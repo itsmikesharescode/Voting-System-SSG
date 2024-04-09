@@ -9,7 +9,7 @@
 />
 
 <div class="xs:px-[40px] xs:py-[88px] px-[55px] py-[32px]">
-	<a href="/admin/login" class=" text-[14px] font-semibold text-red-900 underline">ADMIN LOG IN</a>
+	<a href="/admin" class=" text-[14px] font-semibold text-red-900 underline">ADMIN LOG IN</a>
 
 	<div
 		class="mt-[90px] flex flex-col lg:mx-auto lg:w-[714px] lg:rounded-[10px] lg:bg-[#d9d9d9de] lg:px-[68px] lg:py-[18px]"
