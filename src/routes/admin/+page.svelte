@@ -14,7 +14,7 @@
 	<a href="/" class=" text-[14px] font-semibold text-red-900 underline">BACK TO HOME</a>
 
 	<div
-		class="mt-[90px] flex flex-col gap-[20px] lg:mx-auto lg:w-[481px] lg:rounded-[10px] lg:bg-[#d9d9d9de] lg:px-[68px] lg:py-[18px]"
+		class="xs:w-[420px] mx-auto mt-[90px] flex flex-col gap-[20px] lg:w-[481px] lg:rounded-[10px] lg:bg-[#d9d9d9de] lg:px-[68px] lg:py-[18px]"
 	>
 		<h1 class="xs:text-[28px] text-[24px] font-semibold leading-[30px] text-red-900 lg:text-center">
 			ADMIN LOG IN
