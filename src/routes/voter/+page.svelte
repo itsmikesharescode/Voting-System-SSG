@@ -21,17 +21,23 @@
 		</h1>
 
 		<div class="grid w-full items-center gap-1.5">
-			<Label for="username">LRN</Label>
-			<Input type="text" id="username" placeholder="Enter LRN" />
+			<Label class="text-red-900" for="username">LRN</Label>
+			<Input class="text-red-900" type="text" id="username" placeholder="Enter LRN" />
 		</div>
 
 		<div class="grid w-full items-center gap-1.5">
-			<Label for="password">Password</Label>
-			<Input type="password" id="password" placeholder="Enter password" />
+			<Label class="text-red-900" for="password">Password</Label>
+			<Input class="text-red-900" type="password" id="password" placeholder="Enter password" />
 		</div>
 
 		<Button class=" mx-auto w-[210px] rounded-[10px] bg-red-900 text-[14px] font-semibold"
 			>Log in</Button
+		>
+
+		<a
+			href="/"
+			class="mx-auto text-[14px] font-semibold text-red-900 underline transition-all hover:text-[#2d2b29]"
+			>Forgot Password</a
 		>
 	</div>
 </div>
