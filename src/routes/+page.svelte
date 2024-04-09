@@ -26,9 +26,10 @@
 			facilitation of the voting process.
 		</p>
 
-		<Button
-			class="xs:mt-[40px] mx-auto mt-[20px] w-[210px] rounded-[10px] bg-red-900 text-[14px] font-semibold"
-			>Click to Vote</Button
+		<a
+			href="/voter"
+			class="mx-auto mt-[20px] flex h-[40px] w-[210px] items-center justify-center rounded-[10px] bg-red-900 text-[14px] font-semibold text-white transition-all hover:bg-[#2d2b29]"
+			>Click to Vote</a
 		>
 	</div>
 </div>
