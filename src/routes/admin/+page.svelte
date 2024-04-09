@@ -2,10 +2,11 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
+	import landingDesktopBg from '$lib/assets/landing_desktop_bg.png';
 </script>
 
 <img
-	src="images/landing_desktop_bg.png"
+	src={landingDesktopBg}
 	alt="desktopBG"
 	class="fixed bottom-0 left-0 right-0 top-0 -z-10 hidden h-full w-full lg:block"
 />
