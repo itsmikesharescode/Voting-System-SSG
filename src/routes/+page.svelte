@@ -1,15 +1,15 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/button/button.svelte';
+	import landingDesktopBg from '$lib/assets/landing_desktop_bg.png';
 </script>
 
 <img
-	src="images/landing_desktop_bg.png"
+	src={landingDesktopBg}
 	alt="desktopBG"
 	class="fixed bottom-0 left-0 right-0 top-0 -z-10 hidden h-full w-full lg:block"
 />
 
 <div class="xs:px-[40px] xs:py-[88px] px-[55px] py-[32px]">
-	<a href="/admin/login" class=" text-[14px] font-semibold text-red-900 underline">ADMIN LOG IN</a>
+	<a href="/admin" class=" text-[14px] font-semibold text-red-900 underline">ADMIN LOG IN</a>
 
 	<div
 		class="mt-[90px] flex flex-col lg:mx-auto lg:w-[714px] lg:rounded-[10px] lg:bg-[#d9d9d9de] lg:px-[68px] lg:py-[18px]"
@@ -26,9 +26,10 @@
 			facilitation of the voting process.
 		</p>
 
-		<Button
-			class="xs:mt-[40px] mx-auto mt-[20px] w-[210px] rounded-[10px] bg-red-900 text-[14px] font-semibold"
-			>Click to Vote</Button
+		<a
+			href="/voter"
+			class="mx-auto mt-[20px] flex h-[40px] w-[210px] items-center justify-center rounded-[10px] bg-red-900 text-[14px] font-semibold text-white transition-all hover:bg-[#2d2b29]"
+			>Click to Vote</a
 		>
 	</div>
 </div>

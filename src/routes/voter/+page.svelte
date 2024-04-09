@@ -18,21 +18,27 @@
 		class="xs:w-[420px] mx-auto mt-[90px] flex flex-col gap-[20px] lg:w-[481px] lg:rounded-[10px] lg:bg-[#d9d9d9de] lg:px-[68px] lg:py-[18px]"
 	>
 		<h1 class="xs:text-[28px] text-[24px] font-semibold leading-[30px] text-red-900 lg:text-center">
-			ADMIN LOG IN
+			LAZARO ELECTION
 		</h1>
 
 		<div class="grid w-full items-center gap-1.5">
-			<Label class="text-red-900 " for="username">Username</Label>
-			<Input class="text-red-900" type="text" id="username" placeholder="Enter username" />
+			<Label class="text-red-900" for="username">LRN</Label>
+			<Input class="text-red-900" type="text" id="username" placeholder="Enter LRN" />
 		</div>
 
 		<div class="grid w-full items-center gap-1.5">
-			<Label class="text-red-900 " for="password">Password</Label>
+			<Label class="text-red-900" for="password">Password</Label>
 			<Input class="text-red-900" type="password" id="password" placeholder="Enter password" />
 		</div>
 
 		<Button class=" mx-auto w-[210px] rounded-[10px] bg-red-900 text-[14px] font-semibold"
 			>Log in</Button
+		>
+
+		<a
+			href="/voter/forgot-password"
+			class="mx-auto text-[14px] font-semibold text-red-900 underline transition-all hover:text-[#2d2b29]"
+			>Forgot Password</a
 		>
 	</div>
 </div>
