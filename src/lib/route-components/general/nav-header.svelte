@@ -3,9 +3,12 @@
 	import mobile_open_icon from '$lib/assets/mobile_open_icon.svg';
 	import { selections } from '$lib';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { getAdminState } from '$lib/stores';
 
 	let showMobileMenu = false;
 	let logoutLoader = false;
+
+	const adminState = getAdminState();
 </script>
 
 <nav
@@ -23,9 +26,15 @@
 	</button>
 
 	<div class="hidden w-full items-center justify-between sm:flex">
-		<div class="flex items-center gap-[10px]">
+		<div class="flex items-center gap-[10px] text-mainred">
 			{#each selections as selection}
-				<a href={selection.url} class="text-red max-w-fit underline">{selection.title}</a>
+				<a
+					href={selection.url}
+					class="text-red max-w-fit underline {$adminState.activeItem === selection.url
+						? 'font-bold'
+						: ''}"
+					on:click={() => ($adminState.activeItem = selection.url)}>{selection.title}</a
+				>
 			{/each}
 		</div>
 
