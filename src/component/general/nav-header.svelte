@@ -5,6 +5,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	let showMobileMenu = false;
+	let logoutLoader = false;
 </script>
 
 <nav
@@ -28,8 +29,13 @@
 			{/each}
 		</div>
 
-		<div class="">
-			<Button>Log out</Button>
+		<div class="flex items-center gap-[10px]">
+			<p class="text-red text-[14px]">Admin</p>
+
+			<Button
+				class="{logoutLoader ? 'bg-clicked cursor-not-allowed' : 'bg-red'}
+			mx-auto rounded-[10px] text-[14px] font-semibold">Log out</Button
+			>
 		</div>
 	</div>
 </nav>

@@ -105,7 +105,7 @@
 		<Button
 			disabled={adminLoginLoader}
 			type="submit"
-			class="{adminLoginLoader ? 'bg-clicked cursor-not-allowed' : 'bg-red-900'}
+			class="{adminLoginLoader ? 'bg-clicked cursor-not-allowed' : 'bg-red'}
 			mx-auto w-[210px] rounded-[10px] text-[14px] font-semibold"
 		>
 			{#if adminLoginLoader}
