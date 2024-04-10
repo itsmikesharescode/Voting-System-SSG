@@ -52,10 +52,20 @@
 
 {#if showMobileMenu}
 	<menu
-		class="border-b-red relative flex flex-col gap-[30px] border-b-[1px] border-b-[] bg-subwhite px-[75px] py-[50px] text-[24px] sm:hidden"
+		class="border-b-red relative flex flex-col gap-[30px] border-b-[1px] border-b-[] bg-subwhite px-[75px] py-[50px] text-[24px] text-mainred sm:hidden"
 	>
 		{#each selections as selection}
-			<a href={selection.url} class="text-red max-w-fit">{selection.title}</a>
+			<a
+				href={selection.url}
+				class="text-red max-w-fit {$adminState.activeItem === selection.url
+					? 'font-bold underline'
+					: ''}"
+				on:click={() => {
+					$adminState.activeItem = selection.url;
+					showMobileMenu = false;
+				}}
+				>{selection.title}
+			</a>
 		{/each}
 
 		<div class=" mt-[20px] flex items-center justify-end gap-[10px]">
