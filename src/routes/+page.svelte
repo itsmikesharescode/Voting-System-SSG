@@ -28,7 +28,7 @@
 
 		<a
 			href="/voter"
-			class="mx-auto mt-[20px] flex h-[40px] w-[210px] items-center justify-center rounded-[10px] bg-red text-[14px] font-semibold text-white transition-all hover:bg-clicked"
+			class="bg-mainred mx-auto mt-[20px] flex h-[40px] w-[210px] items-center justify-center rounded-[10px] text-[14px] font-semibold text-white transition-all hover:bg-clicked"
 			>Click to Vote</a
 		>
 	</div>

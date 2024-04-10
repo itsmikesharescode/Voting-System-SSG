@@ -56,7 +56,7 @@ const config = {
 
 				"clicked": "#2d2b29",
 				"subwhite": "#D9D9D9",
-				"red": "#800000"
+				"mainred": "#800000"
 
 
 			},
