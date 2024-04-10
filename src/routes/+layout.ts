@@ -2,13 +2,13 @@
 import type { LayoutLoad } from './$types'
 import { createBrowserClient, isBrowser, parse } from '@supabase/ssr'
 
-const sbURL = "";
-const sbKEY = "";
+const supabaseURL: string = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKEY: string = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const load: LayoutLoad = async ({ fetch, data, depends }) => {
     depends('supabase:auth')
 
-    const supabase = createBrowserClient(sbURL, sbKEY, {
+    const supabase = createBrowserClient(supabaseURL, supabaseKEY, {
         global: {
             fetch,
         },
