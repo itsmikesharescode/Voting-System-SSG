@@ -1,4 +1,5 @@
 <script lang="ts">
+	import NavHeader from '$lib/route-components/general/nav-header.svelte';
 	import { setAdminState } from '$lib/stores';
 	import type { AdminState } from '$lib/types';
 
@@ -14,4 +15,5 @@
 	setAdminState(initialState);
 </script>
 
-<div class=""></div>
+<NavHeader />
+<slot />

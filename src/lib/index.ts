@@ -3,26 +3,26 @@
 export const selections = [
     {
         title: "DASHBOARD",
-        url: "admin/authenticated/dashboard"
+        url: "/admin/dashboard"
     },
 
     {
         title: "VOTES",
-        url: "admin/authenticated/votes"
+        url: "/admin/votes"
     },
 
     {
         title: "ALL VOTERS",
-        url: "admin/authenticated/all-voters"
+        url: "/admin/all-voters"
     },
 
     {
         title: "POSITIONS",
-        url: "admin/authenticated/positions"
+        url: "/admin/positions"
     },
 
     {
         title: "CANDIDATES",
-        url: "admin/authenticated/candidates"
+        url: "/admin/candidates"
     },
 ]

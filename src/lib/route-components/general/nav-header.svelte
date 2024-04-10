@@ -9,7 +9,7 @@
 </script>
 
 <nav
-	class="flex h-[59px] w-full items-center justify-end border-b-[1px] border-b-red bg-subwhite px-[15px] sm:justify-start"
+	class="border-b-red flex h-[59px] w-full items-center justify-end border-b-[1px] bg-subwhite px-[15px] sm:justify-start"
 >
 	<button
 		class="rounded-[10px] p-[10px] transition-all active:scale-105 sm:hidden"
@@ -25,15 +25,15 @@
 	<div class="hidden w-full items-center justify-between sm:flex">
 		<div class="flex items-center gap-[10px]">
 			{#each selections as selection}
-				<a href={selection.url} class="max-w-fit text-red underline">{selection.title}</a>
+				<a href={selection.url} class="text-red max-w-fit underline">{selection.title}</a>
 			{/each}
 		</div>
 
 		<div class="flex items-center gap-[10px]">
-			<p class="text-[14px] text-red">Admin</p>
+			<p class="text-red text-[14px]">Admin</p>
 
 			<Button
-				class="{logoutLoader ? 'cursor-not-allowed bg-clicked' : 'bg-red'}
+				class="{logoutLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
 				mx-auto rounded-[10px] text-[14px] font-semibold"
 				>Log out
 			</Button>
@@ -43,14 +43,14 @@
 
 {#if showMobileMenu}
 	<menu
-		class="relative flex flex-col gap-[30px] border-b-[1px] border-b-[] border-b-red bg-subwhite px-[75px] py-[50px] text-[24px] sm:hidden"
+		class="border-b-red relative flex flex-col gap-[30px] border-b-[1px] border-b-[] bg-subwhite px-[75px] py-[50px] text-[24px] sm:hidden"
 	>
 		{#each selections as selection}
-			<a href={selection.url} class="max-w-fit text-red">{selection.title}</a>
+			<a href={selection.url} class="text-red max-w-fit">{selection.title}</a>
 		{/each}
 
 		<div class=" mt-[20px] flex items-center justify-end gap-[10px]">
-			<p class="text-[14px] text-red">Admin</p>
+			<p class="text-red text-[14px]">Admin</p>
 			<Button>Log out</Button>
 		</div>
 	</menu>
