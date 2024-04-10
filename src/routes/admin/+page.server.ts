@@ -12,6 +12,13 @@ export const actions: Actions = {
         const formData = Object.fromEntries(await request.formData());
         try {
             const result = adminLoginSchema.parse(formData);
+            const { data: { user }, error: adminLoginError } = await supabase.auth.signInWithPassword({
+                email: result.email,
+                password: result.password
+            });
+
+            if (adminLoginError) return fail(401, { msg: adminLoginError.message });
+            else if (user) return fail(200, { msg: "Log in success. Welcome back!" })
 
         } catch (error) {
             const zodError = error as ZodError;
