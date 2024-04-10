@@ -54,7 +54,9 @@ const config = {
 					foreground: "hsl(var(--card-foreground) / <alpha-value>)"
 				},
 
-				"clicked": "#2d2b29"
+				"clicked": "#2d2b29",
+				"subwhite": "#D9D9D9",
+				"red": "#800000"
 
 
 			},
