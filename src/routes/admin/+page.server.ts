@@ -8,7 +8,7 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-    adminLogin: async ({ locals: { supabase }, request }) => {
+    adminLoginAction: async ({ locals: { supabase }, request }) => {
         const formData = Object.fromEntries(await request.formData());
         try {
             const result = adminLoginSchema.parse(formData);
