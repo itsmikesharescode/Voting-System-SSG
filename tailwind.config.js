@@ -6,6 +6,7 @@ const config = {
 	content: ["./src/**/*.{html,js,svelte,ts}"],
 	safelist: ["dark"],
 	theme: {
+
 		container: {
 			center: true,
 			padding: "2rem",
@@ -52,6 +53,11 @@ const config = {
 					DEFAULT: "hsl(var(--card) / <alpha-value>)",
 					foreground: "hsl(var(--card-foreground) / <alpha-value>)"
 				},
+
+				"clicked": "#2d2b29",
+				"subwhite": "#D9D9D9",
+				"mainred": "#800000"
+
 
 			},
 			borderRadius: {
