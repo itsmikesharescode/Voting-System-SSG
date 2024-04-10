@@ -4,9 +4,16 @@ export type ResultModel<T> = {
     data: T
 }
 
+export type Dashboard = {
+    totalVoters: number
+    totalVoted: number
+    totalCandidates: number
+    totalPositions: number
+}
+
 export type AdminState = {
     activeItem: string
-    dashboard: unknown
+    dashboard: Dashboard | null
     votes: unknown
     allvoters: unknown
     positions: unknown

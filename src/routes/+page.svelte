@@ -9,12 +9,12 @@
 />
 
 <div class="px-[55px] py-[32px] xs:px-[40px] xs:py-[88px]">
-	<a href="/admin" class=" text-[14px] font-semibold text-red-900 underline">ADMIN LOG IN</a>
+	<a href="/admin" class=" text-red-900 text-[14px] font-semibold underline">ADMIN LOG IN</a>
 
 	<div
 		class="mt-[90px] flex flex-col lg:mx-auto lg:w-[714px] lg:rounded-[10px] lg:bg-[#d9d9d9de] lg:px-[68px] lg:py-[18px]"
 	>
-		<h1 class="text-[24px] font-semibold leading-[30px] text-red-900 xs:text-[28px] lg:text-center">
+		<h1 class="text-red-900 text-[24px] font-semibold leading-[30px] xs:text-[28px] lg:text-center">
 			Web-Based Voting System for Lazaro Francisco Integrated School (SSG)
 		</h1>
 
@@ -28,7 +28,7 @@
 
 		<a
 			href="/voter"
-			class="hover:bg-clicked bg-red mx-auto mt-[20px] flex h-[40px] w-[210px] items-center justify-center rounded-[10px] text-[14px] font-semibold text-white transition-all"
+			class="mx-auto mt-[20px] flex h-[40px] w-[210px] items-center justify-center rounded-[10px] bg-red text-[14px] font-semibold text-white transition-all hover:bg-clicked"
 			>Click to Vote</a
 		>
 	</div>
