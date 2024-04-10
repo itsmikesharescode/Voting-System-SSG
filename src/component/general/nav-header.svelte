@@ -8,7 +8,7 @@
 </script>
 
 <nav
-	class="bg-subwhite border-b-red flex h-[59px] w-full items-center justify-end border-b-[1px] px-[15px]"
+	class="bg-subwhite border-b-red flex h-[59px] w-full items-center justify-end border-b-[1px] px-[15px] sm:justify-start"
 >
 	<button
 		class="rounded-[10px] p-[10px] transition-all active:scale-105 sm:hidden"
@@ -20,6 +20,18 @@
 			class=""
 		/>
 	</button>
+
+	<div class="hidden w-full items-center justify-between sm:flex">
+		<div class="flex items-center gap-[10px]">
+			{#each selections as selection}
+				<a href={selection.url} class="text-red max-w-fit underline">{selection.title}</a>
+			{/each}
+		</div>
+
+		<div class="">
+			<Button>Log out</Button>
+		</div>
+	</div>
 </nav>
 
 {#if showMobileMenu}
