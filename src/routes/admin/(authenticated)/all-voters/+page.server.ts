@@ -11,7 +11,8 @@ export const actions: Actions = {
 
             const { data: { user }, error: createVoterError } = await supabaseAdmin.auth.admin.createUser({
                 email: result.email,
-                password: result.password
+                password: result.password,
+                email_confirm: true
             });
 
             if (createVoterError) return fail(401, { msg: createVoterError.message });

@@ -40,6 +40,7 @@
 					formActionErrors = null;
 					createVoterLoader = false;
 					toast.success('Create Voter', { description: msg });
+					showCreateVoter = false;
 					break;
 
 				case 400:
