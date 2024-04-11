@@ -72,7 +72,12 @@
 			<Button
 				class="{logoutLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
 				mx-auto rounded-[10px] text-[14px] font-semibold"
-				>Log out
+			>
+				{#if logoutLoader}
+					Logging out...
+				{:else}
+					Log out
+				{/if}
 			</Button>
 		</div>
 	</div>
@@ -104,7 +109,18 @@
 			class=" mt-[20px] flex items-center justify-end gap-[10px]"
 		>
 			<p class="text-red text-[14px]">Admin</p>
-			<Button disabled={logoutLoader} type="submit" class="bg-mainred">Log out</Button>
+			<Button
+				disabled={logoutLoader}
+				type="submit"
+				class="{logoutLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
+			rounded-[10px] text-[14px] font-semibold"
+			>
+				{#if logoutLoader}
+					Logging out...
+				{:else}
+					Log out
+				{/if}
+			</Button>
 		</form>
 	</menu>
 {/if}
