@@ -78,11 +78,11 @@
 				</AlertDialog.Description>
 
 				<div class=" flex flex-col gap-[20px] pt-[20px]">
-					<Select.Root portal={null}>
+					<Select.Root>
 						<Select.Trigger class="w-full" disabled={createVoterLoader}>
-							<Select.Value placeholder="Select a fruit" />
+							<Select.Value placeholder="Choose voter classification" />
 						</Select.Trigger>
-						<Select.Content>
+						<Select.Content class="mt-[10px]">
 							<Select.Group>
 								<Select.Label class="text-left">Select Voter Classification</Select.Label>
 								{#each classifications as classification}
@@ -94,6 +94,9 @@
 						</Select.Content>
 						<Select.Input name="classification" />
 					</Select.Root>
+					{#each formActionErrors?.classification ?? [] as errorMsg}
+						<p class="text-[14px] text-red-600">{errorMsg}</p>
+					{/each}
 
 					<div class="grid w-full gap-1.5">
 						<Label class="text-left text-red-900" for="username">Voter Full Name</Label>
