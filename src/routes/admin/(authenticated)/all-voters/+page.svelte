@@ -3,6 +3,18 @@
 	import AllVoterFilters from '$lib/route-components/admin/all-voters/all-voter-filters.svelte';
 	import CreateVoter from '$lib/route-components/admin/all-voters/create-voter.svelte';
 	import ImportData from '$lib/route-components/admin/all-voters/import-data.svelte';
+	import { getAdminState } from '$lib/stores';
+	import type { PageServerData } from './$types';
+
+	const adminState = getAdminState();
+	export let data: PageServerData;
+
+	//filter functions
+	const generateVotedCount = () => data.user_list.data?.filter((voter) => voter.is_voted === true);
+	const generateUnvotedCount = () =>
+		data.user_list.data?.filter((voter) => voter.is_voted === true);
+	const generateNotRegisteredCount = () =>
+		data.user_list.data?.filter((voter) => voter.is_registered === false);
 </script>
 
 <div class="mt-[30px] p-[22px]">

@@ -7,7 +7,11 @@
 	const initialState: AdminState = {
 		activeItem: $page.url.pathname,
 		dashboard: null,
-		votes: null,
+		votes: {
+			voted: null,
+			unvoted: null,
+			notRegistered: null
+		},
 		allvoters: null,
 		positions: null,
 		candidates: null
