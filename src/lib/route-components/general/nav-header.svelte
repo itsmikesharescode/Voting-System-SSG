@@ -4,11 +4,39 @@
 	import { selections } from '$lib';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { getAdminState } from '$lib/stores';
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import type { ResultModel } from '$lib/types';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
+	const adminState = getAdminState();
 
 	let showMobileMenu = false;
 	let logoutLoader = false;
 
-	const adminState = getAdminState();
+	const adminLogoutActionNews: SubmitFunction = () => {
+		logoutLoader = true;
+		return async ({ result, update }) => {
+			const {
+				status,
+				data: { msg }
+			} = result as ResultModel<{ msg: string }>;
+
+			switch (status) {
+				case 200:
+					toast.success('Log out', { description: msg });
+					logoutLoader = false;
+					goto('/admin');
+					break;
+
+				case 401:
+					toast.error('Log out', { description: msg });
+					logoutLoader = false;
+					break;
+			}
+			await update();
+		};
+	};
 </script>
 
 <nav
@@ -68,9 +96,15 @@
 			</a>
 		{/each}
 
-		<div class=" mt-[20px] flex items-center justify-end gap-[10px]">
+		<form
+			method="post"
+			action="/admin?/adminLogoutAction"
+			enctype="multipart/form-data"
+			use:enhance={adminLogoutActionNews}
+			class=" mt-[20px] flex items-center justify-end gap-[10px]"
+		>
 			<p class="text-red text-[14px]">Admin</p>
-			<Button>Log out</Button>
-		</div>
+			<Button disabled={logoutLoader} type="submit" class="bg-mainred">Log out</Button>
+		</form>
 	</menu>
 {/if}
