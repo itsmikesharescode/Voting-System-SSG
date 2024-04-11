@@ -1,11 +1,9 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
-	import AllVoterFilters from '$lib/route-components/admin/all-voters/all-voter-filters.svelte';
 	import CreateVoter from '$lib/route-components/admin/all-voters/create-voter.svelte';
 	import ImportData from '$lib/route-components/admin/all-voters/import-data.svelte';
 	import { getAdminState } from '$lib/stores';
 	import * as Select from '$lib/components/ui/select/index.js';
-	import type { UserListDB } from '$lib/types';
 	import type { PageServerData } from './$types';
 
 	const adminState = getAdminState();
