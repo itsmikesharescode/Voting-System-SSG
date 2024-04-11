@@ -8,6 +8,7 @@
 	import type { ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import { setAdminState } from '$lib/stores';
+	import { goto } from '$app/navigation';
 
 	interface AdminLoginVal {
 		email: string[];
@@ -30,6 +31,7 @@
 					formActionErrors = null;
 					toast.success('Admin Login', { description: msg });
 					adminLoginLoader = false;
+					goto('/admin/dashboard');
 					break;
 
 				case 400:
@@ -64,12 +66,12 @@
 	enctype="multipart/form-data"
 	use:enhance={adminLoginActionNews}
 >
-	<a href="/" class=" text-red-900 text-[14px] font-semibold underline">BACK TO HOME</a>
+	<a href="/" class=" text-[14px] font-semibold text-red-900 underline">BACK TO HOME</a>
 
 	<div
 		class="mx-auto mt-[90px] flex flex-col gap-[20px] xs:w-[420px] lg:w-[481px] lg:rounded-[10px] lg:bg-[#d9d9d9de] lg:px-[68px] lg:py-[18px]"
 	>
-		<h1 class="text-red-900 text-[24px] font-semibold leading-[30px] xs:text-[28px] lg:text-center">
+		<h1 class="text-[24px] font-semibold leading-[30px] text-red-900 xs:text-[28px] lg:text-center">
 			ADMIN LOG IN
 		</h1>
 
@@ -78,13 +80,13 @@
 			<Input
 				disabled={adminLoginLoader}
 				name="email"
-				class="text-red-900 text-[14px]"
+				class="text-[14px] text-red-900"
 				type="text"
 				id="username"
 				placeholder="Enter username"
 			/>
 			{#each formActionErrors?.email ?? [] as errorMsg}
-				<p class="text-red-600 text-[14px]">{errorMsg}</p>
+				<p class="text-[14px] text-red-600">{errorMsg}</p>
 			{/each}
 		</div>
 
@@ -93,13 +95,13 @@
 			<Input
 				disabled={adminLoginLoader}
 				name="password"
-				class="text-red-900 text-[14px]"
+				class="text-[14px] text-red-900"
 				type="password"
 				id="password"
 				placeholder="Enter password"
 			/>
 			{#each formActionErrors?.password ?? [] as errorMsg}
-				<p class="text-red-600 text-[14px]">{errorMsg}</p>
+				<p class="text-[14px] text-red-600">{errorMsg}</p>
 			{/each}
 		</div>
 
