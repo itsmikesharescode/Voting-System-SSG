@@ -24,10 +24,11 @@ export const actions: Actions = {
                     user_fullname: result.fullName,
                     is_voted: false,
                     classification: result.classification,
+                    is_registered: true
                 }]);
 
                 if (userInsert) {
-                    const { data, error } = await supabaseAdmin.auth.admin.deleteUser(user.id);
+                    const deleteUser = await supabaseAdmin.auth.admin.deleteUser(user.id);
                     return fail(401, { msg: userInsert.message });
                 } else return fail(200, { msg: "Voter Account Created." });
 
