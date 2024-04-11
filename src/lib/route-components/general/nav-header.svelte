@@ -66,10 +66,18 @@
 			{/each}
 		</div>
 
-		<div class="flex items-center gap-[10px]">
+		<form
+			method="post"
+			action="/admin?/adminLogoutAction"
+			enctype="multipart/form-data"
+			use:enhance={adminLogoutActionNews}
+			class="flex items-center gap-[10px]"
+		>
 			<p class="text-red text-[14px]">Admin</p>
 
 			<Button
+				disabled={logoutLoader}
+				type="submit"
 				class="{logoutLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
 				mx-auto rounded-[10px] text-[14px] font-semibold"
 			>
@@ -79,7 +87,7 @@
 					Log out
 				{/if}
 			</Button>
-		</div>
+		</form>
 	</div>
 </nav>
 

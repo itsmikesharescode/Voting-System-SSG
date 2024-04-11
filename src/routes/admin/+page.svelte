@@ -76,14 +76,14 @@
 		</h1>
 
 		<div class="grid w-full items-center gap-1.5 text-[14px]">
-			<Label class="text-red-900 " for="username">Username</Label>
+			<Label class="text-red-900 " for="username">Email</Label>
 			<Input
 				disabled={adminLoginLoader}
 				name="email"
 				class="text-[14px] text-red-900"
-				type="text"
-				id="username"
-				placeholder="Enter username"
+				type="email"
+				id="email"
+				placeholder="Enter admin email"
 			/>
 			{#each formActionErrors?.email ?? [] as errorMsg}
 				<p class="text-[14px] text-red-600">{errorMsg}</p>
@@ -98,7 +98,7 @@
 				class="text-[14px] text-red-900"
 				type="password"
 				id="password"
-				placeholder="Enter password"
+				placeholder="Enter admin password"
 			/>
 			{#each formActionErrors?.password ?? [] as errorMsg}
 				<p class="text-[14px] text-red-600">{errorMsg}</p>
