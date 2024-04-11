@@ -31,5 +31,12 @@ export const actions: Actions = {
             const { fieldErrors } = zodError.flatten();
             return fail(400, { errors: fieldErrors });
         }
+    },
+
+    adminLogoutAction: async ({ locals: { supabase } }) => {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) return fail(401, { msg: error.message });
+        else return fail(200, { msg: "Thanks for using this system!" });
     }
 };
