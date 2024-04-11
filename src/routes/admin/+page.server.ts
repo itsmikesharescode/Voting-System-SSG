@@ -1,10 +1,16 @@
 import type { ZodError } from "zod";
 import type { Actions, PageServerLoad } from "./$types";
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { adminLoginSchema } from "$lib/schema";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
+    const { user } = await safeGetSession();
 
+    if (user) {
+        const { role } = user;
+        if (role !== "service_role") return redirect(301, "/voter/voting-process");
+        return redirect(301, "/admin/dashboard");
+    }
 };
 
 export const actions: Actions = {
