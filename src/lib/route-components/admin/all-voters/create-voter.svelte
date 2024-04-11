@@ -3,8 +3,14 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
+	import * as Select from '$lib/components/ui/select/index.js';
 
 	let showCreateVoter = false;
+
+	const classifications = [
+		{ value: 'highschool', label: 'High School' },
+		{ value: 'elementary', label: 'Elementary' }
+	];
 </script>
 
 <Button
@@ -19,6 +25,23 @@
 			<AlertDialog.Description>
 				This will create a voter account for Lazaro Francisco Integrated School (SSG).
 			</AlertDialog.Description>
+
+			<Select.Root portal={null}>
+				<Select.Trigger class="w-full">
+					<Select.Value placeholder="Select a fruit" />
+				</Select.Trigger>
+				<Select.Content>
+					<Select.Group>
+						<Select.Label class="text-left">Select Voter Classification</Select.Label>
+						{#each classifications as classification}
+							<Select.Item value={classification.value} label={classification.label}
+								>{classification.label}</Select.Item
+							>
+						{/each}
+					</Select.Group>
+				</Select.Content>
+				<Select.Input name="classification" />
+			</Select.Root>
 
 			<div class=" flex flex-col gap-[20px] pt-[20px]">
 				<div class="grid w-full gap-1.5">
