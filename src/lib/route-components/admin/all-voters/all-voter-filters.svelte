@@ -1,15 +1,24 @@
 <script lang="ts">
-	import * as Tabs from '$lib/components/ui/tabs';
+	import * as Select from '$lib/components/ui/select/index.js';
+
+	const selections = [
+		{ value: 'voted', label: 'Voted (20)' },
+		{ value: 'unvoteed', label: 'Unvoted (30)' },
+		{ value: 'notRegistered', label: 'Not Registered (40)' }
+	];
 </script>
 
-<div class="">
-	<Tabs.Root value="voted" class="w-full">
-		<Tabs.List class="">
-			<Tabs.Trigger class="w-full" value="voted">Voted (1)</Tabs.Trigger>
-			<Tabs.Trigger class="w-full" value="unvoted">Unvoted (20)</Tabs.Trigger>
-		</Tabs.List>
-
-		<Tabs.Content value="voted" class="mt-[30px] "></Tabs.Content>
-		<Tabs.Content value="unvoted" class="mt-[30px]"></Tabs.Content>
-	</Tabs.Root>
-</div>
+<Select.Root portal={null}>
+	<Select.Trigger class="w-[180px]">
+		<Select.Value placeholder="Voted (20)" />
+	</Select.Trigger>
+	<Select.Content class="mt-[10px]">
+		<Select.Group>
+			<Select.Label>Choose Filter</Select.Label>
+			{#each selections as selection}
+				<Select.Item value={selection.value} label={selection.label}>{selection.label}</Select.Item>
+			{/each}
+		</Select.Group>
+	</Select.Content>
+	<Select.Input name="selectedFilter" />
+</Select.Root>

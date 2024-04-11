@@ -1,6 +1,11 @@
 import { createVoterAccountSchema } from "$lib/schema";
 import { fail, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
+import type { PageServerLoad } from "./$types";
+
+export const load: PageServerLoad = async ({ locals: supabaseAdmin }) => {
+
+};
 
 export const actions: Actions = {
     createVoterAction: async ({ locals: { supabase, supabaseAdmin }, request }) => {
