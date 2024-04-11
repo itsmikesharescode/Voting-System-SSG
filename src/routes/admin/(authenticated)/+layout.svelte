@@ -8,9 +8,11 @@
 		activeItem: $page.url.pathname,
 		dashboard: null,
 		votes: {
-			voted: null,
-			unvoted: null,
-			notRegistered: null
+			activeTab: 'highschool',
+			userList: null,
+			votedFilter: true,
+			unvotedFilter: false,
+			notRegisteredFilter: false
 		},
 		allvoters: null,
 		positions: null,

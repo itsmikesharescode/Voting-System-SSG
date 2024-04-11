@@ -15,9 +15,11 @@ export type AdminState = {
     activeItem: string
     dashboard: Dashboard | null
     votes: {
-        voted: UserListDB[] | null,
-        unvoted: UserListDB[] | null,
-        notRegistered: UserListDB[] | null
+        activeTab: "highschool" | "elementary"
+        userList: UserListDB[] | null,
+        votedFilter: boolean,
+        unvotedFilter: boolean,
+        notRegisteredFilter: boolean
     }
     allvoters: unknown
     positions: unknown
