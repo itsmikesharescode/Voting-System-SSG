@@ -95,11 +95,11 @@
 						<Select.Input name="classification" />
 					</Select.Root>
 					{#each formActionErrors?.classification ?? [] as errorMsg}
-						<p class="text-[14px] text-red-600">{errorMsg}</p>
+						<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
 					{/each}
 
 					<div class="grid w-full gap-1.5">
-						<Label class="text-left text-red-900" for="username">Voter Full Name</Label>
+						<Label class="text-left text-red-900" for="fullName">Voter Full Name</Label>
 						<Input
 							disabled={createVoterLoader}
 							name="fullName"
@@ -108,10 +108,13 @@
 							id="fullName"
 							placeholder="Enter voter fullname"
 						/>
+						{#each formActionErrors?.fullName ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+						{/each}
 					</div>
 
 					<div class="grid w-full gap-1.5">
-						<Label class="text-left text-red-900 " for="username">Voter LRN</Label>
+						<Label class="text-left text-red-900 " for="voterLrn">Voter LRN</Label>
 						<Input
 							disabled={createVoterLoader}
 							name="voterLrn"
@@ -120,10 +123,13 @@
 							id="voterLrn"
 							placeholder="Enter voter lrn"
 						/>
+						{#each formActionErrors?.voterLrn ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+						{/each}
 					</div>
 
 					<div class="grid w-full gap-1.5">
-						<Label class="text-left text-red-900 " for="username">Voter Email</Label>
+						<Label class="text-left text-red-900 " for="email">Voter Email</Label>
 						<Input
 							disabled={createVoterLoader}
 							name="email"
@@ -132,10 +138,13 @@
 							id="email"
 							placeholder="Enter voter email"
 						/>
+						{#each formActionErrors?.email ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+						{/each}
 					</div>
 
 					<div class="grid w-full items-center gap-1.5">
-						<Label class="text-left text-red-900 " for="username">Voter Password</Label>
+						<Label class="text-left text-red-900 " for="password">Voter Password</Label>
 						<Input
 							disabled={createVoterLoader}
 							name="password"
@@ -144,23 +153,31 @@
 							id="password"
 							placeholder="Enter voter password"
 						/>
+						{#each formActionErrors?.password ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+						{/each}
 					</div>
 
 					<div class="grid w-full items-center gap-1.5">
-						<Label class="text-left text-red-900 " for="username">Voter Confirm Password</Label>
+						<Label class="text-left text-red-900 " for="confirmPassword"
+							>Voter Confirm Password</Label
+						>
 						<Input
 							disabled={createVoterLoader}
-							name="password"
+							name="confirmPassword"
 							class="text-[14px] text-red-900"
 							type="password"
-							id="password"
+							id="confirmPassword"
 							placeholder="Enter voter password"
 						/>
+						{#each formActionErrors?.confirmPassword ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+						{/each}
 					</div>
 				</div>
 			</AlertDialog.Header>
 			<AlertDialog.Footer class="mt-[20px]">
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Cancel on:click={() => (formActionErrors = null)}>Cancel</AlertDialog.Cancel>
 				<Button
 					disabled={createVoterLoader}
 					type="submit"
