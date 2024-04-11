@@ -6,7 +6,7 @@ export const adminLoginSchema = z.object({
     password: z.string().min(1, { message: "Must enter a password." })
 });
 
-export const createVoterAccount = z.object({
+export const createVoterAccountSchema = z.object({
     classification: z.string().min(1, { message: "Must choose a voter classification." }),
     fullName: z.string().min(1, { message: "Must enter a valid full name." }),
     voterLrn: z.string().min(11, { message: "Must enter a valid voter lrn." }),
