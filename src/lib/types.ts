@@ -36,9 +36,10 @@ export type UserListDB = {
     user_lrn: string
     user_password: string
     user_fullname: string
-    is_voted: boolean
+    not_voted: boolean
+    not_registered: boolean
     classification: "elementary" | "highschool"
-    is_registered: boolean
+
 }
 
 export interface MigrationFile {

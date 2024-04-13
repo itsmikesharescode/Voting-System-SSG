@@ -4,10 +4,10 @@
 	import ImportData from '$lib/route-components/admin/all-voters/import-data.svelte';
 	import { getAdminState } from '$lib/stores';
 	import * as Select from '$lib/components/ui/select/index.js';
-	import type { PageServerData } from './$types';
+	import type { LayoutServerData } from '../$types';
 
 	const adminState = getAdminState();
-	export let data: PageServerData;
+	export let data: LayoutServerData;
 
 	const generateHighSchoolList = () =>
 		data.user_list.data?.filter((voter) => voter.classification === 'highschool');
@@ -23,17 +23,19 @@
 
 		if (votedFilter) {
 			return ($adminState.votes.userList =
-				tempArray?.filter((voter) => voter.is_voted === true) ?? []);
+				tempArray?.filter((voter) => voter.not_voted === false && voter.not_registered === false) ??
+				[]);
 		}
 
 		if (unvotedFilter) {
 			return ($adminState.votes.userList =
-				tempArray?.filter((voter) => voter.is_voted === false) ?? []);
+				tempArray?.filter((voter) => voter.not_voted === true && voter.not_registered === false) ??
+				[]);
 		}
 
 		if (notRegisteredFilter) {
 			return ($adminState.votes.userList =
-				tempArray?.filter((voter) => voter.is_registered === false) ?? []);
+				tempArray?.filter((voter) => voter.not_registered === true) ?? []);
 		}
 	};
 
@@ -88,7 +90,7 @@
 		<div class="mt-[10px]">
 			<Select.Root portal={null}>
 				<Select.Trigger class="w-[180px]">
-					<Select.Value />
+					<Select.Value placeholder="Voted" />
 				</Select.Trigger>
 				<Select.Content class="mt-[10px]">
 					<Select.Group>
