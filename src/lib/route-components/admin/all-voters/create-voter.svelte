@@ -8,6 +8,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
+	import { invalidateAll } from '$app/navigation';
 
 	const classifications = [
 		{ value: 'highschool', label: 'High School' },
@@ -37,6 +38,7 @@
 
 			switch (status) {
 				case 200:
+					invalidateAll();
 					formActionErrors = null;
 					createVoterLoader = false;
 					toast.success('Create Voter', { description: msg });

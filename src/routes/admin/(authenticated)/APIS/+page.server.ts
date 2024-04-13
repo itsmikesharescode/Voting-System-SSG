@@ -26,9 +26,9 @@ export const actions: Actions = {
                     user_lrn: result.voterLrn,
                     user_password: result.password,
                     user_fullname: result.fullName,
-                    user_email: result.email,
+                    user_email: result.email.toLowerCase(),
                     not_registered: false,
-                    not_voted: false,
+                    not_voted: true,
                 }]);
 
                 if (userInsert) {
