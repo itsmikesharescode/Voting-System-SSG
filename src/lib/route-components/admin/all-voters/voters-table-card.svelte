@@ -7,7 +7,7 @@
 
 <div class=" mt-[10px] text-[14px] font-semibold text-white xs:text-[16px] md:text-[18px]">
 	<div class="flex w-full justify-between border-b-[1px] border-b-subwhite bg-mainred p-[10px]">
-		<div class=" grid w-full grid-cols-4 gap-[20px]">
+		<div class=" grid w-full grid-cols-4 gap-[20px] overflow-auto truncate">
 			<div class="grid overflow-auto">
 				<p class="">Voter Full Name</p>
 			</div>
@@ -24,7 +24,7 @@
 		</div>
 	</div>
 
-	<div class="max-h-[800px] w-full overflow-auto bg-subwhite">
+	<div class="max-h-[800px] w-full overflow-auto truncate bg-subwhite">
 		{#each $adminState.votes.userList ?? [] as voterObj}
 			<div
 				class=" grid w-full grid-cols-4 gap-[20px] border-b-[1px] border-mainred px-[10px] py-[5px] text-mainred"
