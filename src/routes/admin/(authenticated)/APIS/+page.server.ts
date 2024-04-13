@@ -22,13 +22,13 @@ export const actions: Actions = {
             else if (user) {
                 const { error: userInsert } = await supabaseAdmin.from("user_list_tb").insert([{
                     user_id: user.id,
+                    classification: result.classification,
                     user_lrn: result.voterLrn,
                     user_password: result.password,
                     user_fullname: result.fullName,
-                    is_voted: false,
-                    classification: result.classification,
-                    is_registered: true,
-                    not_voted: true,
+                    user_email: result.email,
+                    not_registered: false,
+                    not_voted: false,
                 }]);
 
                 if (userInsert) {
