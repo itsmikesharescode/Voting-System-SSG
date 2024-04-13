@@ -13,7 +13,8 @@
 
 	import Papa from 'papaparse';
 	import { toast } from 'svelte-sonner';
-	import type { MigrationFile } from '$lib/types';
+	import type { MigrationFile, ResultModel } from '$lib/types';
+	import type { SubmitFunction } from '@sveltejs/kit';
 
 	let isParsing = false;
 	let convertedArray: MigrationFile[] | undefined = undefined;
@@ -42,6 +43,43 @@
 			reader.readAsText(files[0]);
 		}
 	};
+
+	interface MigrationDataVal {
+		classification: string[];
+		migrationData: string[];
+	}
+
+	let formActionErrors: MigrationDataVal | null = null;
+	let migrationLoader = false;
+	const migrationActionNews: SubmitFunction = () => {
+		migrationLoader = true;
+		return async ({ result, update }) => {
+			const {
+				status,
+				data: { msg, errors }
+			} = result as ResultModel<{ msg: string; errors: MigrationDataVal }>;
+
+			switch (status) {
+				case 200:
+					formActionErrors = null;
+					toast.success('Migration Data', { description: msg });
+					migrationLoader = false;
+					break;
+
+				case 400:
+					formActionErrors = errors;
+					migrationLoader = false;
+					break;
+
+				case 401:
+					formActionErrors = null;
+					toast.error('Migration Data', { description: msg });
+					migrationLoader = false;
+					break;
+			}
+			await update();
+		};
+	};
 </script>
 
 <Button
@@ -57,7 +95,12 @@
 				Make sure that you have a proper CSV file format.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
-		<form method="post" action="APIS?/migrationAction" enctype="multipart/form-data" use:enhance>
+		<form
+			method="post"
+			action="APIS?/migrationAction"
+			enctype="multipart/form-data"
+			use:enhance={migrationActionNews}
+		>
 			<div class="mt-[20px] flex flex-col gap-[20px]">
 				<p class={isParsing ? 'text-[14px]' : 'hidden'}>Converting...</p>
 
@@ -74,15 +117,23 @@
 						</div>
 						<RadioGroup.Input name="spacing" />
 					</RadioGroup.Root>
+					{#each formActionErrors?.classification ?? [] as errorMsg}
+						<p class="text-[14px] text-red-600">{errorMsg}</p>
+					{/each}
 				</div>
 
-				<input
-					class={isParsing ? 'hidden' : ''}
-					type="file"
-					bind:files
-					accept=".csv"
-					on:change={handleFileChange}
-				/>
+				<div class="">
+					<input
+						class={isParsing ? 'hidden' : ''}
+						type="file"
+						bind:files
+						accept=".csv"
+						on:change={handleFileChange}
+					/>
+					{#each formActionErrors?.migrationData ?? [] as errorMsg}
+						<p class="text-[14px] text-red-600">{errorMsg}</p>
+					{/each}
+				</div>
 			</div>
 			<input name="classification" type="hidden" value={classificationValue} />
 			<input name="migrationData" type="hidden" value={JSON.stringify(convertedArray)} />
