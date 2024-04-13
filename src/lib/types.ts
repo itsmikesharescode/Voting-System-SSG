@@ -42,8 +42,9 @@ export type UserListDB = {
 }
 
 export interface MigrationFile {
-    "Full Name": string
-    "Email": string
-    "LRN": string
-    "Date Created": string
+    fullName: string
+    email: string
+    lrn: string
+    dateCreated: string
 }
+
