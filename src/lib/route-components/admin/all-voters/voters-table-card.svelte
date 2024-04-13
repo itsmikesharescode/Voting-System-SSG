@@ -29,7 +29,11 @@
 			<div
 				class=" grid w-full grid-cols-4 gap-[20px] border-b-[1px] border-mainred px-[10px] py-[5px] text-mainred"
 			>
-				<div class="grid overflow-auto">{voterObj.user_fullname}</div>
+				<button
+					class="grid max-w-fit overflow-auto transition-all duration-200 after:absolute after:right-full after:top-0 after:z-[-1] after:h-full after:w-full after:bg-white after:duration-200 hover:text-slate-950 hover:underline hover:after:translate-x-full"
+				>
+					{voterObj.user_fullname}
+				</button>
 
 				<div class="grid overflow-auto">
 					<p>{voterObj.user_lrn}</p>
