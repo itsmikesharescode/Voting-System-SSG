@@ -35,6 +35,7 @@ export type UserListDB = {
     user_id: string
     user_lrn: string
     user_password: string
+    user_email: string
     user_fullname: string
     not_voted: boolean
     not_registered: boolean

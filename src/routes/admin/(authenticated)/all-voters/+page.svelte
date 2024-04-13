@@ -7,6 +7,7 @@
 	import { getAdminState } from '$lib/stores';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import type { LayoutServerData } from '../$types';
+	import VotersTableCard from '$lib/route-components/admin/all-voters/voters-table-card.svelte';
 
 	const adminState = getAdminState();
 	export let data: LayoutServerData;
@@ -129,8 +130,6 @@
 			</RadioGroup.Root>
 		</div>
 
-		{#each $adminState.votes.userList ?? [] as voter}
-			<p>{voter.user_fullname}</p>
-		{/each}
+		<VotersTableCard />
 	</Tabs.Root>
 </div>
