@@ -8,7 +8,7 @@ import type { UserListDB } from "$lib/types";
 export const load: PageServerLoad = async ({ locals: { supabaseAdmin } }) => {
 
     return {
-        user_list: await supabaseAdmin.from("user_list_tb").select("*").eq("is_registered", true) as PostgrestSingleResponse<UserListDB[]>,
+        user_list: await supabaseAdmin.from("user_list_tb").select("*") as PostgrestSingleResponse<UserListDB[]>,
     }
 
 };

@@ -27,7 +27,8 @@ export const actions: Actions = {
                     user_fullname: result.fullName,
                     is_voted: false,
                     classification: result.classification,
-                    is_registered: true
+                    is_registered: true,
+                    not_voted: true,
                 }]);
 
                 if (userInsert) {
