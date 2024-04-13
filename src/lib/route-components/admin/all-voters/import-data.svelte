@@ -13,6 +13,7 @@
 	import { toast } from 'svelte-sonner';
 	import type { MigrationFile, ResultModel } from '$lib/types';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import { invalidateAll } from '$app/navigation';
 
 	let isParsing = false;
 	let convertedArray: MigrationFile[] | undefined = undefined;
@@ -59,9 +60,11 @@
 
 			switch (status) {
 				case 200:
+					invalidateAll();
 					formActionErrors = null;
 					toast.success('Migration Data', { description: msg });
 					migrationLoader = false;
+					showUploadDialog = false;
 					break;
 
 				case 400:
@@ -147,7 +150,12 @@
 						disabled={migrationLoader}
 						class="{migrationLoader ? 'cursor-not-allowed bg-mainred/50' : 'bg-mainred'}
 						text-[14px] font-semibold"
-						>Upload
+					>
+						{#if migrationLoader}
+							Uploading...
+						{:else}
+							Upload
+						{/if}
 					</Button>
 				{/if}
 			</AlertDialog.Footer>
