@@ -9,8 +9,6 @@
 	let showUploadDialog = false;
 	let classificationValue = '';
 
-	$: !showUploadDialog && (files = undefined);
-
 	import Papa from 'papaparse';
 	import { toast } from 'svelte-sonner';
 	import type { MigrationFile, ResultModel } from '$lib/types';
@@ -80,6 +78,8 @@
 			await update();
 		};
 	};
+
+	$: !showUploadDialog && ((files = undefined), (formActionErrors = null));
 </script>
 
 <Button
@@ -138,9 +138,15 @@
 			<input name="classification" type="hidden" value={classificationValue} />
 			<input name="migrationData" type="hidden" value={JSON.stringify(convertedArray)} />
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel disabled={isParsing}>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Cancel disabled={isParsing || migrationLoader}>Cancel</AlertDialog.Cancel>
 				{#if files && files.length && !isParsing}
-					<Button type="submit" class=" bg-mainred text-[14px] font-semibold">Upload</Button>
+					<Button
+						type="submit"
+						disabled={migrationLoader}
+						class="{migrationLoader ? 'cursor-not-allowed bg-mainred/50' : 'bg-mainred'}
+						text-[14px] font-semibold"
+						>Upload
+					</Button>
 				{/if}
 			</AlertDialog.Footer>
 		</form>
