@@ -53,6 +53,11 @@ export const actions: Actions = {
         try {
             const result = migrationDataSchema.parse(formData);
             const parseData = JSON.parse(result.migrationData) as MigrationFile[];
+            const { error: migrationError } = await supabaseAdmin.rpc("bulk_insert_user_list", { data: parseData, classification_param: result.classification });
+
+            if (migrationError) return fail(401, { msg: migrationError.message });
+            else return fail(200, { msg: "Data Uploaded Successfully." });
+
 
         } catch (error) {
             const zodError = error as ZodError;

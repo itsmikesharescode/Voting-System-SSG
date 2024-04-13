@@ -67,12 +67,14 @@
 				case 400:
 					formActionErrors = errors;
 					migrationLoader = false;
+
 					break;
 
 				case 401:
 					formActionErrors = null;
 					toast.error('Migration Data', { description: msg });
 					migrationLoader = false;
+					console.log(msg);
 					break;
 			}
 			await update();
