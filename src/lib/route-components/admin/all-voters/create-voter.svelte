@@ -102,11 +102,11 @@
 					{/each}
 
 					<div class="grid w-full gap-1.5">
-						<Label class="text-left text-red-900" for="fullName">Voter Full Name</Label>
+						<Label class="text-left " for="fullName">Voter Full Name</Label>
 						<Input
 							disabled={createVoterLoader}
 							name="fullName"
-							class="text-[14px] text-red-900"
+							class="text-[14px] "
 							type="text"
 							id="fullName"
 							placeholder="Enter voter fullname"
@@ -117,11 +117,11 @@
 					</div>
 
 					<div class="grid w-full gap-1.5">
-						<Label class="text-left text-red-900 " for="voterLrn">Voter LRN</Label>
+						<Label class="text-left  " for="voterLrn">Voter LRN</Label>
 						<Input
 							disabled={createVoterLoader}
 							name="voterLrn"
-							class="text-[14px] text-red-900"
+							class="text-[14px] "
 							type="text"
 							id="voterLrn"
 							placeholder="Enter voter lrn"
@@ -132,11 +132,11 @@
 					</div>
 
 					<div class="grid w-full gap-1.5">
-						<Label class="text-left text-red-900 " for="email">Voter Email</Label>
+						<Label class="text-left  " for="email">Voter Email</Label>
 						<Input
 							disabled={createVoterLoader}
 							name="email"
-							class="text-[14px] text-red-900"
+							class="text-[14px] "
 							type="email"
 							id="email"
 							placeholder="Enter voter email"
@@ -147,11 +147,11 @@
 					</div>
 
 					<div class="grid w-full items-center gap-1.5">
-						<Label class="text-left text-red-900 " for="password">Voter Password</Label>
+						<Label class="text-left  " for="password">Voter Password</Label>
 						<Input
 							disabled={createVoterLoader}
 							name="password"
-							class="text-[14px] text-red-900"
+							class="text-[14px] "
 							type="password"
 							id="password"
 							placeholder="Enter voter password"
@@ -162,13 +162,11 @@
 					</div>
 
 					<div class="grid w-full items-center gap-1.5">
-						<Label class="text-left text-red-900 " for="confirmPassword"
-							>Voter Confirm Password</Label
-						>
+						<Label class="text-left  " for="confirmPassword">Voter Confirm Password</Label>
 						<Input
 							disabled={createVoterLoader}
 							name="confirmPassword"
-							class="text-[14px] text-red-900"
+							class="text-[14px] "
 							type="password"
 							id="confirmPassword"
 							placeholder="Enter voter password"
@@ -185,7 +183,7 @@
 					disabled={createVoterLoader}
 					type="submit"
 					class="{createVoterLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
-					rounded-[10px] text-[14px] font-semibold"
+					 text-[14px] font-semibold"
 					on:click={() => (showCreateVoter = true)}
 				>
 					{#if createVoterLoader}
