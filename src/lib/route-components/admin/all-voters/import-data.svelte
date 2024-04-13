@@ -2,6 +2,8 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { enhance } from '$app/forms';
+	import * as RadioGroup from '$lib/components/ui/radio-group/index.js';
+	import { Label } from '$lib/components/ui/label/index.js';
 
 	let files: FileList | undefined = undefined;
 	let showUploadDialog = false;
@@ -15,6 +17,7 @@
 	let isParsing = false;
 	let convertedArray: MigrationFile[] | undefined = undefined;
 
+	//handle client convertion because server overloading is sick
 	const handleFileChange = () => {
 		if (files && files.length) {
 			isParsing = true;
@@ -50,12 +53,27 @@
 		<AlertDialog.Header class="">
 			<AlertDialog.Title>Upload Bulk Voter Information</AlertDialog.Title>
 			<AlertDialog.Description>
-				Make sure that you have a proper CSV file and format.
+				Make sure that you have a proper CSV file format.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 
-		<div class="mt-[20px]">
+		<div class="mt-[20px] flex flex-col gap-[20px]">
 			<p class={isParsing ? 'text-[14px]' : 'hidden'}>Converting...</p>
+
+			<div class="">
+				<RadioGroup.Root value="classification">
+					<Label>Choose Classification</Label>
+					<div class="flex items-center space-x-2">
+						<RadioGroup.Item value="highschool" id="r1" />
+						<Label for="r1">High School</Label>
+					</div>
+					<div class="flex items-center space-x-2">
+						<RadioGroup.Item value="elementary" id="r2" />
+						<Label for="r2">Elementary</Label>
+					</div>
+					<RadioGroup.Input name="spacing" />
+				</RadioGroup.Root>
+			</div>
 
 			<input
 				class={isParsing ? 'hidden' : ''}
