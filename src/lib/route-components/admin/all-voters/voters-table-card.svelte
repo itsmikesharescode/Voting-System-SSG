@@ -2,6 +2,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { formatDate } from '$lib/helpers';
 	import { getAdminState, getUserState } from '$lib/stores';
+	import DeleteVoter from './delete-voter.svelte';
 	import UpdateVoterContent from './update-voter-content.svelte';
 
 	const adminState = getAdminState();
@@ -53,7 +54,7 @@
 				<div class="w-full">
 					<div class="flex w-full items-center gap-[10px]">
 						<UpdateVoterContent />
-						<Button class="w-full transition-all hover:bg-mainred">Delete</Button>
+						<DeleteVoter />
 					</div>
 				</div>
 			</div>

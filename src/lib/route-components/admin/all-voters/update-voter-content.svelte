@@ -3,7 +3,11 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
-
+	import * as Select from '$lib/components/ui/select/index';
+	const classifications = [
+		{ value: 'highschool', label: 'High School' },
+		{ value: 'elementary', label: 'Elementary' }
+	];
 	let showUpdateVoterDialoag = false;
 </script>
 
@@ -19,6 +23,22 @@
 			<AlertDialog.Description>This will update voters information.</AlertDialog.Description>
 
 			<div class=" flex flex-col gap-[20px] pt-[20px]">
+				<Select.Root>
+					<Select.Trigger class="w-full">
+						<Select.Value placeholder="Choose voter classification" />
+					</Select.Trigger>
+					<Select.Content class="mt-[10px]">
+						<Select.Group>
+							<Select.Label class="text-left">Select Voter Classification</Select.Label>
+							{#each classifications as classification}
+								<Select.Item value={classification.value} label={classification.label}
+									>{classification.label}</Select.Item
+								>
+							{/each}
+						</Select.Group>
+					</Select.Content>
+					<Select.Input name="classification" />
+				</Select.Root>
 				<div class="grid w-full gap-1.5">
 					<Label class="text-left " for="fullName">Update Voter Full Name</Label>
 					<Input
