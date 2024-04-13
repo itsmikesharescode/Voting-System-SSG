@@ -24,3 +24,8 @@ export const createVoterAccountSchema = z.object({
         });
     }
 });
+
+export const migrationDataSchema = z.object({
+    classification: z.string().min(1, { message: "Must choose classification." }),
+    migrationData: z.string().min(1, { message: "Must upload a migration file." }),
+})

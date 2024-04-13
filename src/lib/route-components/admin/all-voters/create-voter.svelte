@@ -68,7 +68,7 @@
 	<AlertDialog.Content>
 		<form
 			method="post"
-			action="?/createVoterAction"
+			action="APIS?/createVoterAction"
 			enctype="multipart/form-data"
 			use:enhance={createVoterActionNews}
 		>

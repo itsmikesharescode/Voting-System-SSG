@@ -7,6 +7,7 @@
 
 	let files: FileList | undefined = undefined;
 	let showUploadDialog = false;
+	let classificationValue = '';
 
 	$: !showUploadDialog && (files = undefined);
 
@@ -56,35 +57,34 @@
 				Make sure that you have a proper CSV file format.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
-
-		<div class="mt-[20px] flex flex-col gap-[20px]">
-			<p class={isParsing ? 'text-[14px]' : 'hidden'}>Converting...</p>
-
-			<div class="">
-				<RadioGroup.Root value="classification">
-					<Label>Choose Classification</Label>
-					<div class="flex items-center space-x-2">
-						<RadioGroup.Item value="highschool" id="r1" />
-						<Label for="r1">High School</Label>
-					</div>
-					<div class="flex items-center space-x-2">
-						<RadioGroup.Item value="elementary" id="r2" />
-						<Label for="r2">Elementary</Label>
-					</div>
-					<RadioGroup.Input name="spacing" />
-				</RadioGroup.Root>
-			</div>
-
-			<input
-				class={isParsing ? 'hidden' : ''}
-				name="migrationFile"
-				type="file"
-				bind:files
-				accept=".csv"
-				on:change={handleFileChange}
-			/>
-		</div>
 		<form method="post" action="APIS?/migrationAction" enctype="multipart/form-data" use:enhance>
+			<div class="mt-[20px] flex flex-col gap-[20px]">
+				<p class={isParsing ? 'text-[14px]' : 'hidden'}>Converting...</p>
+
+				<div class="">
+					<RadioGroup.Root bind:value={classificationValue}>
+						<Label>Choose Classification</Label>
+						<div class="flex items-center space-x-2">
+							<RadioGroup.Item value="highschool" id="r1" />
+							<Label for="r1">High School</Label>
+						</div>
+						<div class="flex items-center space-x-2">
+							<RadioGroup.Item value="elementary" id="r2" />
+							<Label for="r2">Elementary</Label>
+						</div>
+						<RadioGroup.Input name="spacing" />
+					</RadioGroup.Root>
+				</div>
+
+				<input
+					class={isParsing ? 'hidden' : ''}
+					type="file"
+					bind:files
+					accept=".csv"
+					on:change={handleFileChange}
+				/>
+			</div>
+			<input name="classification" type="hidden" value={classificationValue} />
 			<input name="migrationData" type="hidden" value={JSON.stringify(convertedArray)} />
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel disabled={isParsing}>Cancel</AlertDialog.Cancel>

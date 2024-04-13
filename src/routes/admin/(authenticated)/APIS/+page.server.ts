@@ -1,4 +1,5 @@
-import { createVoterAccountSchema } from "$lib/schema";
+import { createVoterAccountSchema, migrationDataSchema } from "$lib/schema";
+import type { MigrationFile } from "$lib/types";
 import { fail, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
 
@@ -47,11 +48,18 @@ export const actions: Actions = {
 
 
     migrationAction: async ({ locals: { supabaseAdmin }, request }) => {
-        const formData = await request.formData();
-        const migrationData = formData.get("migrationData") as string;
-        const parseData = JSON.parse(migrationData);
+        const formData = Object.fromEntries(await request.formData());
 
-        console.log(parseData);
+        try {
+            const result = migrationDataSchema.parse(formData);
+            const parseData = JSON.parse(result.migrationData) as MigrationFile[];
+
+        } catch (error) {
+            const zodError = error as ZodError;
+            const { fieldErrors } = zodError.flatten();
+            console.log(fieldErrors)
+            return fail(400, { errors: fieldErrors });
+        }
 
     }
 };
