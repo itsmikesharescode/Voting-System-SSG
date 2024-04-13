@@ -1,13 +1,16 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
+	import * as RadioGroup from '$lib/components/ui/radio-group/index.js';
+	import { Label } from '$lib/components/ui/label/index.js';
 	import CreateVoter from '$lib/route-components/admin/all-voters/create-voter.svelte';
 	import ImportData from '$lib/route-components/admin/all-voters/import-data.svelte';
 	import { getAdminState } from '$lib/stores';
 	import * as Select from '$lib/components/ui/select/index.js';
-	import type { PageServerData } from './$types';
+	import type { LayoutServerData } from '../$types';
+	import VotersTableCard from '$lib/route-components/admin/all-voters/voters-table-card.svelte';
 
 	const adminState = getAdminState();
-	export let data: PageServerData;
+	export let data: LayoutServerData;
 
 	const generateHighSchoolList = () =>
 		data.user_list.data?.filter((voter) => voter.classification === 'highschool');
@@ -23,17 +26,19 @@
 
 		if (votedFilter) {
 			return ($adminState.votes.userList =
-				tempArray?.filter((voter) => voter.is_voted === true) ?? []);
+				tempArray?.filter((voter) => voter.not_voted === false && voter.not_registered === false) ??
+				[]);
 		}
 
 		if (unvotedFilter) {
 			return ($adminState.votes.userList =
-				tempArray?.filter((voter) => voter.is_voted === false) ?? []);
+				tempArray?.filter((voter) => voter.not_voted === true && voter.not_registered === false) ??
+				[]);
 		}
 
 		if (notRegisteredFilter) {
 			return ($adminState.votes.userList =
-				tempArray?.filter((voter) => voter.is_registered === false) ?? []);
+				tempArray?.filter((voter) => voter.not_registered === true) ?? []);
 		}
 	};
 
@@ -45,19 +50,61 @@
 
 		if (votedFilter) {
 			return ($adminState.votes.userList =
-				tempArray?.filter((voter) => voter.is_voted === true) ?? []);
+				tempArray?.filter((voter) => voter.not_voted === false && voter.not_registered === false) ??
+				[]);
 		}
 
 		if (unvotedFilter) {
 			return ($adminState.votes.userList =
-				tempArray?.filter((voter) => voter.is_voted === false) ?? []);
+				tempArray?.filter((voter) => voter.not_voted === true && voter.not_registered === false) ??
+				[]);
 		}
 
 		if (notRegisteredFilter) {
 			return ($adminState.votes.userList =
-				tempArray?.filter((voter) => voter.is_registered === false) ?? []);
+				tempArray?.filter((voter) => voter.not_registered === true) ?? []);
 		}
 	};
+
+	let filterSelection: 'voted' | 'unvoted' | 'notRegistered' = 'voted';
+
+	const updateThis = () => {
+		if (filterSelection === 'voted') {
+			$adminState.votes.votedFilter = true;
+			$adminState.votes.unvotedFilter = false;
+			$adminState.votes.notRegisteredFilter = false;
+			$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+		} else if (filterSelection === 'unvoted') {
+			$adminState.votes.votedFilter = false;
+			$adminState.votes.unvotedFilter = true;
+			$adminState.votes.notRegisteredFilter = false;
+			$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+		} else {
+			$adminState.votes.votedFilter = false;
+			$adminState.votes.unvotedFilter = false;
+			$adminState.votes.notRegisteredFilter = true;
+			$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+		}
+	};
+
+	$: if (filterSelection === 'voted') {
+		$adminState.votes.votedFilter = true;
+		$adminState.votes.unvotedFilter = false;
+		$adminState.votes.notRegisteredFilter = false;
+		$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+	} else if (filterSelection === 'unvoted') {
+		$adminState.votes.votedFilter = false;
+		$adminState.votes.unvotedFilter = true;
+		$adminState.votes.notRegisteredFilter = false;
+		$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+	} else {
+		$adminState.votes.votedFilter = false;
+		$adminState.votes.unvotedFilter = false;
+		$adminState.votes.notRegisteredFilter = true;
+		$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+	}
+
+	$: data.user_list.data ? updateThis() : '';
 </script>
 
 <div class="mt-[30px] p-[22px]">
@@ -86,58 +133,24 @@
 		</div>
 
 		<div class="mt-[10px]">
-			<Select.Root portal={null}>
-				<Select.Trigger class="w-[180px]">
-					<Select.Value />
-				</Select.Trigger>
-				<Select.Content class="mt-[10px]">
-					<Select.Group>
-						<Select.Label>Choose Filter</Select.Label>
-
-						<Select.Item
-							value="voted"
-							label="Voted"
-							on:click={() => {
-								$adminState.votes.votedFilter = true;
-								$adminState.votes.unvotedFilter = false;
-								$adminState.votes.notRegisteredFilter = false;
-								$adminState.votes.activeTab === 'elementary'
-									? handleElementary()
-									: handleHighSchool();
-							}}>Voted</Select.Item
-						>
-						<Select.Item
-							value="unvoted"
-							label="Unvoted"
-							on:click={() => {
-								$adminState.votes.votedFilter = false;
-								$adminState.votes.unvotedFilter = true;
-								$adminState.votes.notRegisteredFilter = false;
-								$adminState.votes.activeTab === 'elementary'
-									? handleElementary()
-									: handleHighSchool();
-							}}>Unvoted</Select.Item
-						>
-						<Select.Item
-							value="notRegistered"
-							label="Not Registered"
-							on:click={() => {
-								$adminState.votes.votedFilter = false;
-								$adminState.votes.unvotedFilter = false;
-								$adminState.votes.notRegisteredFilter = true;
-								$adminState.votes.activeTab === 'elementary'
-									? handleElementary()
-									: handleHighSchool();
-							}}>Not Registered</Select.Item
-						>
-					</Select.Group>
-				</Select.Content>
-				<Select.Input name="selectedFilter" />
-			</Select.Root>
+			<!---Filters-->
+			<RadioGroup.Root bind:value={filterSelection} class="mt-[20px]">
+				<div class="flex items-center space-x-2">
+					<RadioGroup.Item value="voted" id="r1" />
+					<Label for="r1">Voted</Label>
+				</div>
+				<div class="flex items-center space-x-2">
+					<RadioGroup.Item value="unvoted" id="r2" />
+					<Label for="r2">Unvoted</Label>
+				</div>
+				<div class="flex items-center space-x-2">
+					<RadioGroup.Item value="notRegistered" id="r3" />
+					<Label for="r3">Not Registered</Label>
+				</div>
+				<RadioGroup.Input name="spacing" />
+			</RadioGroup.Root>
 		</div>
 
-		{#each $adminState.votes.userList ?? [] as voter}
-			<p>{voter.user_fullname}</p>
-		{/each}
+		<VotersTableCard />
 	</Tabs.Root>
 </div>
