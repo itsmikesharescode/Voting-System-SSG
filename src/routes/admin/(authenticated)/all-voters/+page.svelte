@@ -68,6 +68,25 @@
 
 	let filterSelection: 'voted' | 'unvoted' | 'notRegistered' = 'voted';
 
+	const updateThis = () => {
+		if (filterSelection === 'voted') {
+			$adminState.votes.votedFilter = true;
+			$adminState.votes.unvotedFilter = false;
+			$adminState.votes.notRegisteredFilter = false;
+			$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+		} else if (filterSelection === 'unvoted') {
+			$adminState.votes.votedFilter = false;
+			$adminState.votes.unvotedFilter = true;
+			$adminState.votes.notRegisteredFilter = false;
+			$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+		} else {
+			$adminState.votes.votedFilter = false;
+			$adminState.votes.unvotedFilter = false;
+			$adminState.votes.notRegisteredFilter = true;
+			$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+		}
+	};
+
 	$: if (filterSelection === 'voted') {
 		$adminState.votes.votedFilter = true;
 		$adminState.votes.unvotedFilter = false;
@@ -84,6 +103,8 @@
 		$adminState.votes.notRegisteredFilter = true;
 		$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
 	}
+
+	$: data.user_list.data ? updateThis() : '';
 </script>
 
 <div class="mt-[30px] p-[22px]">
