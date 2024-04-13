@@ -1,3 +1,5 @@
+import { string } from "zod"
+
 export type ResultModel<T> = {
     status: number
     type: string
@@ -37,4 +39,11 @@ export type UserListDB = {
     is_voted: boolean
     classification: "elementary" | "highschool"
     is_registered: boolean
+}
+
+export interface MigrationFile {
+    "Full Name": string
+    "Email": string
+    "LRN": string
+    "Date Created": string
 }
