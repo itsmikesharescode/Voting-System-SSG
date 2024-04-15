@@ -58,4 +58,12 @@ export const createPositionSchema = z.object({
         message: "Must choose a position classification."
     }),
     positionName: z.string().min(3, { message: "Must enter a valid position name." })
+});
+
+export const updatePositionSchema = z.object({
+    positionId: z.string(),
+    classification: z.string().refine((value) => value !== "undefined", {
+        message: "Must choose a position classification."
+    }),
+    positionName: z.string().min(3, { message: "Must enter a valid position name." })
 })

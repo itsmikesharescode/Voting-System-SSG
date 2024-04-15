@@ -2,6 +2,7 @@
 	import { formatDate } from '$lib/helpers';
 	import { getAdminState } from '$lib/stores';
 	import DeletePosition from './delete-position.svelte';
+	import UpdatePosition from './update-position.svelte';
 
 	const adminState = getAdminState();
 </script>
@@ -37,6 +38,7 @@
 
 				<div class="w-full">
 					<div class="flex w-full items-center gap-[10px]">
+						<UpdatePosition {positionObj} />
 						<DeletePosition {positionObj} />
 					</div>
 				</div>
