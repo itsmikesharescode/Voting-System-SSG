@@ -142,7 +142,15 @@ export const actions: Actions = {
         const formData = Object.fromEntries(await request.formData());
         try {
             const result = createPositionSchema.parse(formData);
-            console.log(result)
+
+            const { error: createPositionError } = await supabaseAdmin.rpc("create_position", {
+                classification_param: result.classification,
+                position_name_param: result.positionName,
+            });
+
+            if (createPositionError) return fail(401, { msg: createPositionError.message });
+            else return fail(200, { msg: "Position Created Successfully." });
+
         } catch (error) {
             const zodError = error as ZodError;
             const { fieldErrors } = zodError.flatten();

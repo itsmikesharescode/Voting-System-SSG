@@ -78,25 +78,28 @@
 				</AlertDialog.Description>
 
 				<div class=" flex flex-col gap-[20px] pt-[20px]">
-					<Select.Root>
-						<Select.Trigger class="w-full" disabled={createPositionLoader}>
-							<Select.Value placeholder="Choose position classification" />
-						</Select.Trigger>
-						<Select.Content class="mt-[10px]">
-							<Select.Group>
-								<Select.Label class="text-left">Select Voter Classification</Select.Label>
-								{#each classifications as classification}
-									<Select.Item value={classification.value} label={classification.label}
-										>{classification.label}</Select.Item
-									>
-								{/each}
-							</Select.Group>
-						</Select.Content>
-						<Select.Input name="classification" />
-					</Select.Root>
-					{#each formActionErrors?.classification ?? [] as errorMsg}
-						<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
-					{/each}
+					<div class="">
+						<Select.Root>
+							<Select.Trigger class="w-full" disabled={createPositionLoader}>
+								<Select.Value placeholder="Choose position classification" />
+							</Select.Trigger>
+							<Select.Content class="mt-[10px]">
+								<Select.Group>
+									<Select.Label class="text-left">Select Voter Classification</Select.Label>
+									{#each classifications as classification}
+										<Select.Item value={classification.value} label={classification.label}
+											>{classification.label}</Select.Item
+										>
+									{/each}
+								</Select.Group>
+							</Select.Content>
+							<Select.Input name="classification" />
+						</Select.Root>
+						{#each formActionErrors?.classification ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+						{/each}
+					</div>
+
 					<div class="grid w-full items-center gap-1.5">
 						<Label class="text-left  " for="positionName">Position Name</Label>
 						<Input
