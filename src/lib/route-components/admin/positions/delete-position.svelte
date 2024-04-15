@@ -47,7 +47,7 @@
 	<AlertDialog.Content>
 		<form
 			method="post"
-			action="APIS?/deleteVoterAction"
+			action="APIS?/deletePositionAction"
 			enctype="multipart/form-data"
 			use:enhance={deletePositionActionNews}
 		>

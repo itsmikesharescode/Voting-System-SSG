@@ -138,6 +138,7 @@ export const actions: Actions = {
 
     },
 
+    // position route actions
     createPositionAction: async ({ locals: { supabaseAdmin }, request }) => {
         const formData = Object.fromEntries(await request.formData());
         try {
@@ -156,5 +157,14 @@ export const actions: Actions = {
             const { fieldErrors } = zodError.flatten();
             return fail(400, { errors: fieldErrors });
         }
+    },
+
+    deletePositionAction: async ({ locals: { supabaseAdmin }, request }) => {
+        const formData = await request.formData();
+        const positionId = formData.get("positionId") as string;
+
+        const { error: deletePositionError } = await supabaseAdmin.from("created_positions_tb").delete().eq("id", positionId);
+        if (deletePositionError) return fail(401, { msg: deletePositionError.message });
+        else return fail(200, { msg: "Position Deleted Successfully." });
     }
 };
