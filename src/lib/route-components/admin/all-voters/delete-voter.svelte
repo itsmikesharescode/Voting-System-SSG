@@ -1,9 +1,11 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import type { UserListDB } from '$lib/types';
+	import type { ResultModel, UserListDB } from '$lib/types';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import { toast } from 'svelte-sonner';
+	import { invalidateAll } from '$app/navigation';
 
 	export let voterObj: UserListDB;
 
@@ -14,13 +16,21 @@
 	const deleteVoterActionNews: SubmitFunction = () => {
 		deleteVoterLoader = true;
 		return async ({ result, update }) => {
-			const { status } = result;
+			const {
+				status,
+				data: { msg }
+			} = result as ResultModel<{ msg: string }>;
 
 			switch (status) {
 				case 200:
+					invalidateAll();
+					toast.success('Delete Account', { description: msg });
+					deleteVoterLoader = false;
 					break;
 
 				case 401:
+					toast.error('Delete Account', { description: msg });
+					deleteVoterLoader = false;
 					break;
 			}
 			await update();
@@ -52,7 +62,7 @@
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer class="mt-[20px]">
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Cancel disabled={deleteVoterLoader}>Cancel</AlertDialog.Cancel>
 				<Button
 					disabled={deleteVoterLoader}
 					class="hover:bg-mainred active:bg-clicked"
