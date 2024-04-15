@@ -136,5 +136,9 @@ export const actions: Actions = {
             else return fail(200, { msg: "Account Deleted Successfully." });
         }
 
+    },
+
+    createPositionAction: async ({ locals: { supabaseAdmin }, request }) => {
+        console.log("HELLO")
     }
 };
