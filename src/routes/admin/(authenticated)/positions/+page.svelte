@@ -1,12 +1,10 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
-	import * as RadioGroup from '$lib/components/ui/radio-group/index.js';
-	import { Label } from '$lib/components/ui/label/index.js';
 	import CreateVoter from '$lib/route-components/admin/all-voters/create-voter.svelte';
 	import ImportData from '$lib/route-components/admin/all-voters/import-data.svelte';
 	import { getAdminState } from '$lib/stores';
 	import type { LayoutServerData } from '../$types';
-	import VotersTableCard from '$lib/route-components/admin/all-voters/voters-table-card.svelte';
+	import PositionTableCard from '$lib/route-components/admin/positions/position-table-card.svelte';
 
 	const adminState = getAdminState();
 	export let data: LayoutServerData;
@@ -130,26 +128,6 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="mt-[10px]">
-			<!---Filters-->
-			<RadioGroup.Root bind:value={filterSelection} class="mt-[20px]">
-				<div class="flex items-center space-x-2">
-					<RadioGroup.Item value="voted" id="r1" />
-					<Label for="r1">Voted</Label>
-				</div>
-				<div class="flex items-center space-x-2">
-					<RadioGroup.Item value="unvoted" id="r2" />
-					<Label for="r2">Unvoted</Label>
-				</div>
-				<div class="flex items-center space-x-2">
-					<RadioGroup.Item value="notRegistered" id="r3" />
-					<Label for="r3">Not Registered</Label>
-				</div>
-				<RadioGroup.Input name="spacing" />
-			</RadioGroup.Root>
-		</div>
-
-		<VotersTableCard />
+		<PositionTableCard />
 	</Tabs.Root>
 </div>
