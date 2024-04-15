@@ -7,14 +7,14 @@
 	const initialState: AdminState = {
 		activeItem: $page.url.pathname,
 		dashboard: null,
-		votes: {
+		votes: null,
+		allvoters: {
 			activeTab: 'highschool',
 			userList: null,
 			votedFilter: true,
 			unvotedFilter: false,
 			notRegisteredFilter: false
 		},
-		allvoters: null,
 		positions: null,
 		candidates: null
 	};

@@ -4,6 +4,9 @@
 	import { getAdminState } from '$lib/stores';
 	import PositionTableCard from '$lib/route-components/admin/positions/position-table-card.svelte';
 	import CreatePosition from '$lib/route-components/admin/positions/create-position.svelte';
+	import type { LayoutServerData } from '../$types';
+
+	export let data: LayoutServerData;
 
 	const adminState = getAdminState();
 </script>

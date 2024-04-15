@@ -18,49 +18,49 @@
 		data.user_list.data?.filter((voter) => voter.classification === 'elementary');
 
 	const handleHighSchool = () => {
-		const { votedFilter, unvotedFilter, notRegisteredFilter } = $adminState.votes;
+		const { votedFilter, unvotedFilter, notRegisteredFilter } = $adminState.allvoters;
 
 		let tempArray = generateHighSchoolList();
-		$adminState.votes.activeTab = 'highschool';
+		$adminState.allvoters.activeTab = 'highschool';
 
 		if (votedFilter) {
-			return ($adminState.votes.userList =
+			return ($adminState.allvoters.userList =
 				tempArray?.filter((voter) => voter.not_voted === false && voter.not_registered === false) ??
 				[]);
 		}
 
 		if (unvotedFilter) {
-			return ($adminState.votes.userList =
+			return ($adminState.allvoters.userList =
 				tempArray?.filter((voter) => voter.not_voted === true && voter.not_registered === false) ??
 				[]);
 		}
 
 		if (notRegisteredFilter) {
-			return ($adminState.votes.userList =
+			return ($adminState.allvoters.userList =
 				tempArray?.filter((voter) => voter.not_registered === true) ?? []);
 		}
 	};
 
 	const handleElementary = () => {
-		const { votedFilter, unvotedFilter, notRegisteredFilter } = $adminState.votes;
+		const { votedFilter, unvotedFilter, notRegisteredFilter } = $adminState.allvoters;
 
 		let tempArray = generateElementaryList();
-		$adminState.votes.activeTab = 'elementary';
+		$adminState.allvoters.activeTab = 'elementary';
 
 		if (votedFilter) {
-			return ($adminState.votes.userList =
+			return ($adminState.allvoters.userList =
 				tempArray?.filter((voter) => voter.not_voted === false && voter.not_registered === false) ??
 				[]);
 		}
 
 		if (unvotedFilter) {
-			return ($adminState.votes.userList =
+			return ($adminState.allvoters.userList =
 				tempArray?.filter((voter) => voter.not_voted === true && voter.not_registered === false) ??
 				[]);
 		}
 
 		if (notRegisteredFilter) {
-			return ($adminState.votes.userList =
+			return ($adminState.allvoters.userList =
 				tempArray?.filter((voter) => voter.not_registered === true) ?? []);
 		}
 	};
@@ -69,38 +69,38 @@
 
 	const updateThis = () => {
 		if (filterSelection === 'voted') {
-			$adminState.votes.votedFilter = true;
-			$adminState.votes.unvotedFilter = false;
-			$adminState.votes.notRegisteredFilter = false;
-			$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+			$adminState.allvoters.votedFilter = true;
+			$adminState.allvoters.unvotedFilter = false;
+			$adminState.allvoters.notRegisteredFilter = false;
+			$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
 		} else if (filterSelection === 'unvoted') {
-			$adminState.votes.votedFilter = false;
-			$adminState.votes.unvotedFilter = true;
-			$adminState.votes.notRegisteredFilter = false;
-			$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+			$adminState.allvoters.votedFilter = false;
+			$adminState.allvoters.unvotedFilter = true;
+			$adminState.allvoters.notRegisteredFilter = false;
+			$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
 		} else {
-			$adminState.votes.votedFilter = false;
-			$adminState.votes.unvotedFilter = false;
-			$adminState.votes.notRegisteredFilter = true;
-			$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+			$adminState.allvoters.votedFilter = false;
+			$adminState.allvoters.unvotedFilter = false;
+			$adminState.allvoters.notRegisteredFilter = true;
+			$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
 		}
 	};
 
 	$: if (filterSelection === 'voted') {
-		$adminState.votes.votedFilter = true;
-		$adminState.votes.unvotedFilter = false;
-		$adminState.votes.notRegisteredFilter = false;
-		$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+		$adminState.allvoters.votedFilter = true;
+		$adminState.allvoters.unvotedFilter = false;
+		$adminState.allvoters.notRegisteredFilter = false;
+		$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
 	} else if (filterSelection === 'unvoted') {
-		$adminState.votes.votedFilter = false;
-		$adminState.votes.unvotedFilter = true;
-		$adminState.votes.notRegisteredFilter = false;
-		$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+		$adminState.allvoters.votedFilter = false;
+		$adminState.allvoters.unvotedFilter = true;
+		$adminState.allvoters.notRegisteredFilter = false;
+		$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
 	} else {
-		$adminState.votes.votedFilter = false;
-		$adminState.votes.unvotedFilter = false;
-		$adminState.votes.notRegisteredFilter = true;
-		$adminState.votes.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+		$adminState.allvoters.votedFilter = false;
+		$adminState.allvoters.unvotedFilter = false;
+		$adminState.allvoters.notRegisteredFilter = true;
+		$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
 	}
 
 	$: data.user_list.data ? updateThis() : '';
