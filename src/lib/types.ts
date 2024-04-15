@@ -25,6 +25,7 @@ export type AdminState = {
         notRegisteredFilter: boolean
     }
     positions: {
+        activeTab: string
         createdPositions: PositionsDB[] | null
     }
     candidates: unknown

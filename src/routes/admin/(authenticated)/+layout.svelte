@@ -16,6 +16,7 @@
 			notRegisteredFilter: false
 		},
 		positions: {
+			activeTab: 'highschool',
 			createdPositions: null
 		},
 		candidates: null
