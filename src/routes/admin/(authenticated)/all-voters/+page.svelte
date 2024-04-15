@@ -7,116 +7,66 @@
 	import { getAdminState } from '$lib/stores';
 	import type { LayoutServerData } from '../$types';
 	import VotersTableCard from '$lib/route-components/admin/all-voters/voters-table-card.svelte';
+	import type { UserListDB } from '$lib/types';
 
 	const adminState = getAdminState();
 	export let data: LayoutServerData;
 
-	const generateHighSchoolList = () =>
-		data.user_list.data?.filter((voter) => voter.classification === 'highschool');
+	const handleSelections = (classification: 'highschool' | 'elementary') => {
+		const { filterSelection } = $adminState.allvoters;
 
-	const generateElementaryList = () =>
-		data.user_list.data?.filter((voter) => voter.classification === 'elementary');
+		$adminState.allvoters.activeTab = classification;
 
-	const handleHighSchool = () => {
-		const { votedFilter, unvotedFilter, notRegisteredFilter } = $adminState.allvoters;
+		let tempArray: UserListDB[] | undefined = undefined;
 
-		let tempArray = generateHighSchoolList();
-		$adminState.allvoters.activeTab = 'highschool';
-
-		if (votedFilter) {
-			return ($adminState.allvoters.userList =
-				tempArray?.filter((voter) => voter.not_voted === false && voter.not_registered === false) ??
-				[]);
-		}
-
-		if (unvotedFilter) {
-			return ($adminState.allvoters.userList =
-				tempArray?.filter((voter) => voter.not_voted === true && voter.not_registered === false) ??
-				[]);
-		}
-
-		if (notRegisteredFilter) {
-			return ($adminState.allvoters.userList =
-				tempArray?.filter((voter) => voter.not_registered === true) ?? []);
-		}
-	};
-
-	const handleElementary = () => {
-		const { votedFilter, unvotedFilter, notRegisteredFilter } = $adminState.allvoters;
-
-		let tempArray = generateElementaryList();
-		$adminState.allvoters.activeTab = 'elementary';
-
-		if (votedFilter) {
-			return ($adminState.allvoters.userList =
-				tempArray?.filter((voter) => voter.not_voted === false && voter.not_registered === false) ??
-				[]);
-		}
-
-		if (unvotedFilter) {
-			return ($adminState.allvoters.userList =
-				tempArray?.filter((voter) => voter.not_voted === true && voter.not_registered === false) ??
-				[]);
-		}
-
-		if (notRegisteredFilter) {
-			return ($adminState.allvoters.userList =
-				tempArray?.filter((voter) => voter.not_registered === true) ?? []);
-		}
-	};
-
-	let filterSelection: 'voted' | 'unvoted' | 'notRegistered' = 'voted';
-
-	const updateThis = () => {
 		if (filterSelection === 'voted') {
-			$adminState.allvoters.votedFilter = true;
-			$adminState.allvoters.unvotedFilter = false;
-			$adminState.allvoters.notRegisteredFilter = false;
-			$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+			tempArray = data.user_list.data?.filter(
+				(voter) =>
+					voter.classification === classification &&
+					voter.not_voted === false &&
+					voter.not_registered === false
+			);
 		} else if (filterSelection === 'unvoted') {
-			$adminState.allvoters.votedFilter = false;
-			$adminState.allvoters.unvotedFilter = true;
-			$adminState.allvoters.notRegisteredFilter = false;
-			$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
-		} else {
-			$adminState.allvoters.votedFilter = false;
-			$adminState.allvoters.unvotedFilter = false;
-			$adminState.allvoters.notRegisteredFilter = true;
-			$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
+			tempArray = data.user_list.data?.filter(
+				(voter) =>
+					voter.classification === classification &&
+					voter.not_voted === true &&
+					voter.not_registered === false
+			);
+		} else if (filterSelection === 'notRegistered') {
+			tempArray = data.user_list.data?.filter(
+				(voter) => voter.classification === classification && voter.not_registered === true
+			);
 		}
+
+		if (tempArray) $adminState.allvoters.userList = tempArray;
 	};
 
-	$: if (filterSelection === 'voted') {
-		$adminState.allvoters.votedFilter = true;
-		$adminState.allvoters.unvotedFilter = false;
-		$adminState.allvoters.notRegisteredFilter = false;
-		$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
-	} else if (filterSelection === 'unvoted') {
-		$adminState.allvoters.votedFilter = false;
-		$adminState.allvoters.unvotedFilter = true;
-		$adminState.allvoters.notRegisteredFilter = false;
-		$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
-	} else {
-		$adminState.allvoters.votedFilter = false;
-		$adminState.allvoters.unvotedFilter = false;
-		$adminState.allvoters.notRegisteredFilter = true;
-		$adminState.allvoters.activeTab === 'elementary' ? handleElementary() : handleHighSchool();
-	}
+	$: $adminState.allvoters.filterSelection ? handleSelections($adminState.allvoters.activeTab) : '';
 
-	$: data.user_list.data ? updateThis() : '';
+	$: data.user_list.data ? handleSelections($adminState.allvoters.activeTab) : '';
 </script>
 
 <div class="mt-[30px] p-[22px]">
-	<Tabs.Root class="w-full">
+	<Tabs.Root bind:value={$adminState.allvoters.activeTab} class="w-full">
 		<div class="flex w-full flex-wrap justify-between gap-[10px]">
 			<div class="">
 				<Tabs.List class="">
-					<Tabs.Trigger class="w-full" value="highschool" on:click={handleHighSchool}
-						>High School</Tabs.Trigger
+					<Tabs.Trigger
+						class="w-full"
+						value="highschool"
+						on:click={() => handleSelections('highschool')}
 					>
-					<Tabs.Trigger class="w-full" value="elementary" on:click={handleElementary}
-						>Elementary</Tabs.Trigger
+						High School
+					</Tabs.Trigger>
+
+					<Tabs.Trigger
+						class="w-full"
+						value="elementary"
+						on:click={() => handleSelections('elementary')}
 					>
+						Elementary
+					</Tabs.Trigger>
 				</Tabs.List>
 			</div>
 
@@ -133,7 +83,7 @@
 
 		<div class="mt-[10px]">
 			<!---Filters-->
-			<RadioGroup.Root bind:value={filterSelection} class="mt-[20px]">
+			<RadioGroup.Root bind:value={$adminState.allvoters.filterSelection} class="mt-[20px]">
 				<div class="flex items-center space-x-2">
 					<RadioGroup.Item value="voted" id="r1" />
 					<Label for="r1">Voted</Label>

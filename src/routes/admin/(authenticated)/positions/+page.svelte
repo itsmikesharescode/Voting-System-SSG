@@ -27,7 +27,7 @@
 </script>
 
 <div class="mt-[30px] p-[22px]">
-	<Tabs.Root value={$adminState.positions.activeTab} class="w-full">
+	<Tabs.Root bind:value={$adminState.positions.activeTab} class="w-full">
 		<div class="flex w-full flex-wrap justify-between gap-[10px]">
 			<div class="">
 				<Tabs.List class="">

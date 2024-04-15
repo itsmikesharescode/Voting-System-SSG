@@ -20,9 +20,7 @@ export type AdminState = {
     allvoters: {
         activeTab: "highschool" | "elementary"
         userList: UserListDB[] | null,
-        votedFilter: boolean,
-        unvotedFilter: boolean,
-        notRegisteredFilter: boolean
+        filterSelection: "voted" | "unvoted" | "notRegistered"
     }
     positions: {
         activeTab: string

@@ -11,9 +11,7 @@
 		allvoters: {
 			activeTab: 'highschool',
 			userList: null,
-			votedFilter: true,
-			unvotedFilter: false,
-			notRegisteredFilter: false
+			filterSelection: 'voted'
 		},
 		positions: {
 			activeTab: 'highschool',
