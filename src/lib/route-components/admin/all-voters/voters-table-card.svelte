@@ -1,7 +1,6 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/button/button.svelte';
 	import { formatDate } from '$lib/helpers';
-	import { getAdminState, getUserState } from '$lib/stores';
+	import { getAdminState } from '$lib/stores';
 	import { flip } from 'svelte/animate';
 	import DeleteVoter from './delete-voter.svelte';
 	import UpdateVoterContent from './update-voter-content.svelte';
@@ -58,7 +57,7 @@
 				<div class="w-full">
 					<div class="flex w-full items-center gap-[10px]">
 						<UpdateVoterContent {voterObj} />
-						<DeleteVoter />
+						<DeleteVoter {voterObj} />
 					</div>
 				</div>
 			</div>

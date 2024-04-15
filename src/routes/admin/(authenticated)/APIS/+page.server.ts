@@ -113,5 +113,27 @@ export const actions: Actions = {
             const { fieldErrors } = zodError.flatten();
             return fail(400, { errors: fieldErrors });
         }
+    },
+
+    deleteVoterAction: async ({ locals: { supabaseAdmin }, request }) => {
+        const formData = await request.formData();
+        const voterId = formData.get("voterId") as string;
+        const userId = formData.get("userId") as string;
+
+        if (userId === "no value") {
+            const { error: deleteVoterError } = await supabaseAdmin.from("user_list_tb").delete().eq("id", voterId);
+            if (deleteVoterError) return fail(401, { msg: deleteVoterError.message });
+            else return fail(200, { msg: "Account Deleted Successfully." })
+        }
+
+        const { error: deleteVoterError } = await supabaseAdmin.from("user_list_tb").delete().eq("id", voterId);
+        if (deleteVoterError) return fail(401, { msg: deleteVoterError.message });
+        else {
+            const { error: deleteUserError } = await supabaseAdmin.auth.admin.deleteUser(userId);
+
+            if (deleteUserError) return fail(401, { msg: deleteUserError.message });
+            else return fail(200, { msg: "Account Deleted Successfully." });
+        }
+
     }
 };
