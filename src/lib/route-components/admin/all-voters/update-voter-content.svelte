@@ -5,11 +5,55 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	import * as Select from '$lib/components/ui/select/index';
 	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import type { ResultModel } from '$lib/types';
+	import { toast } from 'svelte-sonner';
+
 	const classifications = [
 		{ value: 'highschool', label: 'High School' },
 		{ value: 'elementary', label: 'Elementary' }
 	];
+
 	let showUpdateVoterDialoag = false;
+
+	interface UpdateVoterVal {
+		classification: string[];
+		fullName: string[];
+		voterLrn: string[];
+		email: string[];
+		password: string[];
+	}
+
+	let updateVoterLoader = false;
+	let formActionErrors: UpdateVoterVal | null = null;
+	const updateVoterAccountAction: SubmitFunction = () => {
+		updateVoterLoader = true;
+		return async ({ result, update }) => {
+			const {
+				status,
+				data: { msg, errors }
+			} = result as ResultModel<{ msg: string; errors: UpdateVoterVal }>;
+			switch (status) {
+				case 200:
+					formActionErrors = null;
+					toast.success('Update Voter', { description: msg });
+					updateVoterLoader = false;
+					showUpdateVoterDialoag = false;
+					break;
+
+				case 400:
+					formActionErrors = errors;
+					updateVoterLoader = false;
+					break;
+
+				case 401:
+					formActionErrors = null;
+					updateVoterLoader = false;
+					break;
+			}
+			await update();
+		};
+	};
 </script>
 
 <Button
@@ -21,9 +65,9 @@
 	<AlertDialog.Content>
 		<form
 			method="post"
-			action="/APIS?/updateVoterAccountAction"
+			action="APIS?/updateVoterAccountAction"
 			enctype="multipart/form-data"
-			use:enhance
+			use:enhance={updateVoterAccountAction}
 		>
 			<AlertDialog.Header>
 				<AlertDialog.Title>Mike John Eviota ?</AlertDialog.Title>
@@ -102,9 +146,9 @@
 					</div>
 				</div>
 			</AlertDialog.Header>
-			<AlertDialog.Footer>
+			<AlertDialog.Footer class="mt-[20px]">
 				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-				<Button>Update Account</Button>
+				<Button type="submit">Update Account</Button>
 			</AlertDialog.Footer>
 		</form>
 	</AlertDialog.Content>

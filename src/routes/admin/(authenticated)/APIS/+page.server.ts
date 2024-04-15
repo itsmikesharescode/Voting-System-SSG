@@ -1,4 +1,4 @@
-import { createVoterAccountSchema, migrationDataSchema } from "$lib/schema";
+import { createVoterAccountSchema, migrationDataSchema, updateVoterAccountSchema } from "$lib/schema";
 import type { MigrationFile } from "$lib/types";
 import { fail, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
@@ -72,6 +72,7 @@ export const actions: Actions = {
         const formData = Object.fromEntries(await request.formData());
 
         try {
+            const result = updateVoterAccountSchema.parse(formData);
 
         } catch (error) {
             const zodError = error as ZodError;
