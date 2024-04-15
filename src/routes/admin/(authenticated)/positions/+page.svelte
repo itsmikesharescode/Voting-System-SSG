@@ -4,7 +4,6 @@
 	import PositionTableCard from '$lib/route-components/admin/positions/position-table-card.svelte';
 	import CreatePosition from '$lib/route-components/admin/positions/create-position.svelte';
 	import type { LayoutServerData } from '../$types';
-	import { onMount } from 'svelte';
 
 	export let data: LayoutServerData;
 
