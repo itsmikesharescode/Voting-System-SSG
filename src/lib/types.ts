@@ -28,7 +28,7 @@ export type AdminState = {
     candidates: unknown
 }
 
-// db types
+// db types 
 export type UserListDB = {
     id: number
     created_at: string
@@ -50,3 +50,9 @@ export interface MigrationFile {
     dateCreated: string
 }
 
+export type PositionsDB = {
+    id: number
+    created_at: string
+    position_name: string
+    classification: string
+}
