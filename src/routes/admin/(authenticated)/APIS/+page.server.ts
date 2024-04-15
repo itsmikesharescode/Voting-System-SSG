@@ -74,16 +74,43 @@ export const actions: Actions = {
         try {
             const result = updateVoterAccountSchema.parse(formData);
 
-            console.log(result)
+            if (result.userId === "no value") {
 
-            /* const { data, error } = await supabaseAdmin.from("user_list_tb").update([{
+                const { error: updateDefaultVoterError } = await supabaseAdmin.from("user_list_tb").update([{
+                    user_lrn: result.voterLrn,
+                    user_password: result.password,
+                    user_fullname: result.fullName,
+                    classification: result.classification,
+                    user_email: result.email
 
-            }]).eq("user_id", result.voterId) */
+                }]).eq("id", result.voterId);
+                if (updateDefaultVoterError) return fail(401, { msg: updateDefaultVoterError.message });
+                else return fail(200, { msg: "Voter Information Updated." });
+            }
+
+            const { error: updateOrigVoterError } = await supabaseAdmin.from("user_list_tb").update([{
+                user_lrn: result.voterLrn,
+                user_password: result.password,
+                user_fullname: result.fullName,
+                classification: result.classification,
+                user_email: result.email
+
+            }]).eq("id", result.voterId);
+
+            if (updateOrigVoterError) return fail(401, { msg: updateOrigVoterError.message });
+            else {
+                const { data: { user }, error: updateAuthError } = await supabaseAdmin.auth.admin.updateUserById(result.userId, {
+                    email: result.email,
+                    password: result.password
+                });
+
+                if (updateAuthError) return fail(401, { msg: updateAuthError.message });
+                else if (user) return fail(200, { msg: "Voter Information Updated." });
+            }
 
         } catch (error) {
             const zodError = error as ZodError;
             const { fieldErrors } = zodError.flatten();
-            console.log(fieldErrors)
             return fail(400, { errors: fieldErrors });
         }
     }

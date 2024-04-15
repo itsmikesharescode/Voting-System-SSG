@@ -9,6 +9,7 @@
 	import type { ResultModel, UserListDB } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import { fade } from 'svelte/transition';
+	import { invalidateAll } from '$app/navigation';
 
 	export let voterObj: UserListDB;
 
@@ -39,6 +40,7 @@
 			} = result as ResultModel<{ msg: string; errors: UpdateVoterVal }>;
 			switch (status) {
 				case 200:
+					invalidateAll();
 					formActionErrors = null;
 					toast.success('Update Voter', { description: msg });
 					updateVoterLoader = false;
@@ -51,6 +53,7 @@
 					break;
 
 				case 401:
+					toast.error('Update Voter', { description: msg });
 					formActionErrors = null;
 					updateVoterLoader = false;
 					break;
@@ -82,6 +85,7 @@
 			use:enhance={updateVoterAccountAction}
 		>
 			<input name="voterId" type="hidden" value={voterObj.id} />
+			<input name="userId" type="hidden" value={voterObj.user_id ?? 'no value'} />
 			<AlertDialog.Header>
 				<AlertDialog.Title>{voterObj.user_fullname}</AlertDialog.Title>
 				<AlertDialog.Description>This will update voters information.</AlertDialog.Description>
