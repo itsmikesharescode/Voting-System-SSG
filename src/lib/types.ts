@@ -24,7 +24,9 @@ export type AdminState = {
         unvotedFilter: boolean,
         notRegisteredFilter: boolean
     }
-    positions: unknown
+    positions: {
+        createdPositions: PositionsDB[] | null
+    }
     candidates: unknown
 }
 

@@ -9,6 +9,10 @@
 	export let data: LayoutServerData;
 
 	const adminState = getAdminState();
+
+	$: data.created_positions.data
+		? ($adminState.positions.createdPositions = data.created_positions.data)
+		: ($adminState.positions.createdPositions = null);
 </script>
 
 <div class="mt-[30px] p-[22px]">

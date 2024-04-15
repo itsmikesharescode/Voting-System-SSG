@@ -15,7 +15,9 @@
 			unvotedFilter: false,
 			notRegisteredFilter: false
 		},
-		positions: null,
+		positions: {
+			createdPositions: null
+		},
 		candidates: null
 	};
 
