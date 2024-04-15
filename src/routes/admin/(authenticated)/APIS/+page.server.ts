@@ -63,9 +63,21 @@ export const actions: Actions = {
         } catch (error) {
             const zodError = error as ZodError;
             const { fieldErrors } = zodError.flatten();
-            console.log(fieldErrors)
             return fail(400, { errors: fieldErrors });
         }
 
+    },
+
+    updateVoterAccountAction: async ({ locals: { supabaseAdmin }, request }) => {
+        const formData = Object.fromEntries(await request.formData());
+
+        try {
+
+        } catch (error) {
+            const zodError = error as ZodError;
+            const { fieldErrors } = zodError.flatten();
+            console.log(fieldErrors)
+            return fail(400, { errors: fieldErrors });
+        }
     }
 };
