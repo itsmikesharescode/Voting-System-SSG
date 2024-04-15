@@ -142,10 +142,11 @@ export const actions: Actions = {
         const formData = Object.fromEntries(await request.formData());
         try {
             const result = createPositionSchema.parse(formData);
+            console.log(result)
         } catch (error) {
             const zodError = error as ZodError;
             const { fieldErrors } = zodError.flatten();
-            return fail(400, { error: fieldErrors });
+            return fail(400, { errors: fieldErrors });
         }
     }
 };

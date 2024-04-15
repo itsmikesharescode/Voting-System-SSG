@@ -22,10 +22,6 @@
 				<div class="">
 					<CreatePosition />
 				</div>
-
-				<div class="">
-					<ImportData />
-				</div>
 			</div>
 		</div>
 		<PositionTableCard />

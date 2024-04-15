@@ -54,5 +54,8 @@ export const updateVoterAccountSchema = z.object({
 
 // positions route
 export const createPositionSchema = z.object({
+    classification: z.string().refine((value) => value !== "undefined", {
+        message: "Must choose a position classification."
+    }),
     positionName: z.string().min(3, { message: "Must enter a valid position name." })
 })
