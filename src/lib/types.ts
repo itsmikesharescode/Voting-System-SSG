@@ -16,19 +16,20 @@ export type Dashboard = {
 export type AdminState = {
     activeItem: string
     dashboard: Dashboard | null
-    votes: {
+    votes: unknown,
+    allvoters: {
         activeTab: "highschool" | "elementary"
         userList: UserListDB[] | null,
-        votedFilter: boolean,
-        unvotedFilter: boolean,
-        notRegisteredFilter: boolean
+        filterSelection: "voted" | "unvoted" | "notRegistered"
     }
-    allvoters: unknown
-    positions: unknown
+    positions: {
+        activeTab: string
+        createdPositions: PositionsDB[] | null
+    }
     candidates: unknown
 }
 
-// db types
+// db types 
 export type UserListDB = {
     id: number
     created_at: string
@@ -50,3 +51,9 @@ export interface MigrationFile {
     dateCreated: string
 }
 
+export type PositionsDB = {
+    id: number
+    created_at: string
+    position_name: string
+    classification: string
+}

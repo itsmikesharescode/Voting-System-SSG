@@ -31,7 +31,7 @@
 
 	let updateVoterLoader = false;
 	let formActionErrors: UpdateVoterVal | null = null;
-	const updateVoterAccountAction: SubmitFunction = () => {
+	const updateVoterAccountActionNews: SubmitFunction = () => {
 		updateVoterLoader = true;
 		return async ({ result, update }) => {
 			const {
@@ -82,7 +82,7 @@
 			method="post"
 			action="APIS?/updateVoterAccountAction"
 			enctype="multipart/form-data"
-			use:enhance={updateVoterAccountAction}
+			use:enhance={updateVoterAccountActionNews}
 		>
 			<input name="voterId" type="hidden" value={voterObj.id} />
 			<input name="userId" type="hidden" value={voterObj.user_id ?? 'no value'} />
