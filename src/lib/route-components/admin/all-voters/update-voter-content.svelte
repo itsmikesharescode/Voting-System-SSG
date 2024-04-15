@@ -196,8 +196,14 @@
 				<Button
 					disabled={updateVoterLoader}
 					class="hover:bg-mainred active:bg-clicked"
-					type="submit">Update Account</Button
+					type="submit"
 				>
+					{#if updateVoterLoader}
+						Updating...
+					{:else}
+						Update Account
+					{/if}
+				</Button>
 			</AlertDialog.Footer>
 		</form>
 	</AlertDialog.Content>
