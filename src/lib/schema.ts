@@ -6,6 +6,7 @@ export const adminLoginSchema = z.object({
     password: z.string().min(1, { message: "Must enter a password." })
 });
 
+// all-voter route
 export const createVoterAccountSchema = z.object({
     classification: z.string().refine((value) => value !== "undefined", {
         message: "Must choose a voter classification."
@@ -50,3 +51,8 @@ export const updateVoterAccountSchema = z.object({
         });
     }
 });
+
+// positions route
+export const createPositionSchema = z.object({
+    positionName: z.string().min(3, { message: "Must enter a valid position name." })
+})
