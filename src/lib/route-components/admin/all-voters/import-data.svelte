@@ -113,12 +113,12 @@
 					<RadioGroup.Root bind:value={classificationValue}>
 						<Label>Choose Classification</Label>
 						<div class="flex items-center space-x-2">
-							<RadioGroup.Item value="highschool" id="r1" />
-							<Label for="r1">High School</Label>
+							<RadioGroup.Item value="highschool" id="highschool" />
+							<Label for="highschool">High School</Label>
 						</div>
 						<div class="flex items-center space-x-2">
-							<RadioGroup.Item value="elementary" id="r2" />
-							<Label for="r2">Elementary</Label>
+							<RadioGroup.Item value="elementary" id="elementary" />
+							<Label for="elementary">Elementary</Label>
 						</div>
 						<RadioGroup.Input name="spacing" />
 					</RadioGroup.Root>
