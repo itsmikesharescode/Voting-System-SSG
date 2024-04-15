@@ -26,6 +26,7 @@
 					invalidateAll();
 					toast.success('Delete Account', { description: msg });
 					deleteVoterLoader = false;
+					showDeleteVoterDialog = false;
 					break;
 
 				case 401:
@@ -51,6 +52,8 @@
 			enctype="multipart/form-data"
 			use:enhance={deleteVoterActionNews}
 		>
+			<input name="voterId" type="hidden" value={voterObj.id} />
+			<input name="userId" type="hidden" value={voterObj.user_id ?? 'no value'} />
 			<AlertDialog.Header>
 				<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
 				<AlertDialog.Description>

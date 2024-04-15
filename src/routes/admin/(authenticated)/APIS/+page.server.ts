@@ -127,6 +127,7 @@ export const actions: Actions = {
         }
 
         const { error: deleteVoterError } = await supabaseAdmin.from("user_list_tb").delete().eq("id", voterId);
+
         if (deleteVoterError) return fail(401, { msg: deleteVoterError.message });
         else {
             const { error: deleteUserError } = await supabaseAdmin.auth.admin.deleteUser(userId);
