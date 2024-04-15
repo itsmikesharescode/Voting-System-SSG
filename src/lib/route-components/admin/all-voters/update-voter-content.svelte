@@ -8,6 +8,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
+	import { fade } from 'svelte/transition';
 
 	const classifications = [
 		{ value: 'highschool', label: 'High School' },
@@ -22,6 +23,7 @@
 		voterLrn: string[];
 		email: string[];
 		password: string[];
+		confirmPassword: string[];
 	}
 
 	let updateVoterLoader = false;
@@ -74,7 +76,7 @@
 				<AlertDialog.Description>This will update voters information.</AlertDialog.Description>
 
 				<div class=" flex flex-col gap-[20px] pt-[20px]">
-					<Select.Root>
+					<Select.Root disabled={updateVoterLoader}>
 						<Select.Trigger class="w-full">
 							<Select.Value placeholder="Choose voter classification" />
 						</Select.Trigger>
@@ -90,65 +92,94 @@
 						</Select.Content>
 						<Select.Input name="classification" />
 					</Select.Root>
+					{#each formActionErrors?.classification ?? [] as errorMsg}
+						<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+					{/each}
 					<div class="grid w-full gap-1.5">
 						<Label class="text-left " for="fullName">Update Voter Full Name</Label>
 						<Input
+							disabled={updateVoterLoader}
 							name="fullName"
 							class="text-[14px] "
 							type="text"
 							id="fullName"
 							placeholder="Enter voter fullname"
 						/>
+						{#each formActionErrors?.fullName ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+						{/each}
 					</div>
 
 					<div class="grid w-full gap-1.5">
-						<Label class="text-left " for="lrn">Update Voter LRN</Label>
+						<Label class="text-left " for="voterLrn">Update Voter LRN</Label>
 						<Input
-							name="lrn"
+							disabled={updateVoterLoader}
+							name="voterLrn"
 							class="text-[14px] "
 							type="text"
-							id="lrn"
+							id="voterLrn"
 							placeholder="Enter voter lrn"
 						/>
+						{#each formActionErrors?.voterLrn ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+						{/each}
 					</div>
 
 					<div class="grid w-full gap-1.5">
 						<Label class="text-left " for="email">Update Voter Email</Label>
 						<Input
+							disabled={updateVoterLoader}
 							name="email"
 							class="text-[14px] "
 							type="email"
 							id="email"
 							placeholder="Enter voter email"
 						/>
+						{#each formActionErrors?.email ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+						{/each}
 					</div>
 
 					<div class="grid w-full gap-1.5">
 						<Label class="text-left " for="password">Update Voter Password</Label>
 						<Input
+							disabled={updateVoterLoader}
 							name="password"
 							class="text-[14px] "
 							type="password"
 							id="password"
 							placeholder="Enter voter password"
 						/>
+						{#each formActionErrors?.password ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+						{/each}
 					</div>
 
 					<div class="grid w-full gap-1.5">
 						<Label class="text-left " for="confirmPassword">Voter Confirm Password</Label>
 						<Input
+							disabled={updateVoterLoader}
 							name="confirmPassword"
 							class="text-[14px] "
 							type="password"
 							id="confirmPassword"
 							placeholder="Confirm voter password"
 						/>
+						{#each formActionErrors?.confirmPassword ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+						{/each}
 					</div>
 				</div>
 			</AlertDialog.Header>
 			<AlertDialog.Footer class="mt-[20px]">
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-				<Button type="submit">Update Account</Button>
+				<AlertDialog.Cancel disabled={updateVoterLoader} on:click={() => (formActionErrors = null)}
+					>Cancel
+				</AlertDialog.Cancel>
+				<Button
+					disabled={updateVoterLoader}
+					class="hover:bg-mainred active:bg-clicked"
+					type="submit">Update Account</Button
+				>
 			</AlertDialog.Footer>
 		</form>
 	</AlertDialog.Content>

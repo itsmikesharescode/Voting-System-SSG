@@ -73,6 +73,7 @@ export const actions: Actions = {
 
         try {
             const result = updateVoterAccountSchema.parse(formData);
+            console.log(result)
 
         } catch (error) {
             const zodError = error as ZodError;
