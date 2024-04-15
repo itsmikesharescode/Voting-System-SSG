@@ -6,9 +6,11 @@
 	import * as Select from '$lib/components/ui/select/index';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { ResultModel } from '$lib/types';
+	import type { ResultModel, UserListDB } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import { fade } from 'svelte/transition';
+
+	export let voterObj: UserListDB;
 
 	const classifications = [
 		{ value: 'highschool', label: 'High School' },
@@ -56,6 +58,14 @@
 			await update();
 		};
 	};
+
+	const detectClassification = () => {
+		const matchedArray = classifications.filter(
+			(classification) => classification.value === voterObj.classification
+		);
+
+		return matchedArray[0];
+	};
 </script>
 
 <Button
@@ -71,12 +81,13 @@
 			enctype="multipart/form-data"
 			use:enhance={updateVoterAccountAction}
 		>
+			<input name="voterId" type="hidden" value={voterObj.id} />
 			<AlertDialog.Header>
-				<AlertDialog.Title>Mike John Eviota ?</AlertDialog.Title>
+				<AlertDialog.Title>{voterObj.user_fullname}</AlertDialog.Title>
 				<AlertDialog.Description>This will update voters information.</AlertDialog.Description>
 
 				<div class=" flex flex-col gap-[20px] pt-[20px]">
-					<Select.Root disabled={updateVoterLoader}>
+					<Select.Root selected={detectClassification()} disabled={updateVoterLoader}>
 						<Select.Trigger class="w-full">
 							<Select.Value placeholder="Choose voter classification" />
 						</Select.Trigger>
@@ -104,6 +115,7 @@
 							type="text"
 							id="fullName"
 							placeholder="Enter voter fullname"
+							value={voterObj.user_fullname}
 						/>
 						{#each formActionErrors?.fullName ?? [] as errorMsg}
 							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
@@ -119,6 +131,7 @@
 							type="text"
 							id="voterLrn"
 							placeholder="Enter voter lrn"
+							value={voterObj.user_lrn}
 						/>
 						{#each formActionErrors?.voterLrn ?? [] as errorMsg}
 							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
@@ -134,6 +147,7 @@
 							type="email"
 							id="email"
 							placeholder="Enter voter email"
+							value={voterObj.user_email}
 						/>
 						{#each formActionErrors?.email ?? [] as errorMsg}
 							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>

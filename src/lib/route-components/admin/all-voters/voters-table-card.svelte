@@ -2,8 +2,10 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { formatDate } from '$lib/helpers';
 	import { getAdminState, getUserState } from '$lib/stores';
+	import { flip } from 'svelte/animate';
 	import DeleteVoter from './delete-voter.svelte';
 	import UpdateVoterContent from './update-voter-content.svelte';
+	import { fade } from 'svelte/transition';
 
 	const adminState = getAdminState();
 </script>
@@ -32,8 +34,10 @@
 	</div>
 
 	<div class="max-h-[800px] w-full overflow-auto truncate bg-subwhite">
-		{#each $adminState.votes.userList ?? [] as voterObj}
+		{#each $adminState.votes.userList ?? [] as voterObj, index (voterObj.id)}
 			<div
+				animate:flip={{ duration: 350 }}
+				in:fade
 				class=" grid w-full grid-cols-[1fr,1fr,1fr,1fr,190px] gap-[20px] border-b-[1px] border-mainred px-[10px] py-[5px] text-mainred"
 			>
 				<div class="grid overflow-auto">
@@ -53,7 +57,7 @@
 
 				<div class="w-full">
 					<div class="flex w-full items-center gap-[10px]">
-						<UpdateVoterContent />
+						<UpdateVoterContent {voterObj} />
 						<DeleteVoter />
 					</div>
 				</div>

@@ -31,6 +31,7 @@ export const migrationDataSchema = z.object({
 });
 
 export const updateVoterAccountSchema = z.object({
+    voterId: z.string(),
     classification: z.string().refine((value) => value !== "undefined", {
         message: "Must choose a voter classification."
     }),

@@ -73,7 +73,12 @@ export const actions: Actions = {
 
         try {
             const result = updateVoterAccountSchema.parse(formData);
+
             console.log(result)
+
+            /* const { data, error } = await supabaseAdmin.from("user_list_tb").update([{
+
+            }]).eq("user_id", result.voterId) */
 
         } catch (error) {
             const zodError = error as ZodError;
