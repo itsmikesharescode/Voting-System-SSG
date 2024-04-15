@@ -1,7 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
 import type { PostgrestSingleResponse } from "@supabase/supabase-js";
-import type { UserListDB } from "$lib/types";
+import type { PositionsDB, UserListDB } from "$lib/types";
 
 export const load: LayoutServerLoad = async ({ locals: { safeGetSession, supabaseAdmin } }) => {
     const { user } = await safeGetSession();
@@ -12,6 +12,7 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession, supabas
 
         return {
             user_list: await supabaseAdmin.from("user_list_tb").select("*") as PostgrestSingleResponse<UserListDB[]>,
+            created_positions: await supabaseAdmin.from("created_positions_tb").select("*") as PostgrestSingleResponse<PositionsDB[]>,
         }
     }
 

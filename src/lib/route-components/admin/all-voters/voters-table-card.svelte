@@ -33,7 +33,7 @@
 	</div>
 
 	<div class="max-h-[800px] w-full overflow-auto truncate bg-subwhite">
-		{#each $adminState.votes.userList ?? [] as voterObj, index (voterObj.id)}
+		{#each $adminState.allvoters.userList ?? [] as voterObj, index (voterObj.id)}
 			<div
 				animate:flip={{ duration: 350 }}
 				in:fade
