@@ -119,7 +119,7 @@
 										{/each}
 									</Select.Group>
 								</Select.Content>
-								<Select.Input name="classification" />
+								<Select.Input name="position" />
 							</Select.Root>
 							{#each formActionErrors?.position ?? [] as errorMsg}
 								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
@@ -141,17 +141,18 @@
 							{/each}
 						</div>
 
-						<div class="grid max-w-fit gap-1.5">
-							<Label class="text-left " for="fullName">Candidate Photo</Label>
-							<label
-								title="Upload Candidate Photo"
-								class="cursor-pointer transition-all active:scale-95"
-							>
-								<div class="">
-									<img src={candidate_upload_icon} alt="error-upload" />
-									<input name="candidatePhoto" type="file" class="hidden" />
-								</div>
-							</label>
+						<div class="grid w-full gap-1.5">
+							<Label class="text-left  " for="motto">Candidate Mottos</Label>
+							<Textarea
+								disabled={createCandidateLoader}
+								name="motto"
+								class="text-[14px] "
+								id="motto"
+								placeholder="Enter candidate motto"
+							/>
+							{#each formActionErrors?.motto ?? [] as errorMsg}
+								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+							{/each}
 						</div>
 					</div>
 				</AlertDialog.Header>
@@ -180,7 +181,7 @@
 		<Drawer.Content>
 			<form
 				method="post"
-				action="APIS?/createVoterAction"
+				action="APIS?/createCandidateAction"
 				enctype="multipart/form-data"
 				use:enhance={createCandidateActionNews}
 			>
@@ -200,42 +201,29 @@
 								<input name="candidatePhoto" type="file" class="hidden" />
 							</div>
 						</label>
-					</div>
-					<div class="grid w-full gap-1.5">
-						<Select.Root>
-							<Select.Trigger class="w-full " disabled={createCandidateLoader}>
-								<Select.Value placeholder="Available Positions" />
-							</Select.Trigger>
-							<Select.Content class="mt-[10px]">
-								<Select.Group>
-									<Select.Label class="text-left">Available Positions</Select.Label>
-									{#each classifications as classification}
-										<Select.Item value={classification.value} label={classification.label}
-											>{classification.label}</Select.Item
-										>
-									{/each}
-								</Select.Group>
-							</Select.Content>
-							<Select.Input name="classification" />
-						</Select.Root>
-						{#each formActionErrors?.position ?? [] as errorMsg}
-							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
-						{/each}
-					</div>
-					<div class="grid w-full gap-1.5">
-						<Label class="text-left " for="candidatePhoto">Candidate Photo</Label>
-						<Input
-							disabled={createCandidateLoader}
-							name="candidatePhoto"
-							class="text-[14px] "
-							type="file"
-							id="candidatePhoto"
-							accept=".png, .jpeg, .webp"
-						/>
 						{#each formActionErrors?.candidatePhoto ?? [] as errorMsg}
 							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
 						{/each}
 					</div>
+					<Select.Root>
+						<Select.Trigger class="w-full " disabled={createCandidateLoader}>
+							<Select.Value placeholder="Available Positions" />
+						</Select.Trigger>
+						<Select.Content class="mt-[10px]">
+							<Select.Group>
+								<Select.Label class="text-left">Available Positions</Select.Label>
+								{#each classifications as classification}
+									<Select.Item value={classification.value} label={classification.label}
+										>{classification.label}</Select.Item
+									>
+								{/each}
+							</Select.Group>
+						</Select.Content>
+						<Select.Input name="position" />
+					</Select.Root>
+					{#each formActionErrors?.position ?? [] as errorMsg}
+						<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+					{/each}
 
 					<div class="grid w-full gap-1.5">
 						<Label class="text-left " for="fullName">Candidate Full Name</Label>

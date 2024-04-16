@@ -1,4 +1,4 @@
-import { createPositionSchema, createVoterAccountSchema, migrationDataSchema, updatePositionSchema, updateVoterAccountSchema } from "$lib/schema";
+import { createCandidateSchema, createPositionSchema, createVoterAccountSchema, migrationDataSchema, updatePositionSchema, updateVoterAccountSchema } from "$lib/schema";
 import type { MigrationFile } from "$lib/types";
 import { fail, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
@@ -193,10 +193,11 @@ export const actions: Actions = {
         const formData = Object.fromEntries(await request.formData());
 
         try {
-
+            const result = createCandidateSchema.parse(formData);
         } catch (error) {
             const zodError = error as ZodError;
             const { fieldErrors } = zodError.flatten();
+
             return fail(400, { errors: fieldErrors });
         }
     }
