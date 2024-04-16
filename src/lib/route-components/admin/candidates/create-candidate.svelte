@@ -22,7 +22,7 @@
 	];
 	let availablePositions: PositionsDB[] | undefined = undefined;
 
-	let selected: Selected<string>;
+	let selected: Selected<{ value: string; label: string }>;
 	const handleSelections = (classification: string) => {
 		availablePositions = positionList?.filter(
 			(position) => position.classification === classification
