@@ -2,6 +2,9 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import CreateCandidate from '$lib/route-components/admin/candidates/create-candidate.svelte';
 	import { getAdminState } from '$lib/stores';
+	import type { LayoutServerData } from '../$types';
+
+	export let data: LayoutServerData;
 
 	const adminState = getAdminState();
 </script>
@@ -18,7 +21,7 @@
 
 			<div class="flex items-center gap-[10px]">
 				<div class="">
-					<CreateCandidate />
+					<CreateCandidate positionList={data.created_positions.data} />
 				</div>
 			</div>
 		</div>

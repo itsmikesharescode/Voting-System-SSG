@@ -205,26 +205,20 @@ export const actions: Actions = {
                 if (uploadCandidatePhotoError) return fail(401, { msg: uploadCandidatePhotoError.message });
                 else {
 
-                    const { data: fileObject, error: fileObjectError } = await supabaseAdmin.storage.from("candidate_bucket").list(`${result.classification}/${result.fullName}`, { limit: 1 });
+                    const { data: { publicUrl } } = supabaseAdmin.storage.from("candidate_bucket").getPublicUrl(candidateBucket.path);
+                    if (publicUrl) {
+                        const { error: insertCandidateError } = await supabaseAdmin.from("created_candidates_tb").insert([{
+                            position_id: Number(result.positionId),
+                            candidate_fullname: result.fullName,
+                            candidate_motto: result.motto,
+                            candidate_position: result.position,
+                            candidate_photo_link: publicUrl,
+                        }]);
 
-                    if (fileObjectError) return fail(401, { msg: fileObjectError.message });
-
-                    else if (fileObject?.length) {
-                        const { data: { publicUrl } } = supabaseAdmin.storage.from("candidate_bucket").getPublicUrl(candidateBucket.path);
-                        if (publicUrl) {
-                            const { error: insertCandidateError } = await supabaseAdmin.from("created_candidates_tb").insert([{
-                                storage_id: fileObject[0].id,
-                                candidate_fullname: result.fullName,
-                                candidate_motto: result.motto,
-                                candidate_position: result.position,
-                                candidate_photo_link: publicUrl,
-                            }]);
-
-                            if (insertCandidateError) return fail(401, { msg: insertCandidateError.message });
-                            else return fail(200, { msg: "Candidate Successfully Created." });
-
-                        }
+                        if (insertCandidateError) return fail(401, { msg: insertCandidateError.message });
+                        else return fail(200, { msg: "Candidate Successfully Created." });
                     }
+
 
                 }
             }

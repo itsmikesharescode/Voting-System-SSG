@@ -6,12 +6,17 @@
 	import * as Select from '$lib/components/ui/select/index';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { ResultModel } from '$lib/types';
+	import type { PositionsDB, ResultModel } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import { invalidateAll } from '$app/navigation';
 	import * as Drawer from '$lib/components/ui/drawer';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import candidate_upload_icon from '$lib/assets/candidate_upload_icon.svg';
+	import { getAdminState } from '$lib/stores';
+
+	export let positionList: PositionsDB[] | null;
+
+	const adminState = getAdminState();
 
 	const classifications = [
 		{ value: 'highschool', label: 'High School' },
@@ -162,9 +167,10 @@
 								<Select.Content class="mt-[10px]">
 									<Select.Group>
 										<Select.Label class="text-left">Available Positions</Select.Label>
-										{#each classifications as classification}
-											<Select.Item value={classification.value} label={classification.label}
-												>{classification.label}</Select.Item
+										{#each $adminState.positions.createdPositions ?? [] as positionObj}
+											<Select.Item
+												value={positionObj.position_name}
+												label={positionObj.position_name}>{positionObj.position_name}</Select.Item
 											>
 										{/each}
 									</Select.Group>

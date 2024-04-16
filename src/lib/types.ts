@@ -27,7 +27,8 @@ export type AdminState = {
         createdPositions: PositionsDB[] | null
     }
     candidates: {
-        activeTab: "highschool" | "elementary"
+        activeTab: "highschool" | "elementary",
+        availablePositions: PositionsDB[] | null
     }
 }
 

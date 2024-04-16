@@ -70,6 +70,7 @@ export const updatePositionSchema = z.object({
 
 // candidate route
 export const createCandidateSchema = z.object({
+    positionId: z.string(),
     candidatePhoto: z.instanceof(File).refine((file) => file.size > 0, { message: "Must upload candidate photo." }),
     classification: z.string().refine((value) => value !== "undefined", {
         message: "Must choose a voter classification."
