@@ -10,6 +10,7 @@
 	import { toast } from 'svelte-sonner';
 	import { fade } from 'svelte/transition';
 	import { invalidateAll } from '$app/navigation';
+	import * as Drawer from '$lib/components/ui/drawer';
 
 	export let voterObj: UserListDB;
 
@@ -69,28 +70,164 @@
 
 		return matchedArray[0];
 	};
+	let nativeWidthValue = 0;
 </script>
+
+<svelte:window bind:innerWidth={nativeWidthValue} />
 
 <Button
 	class="w-full transition-all hover:bg-mainred"
 	on:click={() => (showUpdateVoterDialoag = true)}>Update</Button
 >
+{#if nativeWidthValue > 1024}
+	<AlertDialog.Root bind:open={showUpdateVoterDialoag}>
+		<AlertDialog.Content>
+			<form
+				method="post"
+				action="APIS?/updateVoterAccountAction"
+				enctype="multipart/form-data"
+				use:enhance={updateVoterAccountActionNews}
+			>
+				<input name="voterId" type="hidden" value={voterObj.id} />
+				<input name="userId" type="hidden" value={voterObj.user_id ?? 'no value'} />
+				<AlertDialog.Header>
+					<AlertDialog.Title>{voterObj.user_fullname}</AlertDialog.Title>
+					<AlertDialog.Description>This will update voters information.</AlertDialog.Description>
 
-<AlertDialog.Root bind:open={showUpdateVoterDialoag}>
-	<AlertDialog.Content>
-		<form
-			method="post"
-			action="APIS?/updateVoterAccountAction"
-			enctype="multipart/form-data"
-			use:enhance={updateVoterAccountActionNews}
-		>
-			<input name="voterId" type="hidden" value={voterObj.id} />
-			<input name="userId" type="hidden" value={voterObj.user_id ?? 'no value'} />
-			<AlertDialog.Header>
-				<AlertDialog.Title>{voterObj.user_fullname}</AlertDialog.Title>
-				<AlertDialog.Description>This will update voters information.</AlertDialog.Description>
+					<div class=" flex flex-col gap-[20px] pt-[20px]">
+						<Select.Root selected={detectClassification()} disabled={updateVoterLoader}>
+							<Select.Trigger class="w-full">
+								<Select.Value placeholder="Choose voter classification" />
+							</Select.Trigger>
+							<Select.Content class="mt-[10px]">
+								<Select.Group>
+									<Select.Label class="text-left">Select Voter Classification</Select.Label>
+									{#each classifications as classification}
+										<Select.Item value={classification.value} label={classification.label}
+											>{classification.label}</Select.Item
+										>
+									{/each}
+								</Select.Group>
+							</Select.Content>
+							<Select.Input name="classification" />
+						</Select.Root>
+						{#each formActionErrors?.classification ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+						{/each}
+						<div class="grid w-full gap-1.5">
+							<Label class="text-left " for="fullName">Update Voter Full Name</Label>
+							<Input
+								disabled={updateVoterLoader}
+								name="fullName"
+								class="text-[14px] "
+								type="text"
+								id="fullName"
+								placeholder="Enter voter fullname"
+								value={voterObj.user_fullname}
+							/>
+							{#each formActionErrors?.fullName ?? [] as errorMsg}
+								<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+							{/each}
+						</div>
 
-				<div class=" flex flex-col gap-[20px] pt-[20px]">
+						<div class="grid w-full gap-1.5">
+							<Label class="text-left " for="voterLrn">Update Voter LRN</Label>
+							<Input
+								disabled={updateVoterLoader}
+								name="voterLrn"
+								class="text-[14px] "
+								type="text"
+								id="voterLrn"
+								placeholder="Enter voter lrn"
+								value={voterObj.user_lrn}
+							/>
+							{#each formActionErrors?.voterLrn ?? [] as errorMsg}
+								<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+							{/each}
+						</div>
+
+						<div class="grid w-full gap-1.5">
+							<Label class="text-left " for="email">Update Voter Email</Label>
+							<Input
+								disabled={updateVoterLoader}
+								name="email"
+								class="text-[14px] "
+								type="email"
+								id="email"
+								placeholder="Enter voter email"
+								value={voterObj.user_email}
+							/>
+							{#each formActionErrors?.email ?? [] as errorMsg}
+								<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+							{/each}
+						</div>
+
+						<div class="grid w-full gap-1.5">
+							<Label class="text-left " for="password">Update Voter Password</Label>
+							<Input
+								disabled={updateVoterLoader}
+								name="password"
+								class="text-[14px] "
+								type="password"
+								id="password"
+								placeholder="Enter voter password"
+							/>
+							{#each formActionErrors?.password ?? [] as errorMsg}
+								<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+							{/each}
+						</div>
+
+						<div class="grid w-full gap-1.5">
+							<Label class="text-left " for="confirmPassword">Voter Confirm Password</Label>
+							<Input
+								disabled={updateVoterLoader}
+								name="confirmPassword"
+								class="text-[14px] "
+								type="password"
+								id="confirmPassword"
+								placeholder="Confirm voter password"
+							/>
+							{#each formActionErrors?.confirmPassword ?? [] as errorMsg}
+								<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+							{/each}
+						</div>
+					</div>
+				</AlertDialog.Header>
+				<AlertDialog.Footer class="mt-[20px]">
+					<AlertDialog.Cancel
+						disabled={updateVoterLoader}
+						on:click={() => (formActionErrors = null)}
+						>Cancel
+					</AlertDialog.Cancel>
+					<Button
+						disabled={updateVoterLoader}
+						class="hover:bg-mainred active:bg-clicked"
+						type="submit"
+					>
+						{#if updateVoterLoader}
+							Updating...
+						{:else}
+							Update Account
+						{/if}
+					</Button>
+				</AlertDialog.Footer>
+			</form>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+{:else}
+	<Drawer.Root bind:open={showUpdateVoterDialoag}>
+		<Drawer.Content>
+			<form
+				method="post"
+				action="APIS?/createVoterAction"
+				enctype="multipart/form-data"
+				use:enhance={updateVoterAccountActionNews}
+			>
+				<Drawer.Header>
+					<Drawer.Title>{voterObj.user_fullname}</Drawer.Title>
+					<Drawer.Description>This will update voters information.</Drawer.Description>
+				</Drawer.Header>
+				<div class=" flex h-[400px] flex-col gap-[20px] overflow-auto p-[20px]">
 					<Select.Root selected={detectClassification()} disabled={updateVoterLoader}>
 						<Select.Trigger class="w-full">
 							<Select.Value placeholder="Choose voter classification" />
@@ -188,23 +325,24 @@
 						{/each}
 					</div>
 				</div>
-			</AlertDialog.Header>
-			<AlertDialog.Footer class="mt-[20px]">
-				<AlertDialog.Cancel disabled={updateVoterLoader} on:click={() => (formActionErrors = null)}
-					>Cancel
-				</AlertDialog.Cancel>
-				<Button
-					disabled={updateVoterLoader}
-					class="hover:bg-mainred active:bg-clicked"
-					type="submit"
-				>
-					{#if updateVoterLoader}
-						Updating...
-					{:else}
-						Update Account
-					{/if}
-				</Button>
-			</AlertDialog.Footer>
-		</form>
-	</AlertDialog.Content>
-</AlertDialog.Root>
+
+				<Drawer.Footer class="flex flex-col gap-[10px]">
+					<Button
+						disabled={updateVoterLoader}
+						class="hover:bg-mainred active:bg-clicked"
+						type="submit"
+					>
+						{#if updateVoterLoader}
+							Updating...
+						{:else}
+							Update Account
+						{/if}
+					</Button>
+					<Drawer.Close class="h-10 rounded-sm bg-subwhite px-4 py-2 text-[14px] font-semibold "
+						>Cancel</Drawer.Close
+					>
+				</Drawer.Footer>
+			</form>
+		</Drawer.Content>
+	</Drawer.Root>
+{/if}
