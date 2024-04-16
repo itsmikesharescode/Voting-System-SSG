@@ -23,10 +23,12 @@ export type AdminState = {
         filterSelection: "voted" | "unvoted" | "notRegistered"
     }
     positions: {
-        activeTab: string
+        activeTab: "highschool" | "elementary"
         createdPositions: PositionsDB[] | null
     }
-    candidates: unknown
+    candidates: {
+        activeTab: "highschool" | "elementary"
+    }
 }
 
 // db types 
