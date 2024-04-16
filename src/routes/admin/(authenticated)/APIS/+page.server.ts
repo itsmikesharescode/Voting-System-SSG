@@ -6,7 +6,7 @@ import type { ZodError } from "zod";
 
 export const actions: Actions = {
 
-
+    // all voter route actions
     createVoterAction: async ({ locals: { supabase, supabaseAdmin }, request }) => {
         const formData = Object.fromEntries(await request.formData());
         try {
@@ -46,7 +46,6 @@ export const actions: Actions = {
             return fail(400, { errors: fieldErrors });
         }
     },
-
 
     migrationAction: async ({ locals: { supabaseAdmin }, request }) => {
         const formData = Object.fromEntries(await request.formData());
@@ -188,5 +187,18 @@ export const actions: Actions = {
         if (deletePositionError) return fail(401, { msg: deletePositionError.message });
         else return fail(200, { msg: "Position Deleted Successfully." });
     },
+
+    // candidate actions
+    createCandidateAction: async ({ locals: { supabaseAdmin }, request }) => {
+        const formData = Object.fromEntries(await request.formData());
+
+        try {
+
+        } catch (error) {
+            const zodError = error as ZodError;
+            const { fieldErrors } = zodError.flatten();
+            return fail(400, { errors: fieldErrors });
+        }
+    }
 
 };

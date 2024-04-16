@@ -23,7 +23,7 @@
 
 <div class="mt-[30px] p-[22px]">
 	<Tabs.Root value="highschool" class="w-full">
-		<div class="flex justify-between">
+		<div class="flex flex-wrap justify-between gap-[10px]">
 			<div class="">
 				<Tabs.List class="">
 					<Tabs.Trigger class="w-full" value="highschool">High School</Tabs.Trigger>

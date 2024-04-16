@@ -66,4 +66,9 @@ export const updatePositionSchema = z.object({
         message: "Must choose a position classification."
     }),
     positionName: z.string().min(3, { message: "Must enter a valid position name." })
+});
+
+// candidate route
+export const createCandidateSchema = z.object({
+
 })
