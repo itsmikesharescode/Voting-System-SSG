@@ -9,7 +9,7 @@
 
 	const adminState = getAdminState();
 
-	const handleSelections = (classification: string) => {
+	const handleSelections = (classification: 'highschool' | 'elementary') => {
 		$adminState.positions.activeTab = classification;
 
 		const tempArray = data.created_positions.data?.filter(

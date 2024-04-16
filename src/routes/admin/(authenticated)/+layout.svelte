@@ -17,7 +17,9 @@
 			activeTab: 'highschool',
 			createdPositions: null
 		},
-		candidates: null
+		candidates: {
+			activeTab: 'highschool'
+		}
 	};
 
 	setAdminState(initialState);
