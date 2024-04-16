@@ -12,6 +12,7 @@
 	import * as Drawer from '$lib/components/ui/drawer';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import candidate_upload_icon from '$lib/assets/candidate_upload_icon.svg';
+	import type { Selected } from 'bits-ui';
 
 	export let positionList: PositionsDB[] | null;
 
@@ -21,8 +22,8 @@
 	];
 	let availablePositions: PositionsDB[] | undefined = undefined;
 
+	let selected: Selected<string>;
 	const handleSelections = (classification: string) => {
-		availablePositions = undefined;
 		availablePositions = positionList?.filter(
 			(position) => position.classification === classification
 		);
@@ -143,7 +144,7 @@
 							{/each}
 						</div>
 						<div class="grid w-full gap-1.5">
-							<Select.Root>
+							<Select.Root bind:selected>
 								<Select.Trigger class="w-full " disabled={createCandidateLoader}>
 									<Select.Value placeholder="Choose voter classification" />
 								</Select.Trigger>
@@ -167,28 +168,30 @@
 							{/each}
 						</div>
 
-						<div class="grid w-full gap-1.5">
-							<Select.Root>
-								<Select.Trigger class="w-full " disabled={createCandidateLoader}>
-									<Select.Value placeholder="Available Positions" />
-								</Select.Trigger>
-								<Select.Content class="mt-[10px]">
-									<Select.Group>
-										<Select.Label class="text-left">Available Positions</Select.Label>
-										{#each availablePositions ?? [] as positionObj}
-											<Select.Item
-												value={JSON.stringify(positionObj)}
-												label={positionObj.position_name}>{positionObj.position_name}</Select.Item
-											>
-										{/each}
-									</Select.Group>
-								</Select.Content>
-								<Select.Input name="position" />
-							</Select.Root>
-							{#each formActionErrors?.position ?? [] as errorMsg}
-								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
-							{/each}
-						</div>
+						{#key selected}
+							<div class="grid w-full gap-1.5">
+								<Select.Root>
+									<Select.Trigger class="w-full " disabled={createCandidateLoader}>
+										<Select.Value placeholder="Available Positions" />
+									</Select.Trigger>
+									<Select.Content class="mt-[10px]">
+										<Select.Group>
+											<Select.Label class="text-left">Available Positions</Select.Label>
+											{#each availablePositions ?? [] as positionObj}
+												<Select.Item
+													value={JSON.stringify(positionObj)}
+													label={positionObj.position_name}>{positionObj.position_name}</Select.Item
+												>
+											{/each}
+										</Select.Group>
+									</Select.Content>
+									<Select.Input name="position" />
+								</Select.Root>
+								{#each formActionErrors?.position ?? [] as errorMsg}
+									<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+								{/each}
+							</div>
+						{/key}
 
 						<div class="grid w-full gap-1.5">
 							<Label class="text-left " for="fullName">Candidate Full Name</Label>
