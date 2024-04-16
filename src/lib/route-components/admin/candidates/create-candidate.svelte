@@ -29,6 +29,23 @@
 	let createCandidateLoader = false;
 	let formActionErrors: CreateCandidateVal | null = null;
 
+	//for uploading profile
+	let uploadLoader = false;
+	let previewURL: string | undefined;
+	let files: FileList | undefined = undefined;
+
+	const handleFileChange = (event: Event) => {
+		const fileInput = event.currentTarget as HTMLInputElement;
+		const file = fileInput.files?.[0];
+		if (file && file.type.startsWith('image/')) {
+			const reader = new FileReader();
+			reader.onload = () => {
+				previewURL = reader.result as string;
+			};
+			reader.readAsDataURL(file);
+		}
+	};
+
 	const createCandidateActionNews: SubmitFunction = () => {
 		createCandidateLoader = true;
 		return async ({ result, update }) => {
@@ -95,8 +112,18 @@
 								class="cursor-pointer transition-all active:scale-95"
 							>
 								<div class="">
-									<img src={candidate_upload_icon} alt="error-upload" />
-									<input name="candidatePhoto" type="file" class="hidden" />
+									<img
+										src={previewURL ? previewURL : candidate_upload_icon}
+										alt="error-upload"
+										class="h-[150px] w-[150px] rounded-[10px]"
+									/>
+									<input
+										name="candidatePhoto"
+										type="file"
+										class="hidden"
+										bind:files
+										on:change={handleFileChange}
+									/>
 								</div>
 							</label>
 							{#each formActionErrors?.candidatePhoto ?? [] as errorMsg}
@@ -157,7 +184,13 @@
 					</div>
 				</AlertDialog.Header>
 				<AlertDialog.Footer class="mt-[20px]">
-					<AlertDialog.Cancel on:click={() => (formActionErrors = null)}>Cancel</AlertDialog.Cancel>
+					<AlertDialog.Cancel
+						on:click={() => {
+							formActionErrors = null;
+							files = undefined;
+							previewURL = undefined;
+						}}>Cancel</AlertDialog.Cancel
+					>
 					<Button
 						disabled={createCandidateLoader}
 						type="submit"
@@ -267,9 +300,11 @@
 								Create Candidate
 							{/if}
 						</Button>
-						<Drawer.Close class="h-10 rounded-sm bg-subwhite px-4 py-2 text-[14px] font-semibold "
-							>Cancel</Drawer.Close
-						>
+						<Drawer.Close
+							class="h-10 rounded-sm bg-subwhite px-4 py-2 text-[14px] font-semibold "
+							on:click={() => (formActionErrors = null)}
+							>Cancel
+						</Drawer.Close>
 					</Drawer.Footer>
 				</div>
 			</form>
