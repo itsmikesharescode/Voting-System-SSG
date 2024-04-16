@@ -189,11 +189,46 @@ export const actions: Actions = {
     },
 
     // candidate actions
-    createCandidateAction: async ({ locals: { supabaseAdmin }, request }) => {
+    createCandidateAction: async ({ locals: { supabaseAdmin, compressImage }, request }) => {
         const formData = Object.fromEntries(await request.formData());
 
         try {
             const result = createCandidateSchema.parse(formData);
+            const convertedBlob = await compressImage(result.candidatePhoto);
+
+            if (convertedBlob) {
+                const { data: candidateBucket, error: uploadCandidatePhotoError } = await supabaseAdmin.storage.from("candidate_bucket").upload(`${result.classification}/${result.fullName}/candidatePhoto.webp`, convertedBlob, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
+
+                if (uploadCandidatePhotoError) return fail(401, { msg: uploadCandidatePhotoError.message });
+                else {
+
+                    const { data: fileObject, error: fileObjectError } = await supabaseAdmin.storage.from("candidate_bucket").list(`${result.classification}/${result.fullName}`, { limit: 1 });
+
+                    if (fileObjectError) return fail(401, { msg: fileObjectError.message });
+
+                    else if (fileObject?.length) {
+                        const { data: { publicUrl } } = supabaseAdmin.storage.from("candidate_bucket").getPublicUrl(candidateBucket.path);
+                        if (publicUrl) {
+                            const { error: insertCandidateError } = await supabaseAdmin.from("created_candidates_tb").insert([{
+                                storage_id: fileObject[0].id,
+                                candidate_fullname: result.fullName,
+                                candidate_motto: result.motto,
+                                candidate_position: result.position,
+                                candidate_photo_link: publicUrl,
+                            }]);
+
+                            if (insertCandidateError) return fail(401, { msg: insertCandidateError.message });
+                            else return fail(200, { msg: "Candidate Successfully Created." });
+
+                        }
+                    }
+
+                }
+            }
+
         } catch (error) {
             const zodError = error as ZodError;
             const { fieldErrors } = zodError.flatten();

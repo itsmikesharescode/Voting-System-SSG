@@ -36,25 +36,34 @@ export const handle: Handle = async ({ event, resolve }) => {
         },
     })
     event.locals.compressImage = async (fileObject, targetSizeKB = 300) => {
-        const maxQuality = 100;
-        const inputImageBuffer = await fileObject.arrayBuffer();
-
-        let quality = maxQuality;
+        const maxWidth = 150;
+        const maxHeight = 150;
+        let quality = 90; // Initial quality setting
         let outputBuffer = null;
 
         try {
-            // Resize and crop the image to exactly 150x150 pixels
-            outputBuffer = await sharp(Buffer.from(inputImageBuffer))
-                .resize({ width: 150, height: 150, fit: 'cover' }) // Resize to cover 150x150
-                .png({ quality: quality }) // Set PNG quality
-                .toBuffer();
+            // Read the input image buffer
+            const inputImageBuffer = await fileObject.arrayBuffer();
 
-            const outputSizeKB = outputBuffer.length / 1024;
+            // Resize and compress loop
+            while (quality > 0) {
+                // Resize and compress the image to WebP format
+                outputBuffer = await sharp(inputImageBuffer)
+                    .resize({ width: maxWidth, height: maxHeight, fit: 'cover' })
+                    .toFormat('webp', { quality: quality })
+                    .toBuffer();
 
-            // Check if the output size is within the target range
-            if (outputSizeKB <= targetSizeKB) {
-                const blob = new Blob([outputBuffer], { type: "image/png" });
-                return blob;
+                // Calculate output size in KB
+                const outputSizeKB = outputBuffer.length / 1024;
+
+                // Check if output size meets the target
+                if (outputSizeKB <= targetSizeKB) {
+                    const blob = new Blob([outputBuffer], { type: "image/webp" });
+                    return blob;
+                }
+
+                // Reduce quality for next iteration
+                quality -= 10;
             }
         } catch (error) {
             console.error('Error compressing image:', error);

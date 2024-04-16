@@ -20,6 +20,7 @@
 
 	interface CreateCandidateVal {
 		candidatePhoto: string[];
+		classification: string[];
 		position: string[];
 		fullName: string[];
 		motto: string[];
@@ -123,10 +124,32 @@
 										class="hidden"
 										bind:files
 										on:change={handleFileChange}
+										accept=".jpg, .jpeg, .png, .webp"
 									/>
 								</div>
 							</label>
 							{#each formActionErrors?.candidatePhoto ?? [] as errorMsg}
+								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+							{/each}
+						</div>
+						<div class="grid w-full gap-1.5">
+							<Select.Root>
+								<Select.Trigger class="w-full " disabled={createCandidateLoader}>
+									<Select.Value placeholder="Choose voter classification" />
+								</Select.Trigger>
+								<Select.Content class="mt-[10px]">
+									<Select.Group>
+										<Select.Label class="text-left">Select Voter Classification</Select.Label>
+										{#each classifications as classification}
+											<Select.Item value={classification.value} label={classification.label}
+												>{classification.label}</Select.Item
+											>
+										{/each}
+									</Select.Group>
+								</Select.Content>
+								<Select.Input name="classification" />
+							</Select.Root>
+							{#each formActionErrors?.classification ?? [] as errorMsg}
 								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
 							{/each}
 						</div>
@@ -228,35 +251,73 @@
 				<div class=" flex h-[400px] flex-col gap-[20px] overflow-auto p-[20px]">
 					<div class="grid max-w-fit gap-1.5">
 						<Label class="text-left " for="fullName">Candidate Photo</Label>
-						<label>
+						<label
+							title="Upload Candidate Photo"
+							class="cursor-pointer transition-all active:scale-95"
+						>
 							<div class="">
-								<img src={candidate_upload_icon} alt="error-upload" />
-								<input name="candidatePhoto" type="file" class="hidden" />
+								<img
+									src={previewURL ? previewURL : candidate_upload_icon}
+									alt="error-upload"
+									class="h-[150px] w-[150px] rounded-[10px]"
+								/>
+								<input
+									name="candidatePhoto"
+									type="file"
+									class="hidden"
+									bind:files
+									on:change={handleFileChange}
+									accept=".jpg, .jpeg, .png, .webp"
+								/>
 							</div>
 						</label>
 						{#each formActionErrors?.candidatePhoto ?? [] as errorMsg}
 							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
 						{/each}
 					</div>
-					<Select.Root>
-						<Select.Trigger class="w-full " disabled={createCandidateLoader}>
-							<Select.Value placeholder="Available Positions" />
-						</Select.Trigger>
-						<Select.Content class="mt-[10px]">
-							<Select.Group>
-								<Select.Label class="text-left">Available Positions</Select.Label>
-								{#each classifications as classification}
-									<Select.Item value={classification.value} label={classification.label}
-										>{classification.label}</Select.Item
-									>
-								{/each}
-							</Select.Group>
-						</Select.Content>
-						<Select.Input name="position" />
-					</Select.Root>
-					{#each formActionErrors?.position ?? [] as errorMsg}
-						<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
-					{/each}
+					<div class="grid w-full gap-1.5">
+						<Select.Root>
+							<Select.Trigger class="w-full " disabled={createCandidateLoader}>
+								<Select.Value placeholder="Choose voter classification" />
+							</Select.Trigger>
+							<Select.Content class="mt-[10px]">
+								<Select.Group>
+									<Select.Label class="text-left">Select Voter Classification</Select.Label>
+									{#each classifications as classification}
+										<Select.Item value={classification.value} label={classification.label}
+											>{classification.label}</Select.Item
+										>
+									{/each}
+								</Select.Group>
+							</Select.Content>
+							<Select.Input name="classification" />
+						</Select.Root>
+						{#each formActionErrors?.classification ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+						{/each}
+					</div>
+
+					<div class="grid w-full gap-1.5">
+						<Select.Root>
+							<Select.Trigger class="w-full " disabled={createCandidateLoader}>
+								<Select.Value placeholder="Available Positions" />
+							</Select.Trigger>
+							<Select.Content class="mt-[10px]">
+								<Select.Group>
+									<Select.Label class="text-left">Available Positions</Select.Label>
+									{#each classifications as classification}
+										<Select.Item value={classification.value} label={classification.label}
+											>{classification.label}</Select.Item
+										>
+									{/each}
+								</Select.Group>
+							</Select.Content>
+							<Select.Input name="position" />
+						</Select.Root>
+						{#each formActionErrors?.position ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+						{/each}
+					</div>
 
 					<div class="grid w-full gap-1.5">
 						<Label class="text-left " for="fullName">Candidate Full Name</Label>
