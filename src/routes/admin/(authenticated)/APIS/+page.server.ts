@@ -182,10 +182,22 @@ export const actions: Actions = {
     deletePositionAction: async ({ locals: { supabaseAdmin }, request }) => {
         const formData = await request.formData();
         const positionId = formData.get("positionId") as string;
+        const positionName = formData.get("positionName") as string;
+        const classification = formData.get("classification") as string;
 
         const { error: deletePositionError } = await supabaseAdmin.from("created_positions_tb").delete().eq("id", positionId);
         if (deletePositionError) return fail(401, { msg: deletePositionError.message });
-        else return fail(200, { msg: "Position Deleted Successfully." });
+        else {
+            // will delete the all photos in bucket related to position this is stupid not atomic hope supabase will fix
+            const { data } = await supabaseAdmin.storage.from("candidate_bucket").list(`${classification}/${positionName}`);
+            console.log(data)
+            if (data) {
+                for (const item of data) {
+                    await supabaseAdmin.storage.from("candidate_bucket").remove([`${classification}/${positionName}/${item.name}`]);
+                }
+            };
+            return fail(200, { msg: "Position Deleted Successfully." });
+        }
     },
 
     // candidate actions
@@ -199,7 +211,7 @@ export const actions: Actions = {
             const convertedBlob = await compressImage(result.candidatePhoto);
 
             if (convertedBlob) {
-                const { data: candidateBucket, error: uploadCandidatePhotoError } = await supabaseAdmin.storage.from("candidate_bucket").upload(`${result.classification}/${result.fullName}/candidatePhoto.webp`, convertedBlob, {
+                const { data: candidateBucket, error: uploadCandidatePhotoError } = await supabaseAdmin.storage.from("candidate_bucket").upload(`${result.classification}/${position.position_name}/${result.fullName}.webp`, convertedBlob, {
                     cacheControl: '3600',
                     upsert: false
                 });

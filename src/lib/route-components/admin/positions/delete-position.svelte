@@ -52,6 +52,8 @@
 			use:enhance={deletePositionActionNews}
 		>
 			<input name="positionId" type="hidden" value={positionObj.id} />
+			<input name="positionName" type="hidden" value={positionObj.position_name} />
+			<input name="classification" type="hidden" value={positionObj.classification} />
 
 			<AlertDialog.Header>
 				<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>

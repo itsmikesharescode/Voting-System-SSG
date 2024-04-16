@@ -75,6 +75,8 @@ export const createCandidateSchema = z.object({
         message: "Must choose a voter classification."
     }),
     fullName: z.string().min(4, { message: "Must enter a valid candidate full name." }),
-    position: z.string().min(1, { message: "Must choose position" }),
+    position: z.string().refine((value) => value !== "undefined", {
+        message: "Must choose a position."
+    }),
     motto: z.string().min(4, { message: "Must enter a valid motto." })
 })
