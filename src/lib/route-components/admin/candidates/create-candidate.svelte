@@ -12,16 +12,21 @@
 	import * as Drawer from '$lib/components/ui/drawer';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import candidate_upload_icon from '$lib/assets/candidate_upload_icon.svg';
-	import { getAdminState } from '$lib/stores';
 
 	export let positionList: PositionsDB[] | null;
-
-	const adminState = getAdminState();
 
 	const classifications = [
 		{ value: 'highschool', label: 'High School' },
 		{ value: 'elementary', label: 'Elementary' }
 	];
+	let availablePositions: PositionsDB[] | undefined = undefined;
+
+	const handleSelections = (classification: string) => {
+		availablePositions = undefined;
+		availablePositions = positionList?.filter(
+			(position) => position.classification === classification
+		);
+	};
 
 	interface CreateCandidateVal {
 		candidatePhoto: string[];
@@ -146,7 +151,10 @@
 									<Select.Group>
 										<Select.Label class="text-left">Select Voter Classification</Select.Label>
 										{#each classifications as classification}
-											<Select.Item value={classification.value} label={classification.label}
+											<Select.Item
+												value={classification.value}
+												label={classification.label}
+												on:click={() => handleSelections(classification.value)}
 												>{classification.label}</Select.Item
 											>
 										{/each}
@@ -167,9 +175,9 @@
 								<Select.Content class="mt-[10px]">
 									<Select.Group>
 										<Select.Label class="text-left">Available Positions</Select.Label>
-										{#each $adminState.positions.createdPositions ?? [] as positionObj}
+										{#each availablePositions ?? [] as positionObj}
 											<Select.Item
-												value={positionObj.position_name}
+												value={JSON.stringify(positionObj)}
 												label={positionObj.position_name}>{positionObj.position_name}</Select.Item
 											>
 										{/each}

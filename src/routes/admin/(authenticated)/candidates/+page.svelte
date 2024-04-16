@@ -7,6 +7,16 @@
 	export let data: LayoutServerData;
 
 	const adminState = getAdminState();
+
+	const handleSelections = (classification: 'highschool' | 'elementary') => {
+		/* $adminState.candidates.activeTab = classification;
+
+		const tempArray = data.created_positions.data?.filter(
+			(position) => position.classification === $adminState.candidates.activeTab
+		);
+
+		if (tempArray) $adminState.candidates.availablePositions = tempArray; */
+	};
 </script>
 
 <div class="mt-[30px] p-[22px]">
@@ -14,8 +24,16 @@
 		<div class="flex w-full flex-wrap justify-between gap-[10px]">
 			<div class="">
 				<Tabs.List class="">
-					<Tabs.Trigger class="w-full" value="highschool">High School</Tabs.Trigger>
-					<Tabs.Trigger class="w-full" value="elementary">Elementary</Tabs.Trigger>
+					<Tabs.Trigger
+						class="w-full"
+						value="highschool"
+						on:click={() => handleSelections('highschool')}>High School</Tabs.Trigger
+					>
+					<Tabs.Trigger
+						class="w-full"
+						value="elementary"
+						on:click={() => handleSelections('elementary')}>Elementary</Tabs.Trigger
+					>
 				</Tabs.List>
 			</div>
 

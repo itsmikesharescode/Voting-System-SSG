@@ -1,5 +1,5 @@
 import { createCandidateSchema, createPositionSchema, createVoterAccountSchema, migrationDataSchema, updatePositionSchema, updateVoterAccountSchema } from "$lib/schema";
-import type { MigrationFile } from "$lib/types";
+import type { MigrationFile, PositionsDB } from "$lib/types";
 import { fail, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
 
@@ -194,6 +194,8 @@ export const actions: Actions = {
 
         try {
             const result = createCandidateSchema.parse(formData);
+            const position = JSON.parse(result.position) as PositionsDB;
+
             const convertedBlob = await compressImage(result.candidatePhoto);
 
             if (convertedBlob) {
@@ -208,10 +210,10 @@ export const actions: Actions = {
                     const { data: { publicUrl } } = supabaseAdmin.storage.from("candidate_bucket").getPublicUrl(candidateBucket.path);
                     if (publicUrl) {
                         const { error: insertCandidateError } = await supabaseAdmin.from("created_candidates_tb").insert([{
-                            position_id: Number(result.positionId),
+                            position_id: position.id,
                             candidate_fullname: result.fullName,
                             candidate_motto: result.motto,
-                            candidate_position: result.position,
+                            candidate_position: position.position_name,
                             candidate_photo_link: publicUrl,
                         }]);
 

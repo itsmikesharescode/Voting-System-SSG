@@ -18,8 +18,7 @@
 			createdPositions: null
 		},
 		candidates: {
-			activeTab: 'highschool',
-			availablePositions: null
+			activeTab: 'highschool'
 		}
 	};
 
