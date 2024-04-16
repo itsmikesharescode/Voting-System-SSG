@@ -1,12 +1,13 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
+	import CreateCandidate from '$lib/route-components/admin/candidates/create-candidate.svelte';
 	import { getAdminState } from '$lib/stores';
 
 	const adminState = getAdminState();
 </script>
 
 <div class="mt-[30px] p-[22px]">
-	<Tabs.Root bind:value={$adminState.positions.activeTab} class="w-full">
+	<Tabs.Root bind:value={$adminState.candidates.activeTab} class="w-full">
 		<div class="flex w-full flex-wrap justify-between gap-[10px]">
 			<div class="">
 				<Tabs.List class="">
@@ -17,7 +18,7 @@
 
 			<div class="flex items-center gap-[10px]">
 				<div class="">
-					<!-- <CreatePosition /> -->
+					<CreateCandidate />
 				</div>
 			</div>
 		</div>
