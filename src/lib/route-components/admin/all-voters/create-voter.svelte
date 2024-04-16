@@ -317,7 +317,7 @@
 					</div>
 				</div>
 
-				<Drawer.Footer>
+				<Drawer.Footer class="flex flex-col gap-[10px]">
 					<Button
 						disabled={createVoterLoader}
 						type="submit"
@@ -331,7 +331,9 @@
 							Create Voter
 						{/if}
 					</Button>
-					<Drawer.Close>Cancel</Drawer.Close>
+					<Drawer.Close class="h-10 rounded-sm bg-subwhite px-4 py-2 text-[14px] font-semibold "
+						>Cancel</Drawer.Close
+					>
 				</Drawer.Footer>
 			</form>
 		</Drawer.Content>
