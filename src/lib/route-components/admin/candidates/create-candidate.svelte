@@ -11,18 +11,17 @@
 	import { invalidateAll } from '$app/navigation';
 	import * as Drawer from '$lib/components/ui/drawer';
 
+	export let positions: unknown;
+
 	const classifications = [
 		{ value: 'highschool', label: 'High School' },
 		{ value: 'elementary', label: 'Elementary' }
 	];
 
 	interface CreateVoterVal {
-		classification: string[];
+		position: string[];
 		fullName: string[];
-		voterLrn: string[];
-		email: string[];
-		password: string[];
-		confirmPassword: string[];
+		motto: string[];
 	}
 
 	let showCreateCandidate = false;
@@ -71,7 +70,7 @@
 	on:click={() => (showCreateCandidate = true)}>Create Candidate</Button
 >
 
-{#if nativeWidthValue > 1024}
+{#if nativeWidthValue > 768}
 	<!--Forms for Desktop-->
 	<AlertDialog.Root bind:open={showCreateCandidate}>
 		<AlertDialog.Content>
@@ -82,19 +81,19 @@
 				use:enhance={createCandidateActionNews}
 			>
 				<AlertDialog.Header>
-					<AlertDialog.Title>Create Voter</AlertDialog.Title>
+					<AlertDialog.Title>Create Candidate</AlertDialog.Title>
 					<AlertDialog.Description>
-						This will create a voter account for Lazaro Francisco Integrated School (SSG).
+						This will create a candidate that will rely on opened positions.
 					</AlertDialog.Description>
 
 					<div class=" flex flex-col gap-[20px] pt-[20px]">
 						<Select.Root>
 							<Select.Trigger class="w-full " disabled={createCandidateLoader}>
-								<Select.Value placeholder="Choose voter classification" />
+								<Select.Value placeholder="Available Positions" />
 							</Select.Trigger>
 							<Select.Content class="mt-[10px]">
 								<Select.Group>
-									<Select.Label class="text-left">Select Voter Classification</Select.Label>
+									<Select.Label class="text-left">Available Positions</Select.Label>
 									{#each classifications as classification}
 										<Select.Item value={classification.value} label={classification.label}
 											>{classification.label}</Select.Item
@@ -104,19 +103,19 @@
 							</Select.Content>
 							<Select.Input name="classification" />
 						</Select.Root>
-						{#each formActionErrors?.classification ?? [] as errorMsg}
+						{#each formActionErrors?.position ?? [] as errorMsg}
 							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
 						{/each}
 
 						<div class="grid w-full gap-1.5">
-							<Label class="text-left " for="fullName">Voter Full Name</Label>
+							<Label class="text-left " for="fullName">Candidate Photo</Label>
 							<Input
 								disabled={createCandidateLoader}
 								name="fullName"
 								class="text-[14px] "
-								type="text"
+								type="file"
 								id="fullName"
-								placeholder="Enter voter fullname"
+								accept=".png, .jpeg, .webp"
 							/>
 							{#each formActionErrors?.fullName ?? [] as errorMsg}
 								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
@@ -124,61 +123,31 @@
 						</div>
 
 						<div class="grid w-full gap-1.5">
-							<Label class="text-left  " for="voterLrn">Voter LRN</Label>
+							<Label class="text-left " for="fullName">Candidate Full Name</Label>
+							<Input
+								disabled={createCandidateLoader}
+								name="fullName"
+								class="text-[14px] "
+								type="text"
+								id="fullName"
+								placeholder="Enter candidate fullname"
+							/>
+							{#each formActionErrors?.fullName ?? [] as errorMsg}
+								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+							{/each}
+						</div>
+
+						<div class="grid w-full gap-1.5">
+							<Label class="text-left  " for="voterLrn">Candidate Motto</Label>
 							<Input
 								disabled={createCandidateLoader}
 								name="voterLrn"
 								class="text-[14px] "
 								type="text"
 								id="voterLrn"
-								placeholder="Enter voter lrn"
+								placeholder="Enter candidate motto"
 							/>
-							{#each formActionErrors?.voterLrn ?? [] as errorMsg}
-								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
-							{/each}
-						</div>
-
-						<div class="grid w-full gap-1.5">
-							<Label class="text-left  " for="email">Voter Email</Label>
-							<Input
-								disabled={createCandidateLoader}
-								name="email"
-								class="text-[14px] "
-								type="email"
-								id="email"
-								placeholder="Enter voter email"
-							/>
-							{#each formActionErrors?.email ?? [] as errorMsg}
-								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
-							{/each}
-						</div>
-
-						<div class="grid w-full items-center gap-1.5">
-							<Label class="text-left  " for="password">Voter Password</Label>
-							<Input
-								disabled={createCandidateLoader}
-								name="password"
-								class="text-[14px] "
-								type="password"
-								id="password"
-								placeholder="Enter voter password"
-							/>
-							{#each formActionErrors?.password ?? [] as errorMsg}
-								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
-							{/each}
-						</div>
-
-						<div class="grid w-full items-center gap-1.5">
-							<Label class="text-left  " for="confirmPassword">Voter Confirm Password</Label>
-							<Input
-								disabled={createCandidateLoader}
-								name="confirmPassword"
-								class="text-[14px] "
-								type="password"
-								id="confirmPassword"
-								placeholder="Enter voter password"
-							/>
-							{#each formActionErrors?.confirmPassword ?? [] as errorMsg}
+							{#each formActionErrors?.motto ?? [] as errorMsg}
 								<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
 							{/each}
 						</div>
@@ -196,7 +165,7 @@
 						{#if createCandidateLoader}
 							Creating...
 						{:else}
-							Create Voter
+							Create Candidate
 						{/if}
 					</Button>
 				</AlertDialog.Footer>
@@ -211,23 +180,23 @@
 				method="post"
 				action="APIS?/createVoterAction"
 				enctype="multipart/form-data"
-				use:enhance={createCandidateAction}
+				use:enhance={createCandidateActionNews}
 			>
 				<Drawer.Header>
-					<Drawer.Title>Create Voter</Drawer.Title>
+					<Drawer.Title>Create Candidate</Drawer.Title>
 					<Drawer.Description
-						>This will create a voter account for Lazaro Francisco Integrated School (SSG).</Drawer.Description
+						>This will create a candidate that will rely on opened positions.</Drawer.Description
 					>
 				</Drawer.Header>
 
 				<div class=" flex h-[400px] flex-col gap-[20px] overflow-auto p-[20px]">
 					<Select.Root>
 						<Select.Trigger class="w-full " disabled={createCandidateLoader}>
-							<Select.Value placeholder="Choose voter classification" />
+							<Select.Value placeholder="Available Positions" />
 						</Select.Trigger>
 						<Select.Content class="mt-[10px]">
 							<Select.Group>
-								<Select.Label class="text-left">Select Voter Classification</Select.Label>
+								<Select.Label class="text-left">Available Positions</Select.Label>
 								{#each classifications as classification}
 									<Select.Item value={classification.value} label={classification.label}
 										>{classification.label}</Select.Item
@@ -237,19 +206,19 @@
 						</Select.Content>
 						<Select.Input name="classification" />
 					</Select.Root>
-					{#each formActionErrors?.classification ?? [] as errorMsg}
+					{#each formActionErrors?.position ?? [] as errorMsg}
 						<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
 					{/each}
 
 					<div class="grid w-full gap-1.5">
-						<Label class="text-left " for="fullName">Voter Full Name</Label>
+						<Label class="text-left " for="fullName">Candidate Photo</Label>
 						<Input
 							disabled={createCandidateLoader}
 							name="fullName"
 							class="text-[14px] "
-							type="text"
+							type="file"
 							id="fullName"
-							placeholder="Enter voter fullname"
+							accept=".png, .jpeg, .webp"
 						/>
 						{#each formActionErrors?.fullName ?? [] as errorMsg}
 							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
@@ -257,84 +226,54 @@
 					</div>
 
 					<div class="grid w-full gap-1.5">
-						<Label class="text-left  " for="voterLrn">Voter LRN</Label>
+						<Label class="text-left " for="fullName">Candidate Full Name</Label>
+						<Input
+							disabled={createCandidateLoader}
+							name="fullName"
+							class="text-[14px] "
+							type="text"
+							id="fullName"
+							placeholder="Enter candidate fullname"
+						/>
+						{#each formActionErrors?.fullName ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+						{/each}
+					</div>
+
+					<div class="grid w-full gap-1.5">
+						<Label class="text-left  " for="voterLrn">Candidate Motto</Label>
 						<Input
 							disabled={createCandidateLoader}
 							name="voterLrn"
 							class="text-[14px] "
 							type="text"
 							id="voterLrn"
-							placeholder="Enter voter lrn"
+							placeholder="Enter candidate motto"
 						/>
-						{#each formActionErrors?.voterLrn ?? [] as errorMsg}
+						{#each formActionErrors?.motto ?? [] as errorMsg}
 							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
 						{/each}
 					</div>
 
-					<div class="grid w-full gap-1.5">
-						<Label class="text-left  " for="email">Voter Email</Label>
-						<Input
+					<Drawer.Footer class="flex flex-col gap-[10px] p-0">
+						<Button
 							disabled={createCandidateLoader}
-							name="email"
-							class="text-[14px] "
-							type="email"
-							id="email"
-							placeholder="Enter voter email"
-						/>
-						{#each formActionErrors?.email ?? [] as errorMsg}
-							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
-						{/each}
-					</div>
-
-					<div class="grid w-full items-center gap-1.5">
-						<Label class="text-left  " for="password">Voter Password</Label>
-						<Input
-							disabled={createCandidateLoader}
-							name="password"
-							class="text-[14px] "
-							type="password"
-							id="password"
-							placeholder="Enter voter password"
-						/>
-						{#each formActionErrors?.password ?? [] as errorMsg}
-							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
-						{/each}
-					</div>
-
-					<div class="grid w-full items-center gap-1.5">
-						<Label class="text-left  " for="confirmPassword">Voter Confirm Password</Label>
-						<Input
-							disabled={createCandidateLoader}
-							name="confirmPassword"
-							class="text-[14px] "
-							type="password"
-							id="confirmPassword"
-							placeholder="Enter voter password"
-						/>
-						{#each formActionErrors?.confirmPassword ?? [] as errorMsg}
-							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
-						{/each}
-					</div>
-				</div>
-
-				<Drawer.Footer class="flex flex-col gap-[10px]">
-					<Button
-						disabled={createCandidateLoader}
-						type="submit"
-						class="{createCandidateLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
+							type="submit"
+							class="{createCandidateLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
 					 text-[14px] font-semibold"
-						on:click={() => (showCreateCandidate = true)}
-					>
-						{#if createCandidateLoader}
-							Creating...
-						{:else}
-							Create Voter
-						{/if}
-					</Button>
-					<Drawer.Close class="h-10 rounded-sm bg-subwhite px-4 py-2 text-[14px] font-semibold "
-						>Cancel</Drawer.Close
-					>
-				</Drawer.Footer>
+							on:click={() => (showCreateCandidate = true)}
+						>
+							{#if createCandidateLoader}
+								Creating...
+							{:else}
+								Create Candidate
+							{/if}
+						</Button>
+						<Drawer.Close class="h-10 rounded-sm bg-subwhite px-4 py-2 text-[14px] font-semibold "
+							>Cancel</Drawer.Close
+						>
+					</Drawer.Footer>
+				</div>
 			</form>
 		</Drawer.Content>
 	</Drawer.Root>
