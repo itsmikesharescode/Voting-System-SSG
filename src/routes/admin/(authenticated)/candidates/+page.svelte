@@ -19,7 +19,7 @@
 		if (tempArray) $adminState.candidates.availablePositions = tempArray; */
 	};
 
-	$: if (data.created_candidates) {
+	$: if (data.created_candidates.data) {
 		$adminState.candidates.createdCandidates = data.created_candidates.data;
 	}
 </script>

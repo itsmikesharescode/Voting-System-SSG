@@ -26,25 +26,18 @@
 	</div>
 
 	<div class="  flex flex-col gap-[10px] text-mainred lg:gap-[5px]">
-		{#each $adminState.allvoters.userList ?? [] as voterObj, index (voterObj.id)}
+		{#each $adminState.candidates.createdCandidates ?? [] as candidateObj, index (candidateObj.id)}
 			<div
 				animate:flip={{ duration: 350 }}
 				in:fade
-				class="grid items-center gap-[20px] border-b-[1px] bg-subwhite p-[10px] lg:grid lg:grid-cols-[1fr,1fr,1fr,300px,190px]"
+				class="grid items-center gap-[20px] border-b-[1px] bg-subwhite p-[10px] lg:grid lg:grid-cols-[1fr,300px,300px]"
 			>
 				<div class="grid overflow-auto">
-					<p>{voterObj.user_fullname}</p>
+					<p>{candidateObj.candidate_fullname}</p>
 				</div>
 
 				<div class="grid overflow-auto">
-					<p>{voterObj.user_lrn}</p>
-				</div>
-				<div class="grid overflow-auto">
-					<p>{voterObj.user_email}</p>
-				</div>
-
-				<div class="grid overflow-auto">
-					<p>{formatDate(voterObj.created_at)}</p>
+					<p>{formatDate(candidateObj.created_at)}</p>
 				</div>
 
 				<div class="w-full">

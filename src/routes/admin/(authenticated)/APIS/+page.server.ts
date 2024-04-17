@@ -227,6 +227,7 @@ export const actions: Actions = {
                             candidate_motto: result.motto,
                             candidate_position: position.position_name,
                             candidate_photo_link: publicUrl,
+                            classification: position.classification,
                         }]);
 
                         if (insertCandidateError) return fail(401, { msg: insertCandidateError.message });
