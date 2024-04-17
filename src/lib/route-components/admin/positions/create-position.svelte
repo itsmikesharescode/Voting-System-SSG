@@ -16,6 +16,7 @@
 	];
 
 	interface CreatePositionVal {
+		maximumVotes: string[];
 		positionName: string[];
 		classification: string[];
 	}
@@ -111,6 +112,21 @@
 							placeholder="Enter position name"
 						/>
 						{#each formActionErrors?.positionName ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
+						{/each}
+					</div>
+
+					<div class="grid w-full items-center gap-1.5">
+						<Label class="text-left  " for="maximumVotes">Maximum Votes</Label>
+						<Input
+							disabled={createPositionLoader}
+							name="maximumVotes"
+							class="text-[14px] "
+							type="number"
+							id="maximumVotes"
+							placeholder="Enter maximum votes"
+						/>
+						{#each formActionErrors?.maximumVotes ?? [] as errorMsg}
 							<p class="text-left text-[14px] text-red-600">{errorMsg}</p>
 						{/each}
 					</div>

@@ -146,6 +146,7 @@ export const actions: Actions = {
             const { error: createPositionError } = await supabaseAdmin.rpc("create_position", {
                 classification_param: result.classification,
                 position_name_param: result.positionName,
+                maximum_votes_param: Math.abs(Number(result.maximumVotes))
             });
 
             if (createPositionError) return fail(401, { msg: createPositionError.message });
@@ -166,7 +167,8 @@ export const actions: Actions = {
 
             const { error: updatePositonError } = await supabaseAdmin.from("created_positions_tb").update([{
                 position_name: result.positionName,
-                classification: result.classification
+                classification: result.classification,
+                maximum_votes: result.maximumVotes
             }]).eq("id", result.positionId);
 
             if (updatePositonError) return fail(401, { msg: updatePositonError.message });
@@ -231,7 +233,9 @@ export const actions: Actions = {
                                 candidate_position: position.position_name,
                                 candidate_photo_link: publicUrl,
                                 classification: position.classification,
-                                storage_id: fileObject[0].id
+                                storage_id: fileObject[0].id,
+                                vote_count: 0,
+                                maximum_vote: position.maximum_votes,
                             }]);
 
                             if (insertCandidateError) return fail(401, { msg: insertCandidateError.message });
