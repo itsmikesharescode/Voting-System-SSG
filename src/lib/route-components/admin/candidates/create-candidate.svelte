@@ -70,6 +70,9 @@
 				case 200:
 					invalidateAll();
 					formActionErrors = null;
+					files = undefined;
+					previewURL = undefined;
+					selected = undefined;
 					createCandidateLoader = false;
 					toast.success('Create Voter', { description: msg });
 					showCreateCandidate = false;
