@@ -58,7 +58,7 @@
 					<div class="flex w-full items-center gap-[10px]">
 						<CandidateDetails {candidateObj} />
 						<!-- <CandidateUpdate {positionList} {candidateObj} /> -->
-						<CandidateDelete />
+						<CandidateDelete {candidateObj} />
 					</div>
 				</div>
 			</div>
