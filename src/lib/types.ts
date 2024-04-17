@@ -61,6 +61,7 @@ export type PositionsDB = {
     created_at: string
     position_name: string
     classification: string
+    maximum_votes: number
 }
 
 export type CandidatesDB = {
