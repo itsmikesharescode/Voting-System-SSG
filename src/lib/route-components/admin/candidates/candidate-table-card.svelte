@@ -4,6 +4,9 @@
 	import { flip } from 'svelte/animate';
 
 	import { fade } from 'svelte/transition';
+	import CandidateDetails from './candidate-details.svelte';
+	import CandidateUpdate from './candidate-update.svelte';
+	import CandidateDelete from './candidate-delete.svelte';
 
 	const adminState = getAdminState();
 </script>
@@ -50,8 +53,9 @@
 
 				<div class="w-full">
 					<div class="flex w-full items-center gap-[10px]">
-						<!-- <UpdateVoterContent {voterObj} />
-						<DeleteVoter {voterObj} /> -->
+						<CandidateDetails {candidateObj} />
+						<CandidateUpdate />
+						<CandidateDelete />
 					</div>
 				</div>
 			</div>
