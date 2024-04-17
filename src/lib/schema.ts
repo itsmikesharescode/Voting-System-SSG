@@ -54,6 +54,7 @@ export const updateVoterAccountSchema = z.object({
 
 // positions route
 export const createPositionSchema = z.object({
+    maximumVotes: z.string().refine(val => Number(val) > 1, { message: "Maximum votes must greater than 1." }),
     classification: z.string().refine((value) => value !== "undefined", {
         message: "Must choose a position classification."
     }),
