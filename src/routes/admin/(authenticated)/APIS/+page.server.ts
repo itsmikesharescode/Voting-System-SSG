@@ -233,7 +233,9 @@ export const actions: Actions = {
                                 candidate_position: position.position_name,
                                 candidate_photo_link: publicUrl,
                                 classification: position.classification,
-                                storage_id: fileObject[0].id
+                                storage_id: fileObject[0].id,
+                                vote_count: 0,
+                                maximum_vote: position.maximum_votes,
                             }]);
 
                             if (insertCandidateError) return fail(401, { msg: insertCandidateError.message });
