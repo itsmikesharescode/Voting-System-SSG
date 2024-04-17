@@ -72,4 +72,5 @@ export type CandidatesDB = {
     candidate_photo_link: string
     position_id: number
     classification: "elementary" | "highschool"
+    storage_id: string
 }

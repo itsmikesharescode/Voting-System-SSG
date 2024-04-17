@@ -51,9 +51,10 @@
 			enctype="multipart/form-data"
 			use:enhance={deleteCandidateActionNews}
 		>
-			<input name="candidateId" type="hidden" value={candidateObj?.id} />
-			<input name="candidateName" type="hidden" value={candidateObj?.candidate_fullname} />
+			<input name="storageId" type="hidden" value={candidateObj?.storage_id} />
 			<input name="classification" type="hidden" value={candidateObj?.classification} />
+			<input name="position" type="hidden" value={candidateObj?.candidate_position} />
+			<input name="fullname" type="hidden" value={candidateObj?.candidate_fullname} />
 
 			<AlertDialog.Header>
 				<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>

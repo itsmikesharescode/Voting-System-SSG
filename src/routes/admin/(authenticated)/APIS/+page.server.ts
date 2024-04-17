@@ -297,9 +297,14 @@ export const actions: Actions = {
 
     deleteCandidateAction: async ({ locals: { supabaseAdmin }, request }) => {
         const formData = await request.formData();
-        const positionId = formData.get("positionId") as string;
-        const positionName = formData.get("positionName") as string;
         const classification = formData.get("classification") as string;
+        const position = formData.get("position") as string;
+        const fullname = formData.get("fullname") as string;
+
+        const { data: deleteCandidatePhoto, error: deleteCandidatePhotoError } = await supabaseAdmin.storage.from("candidate_bucket").remove([`${classification}/${position}/${fullname}/${fullname}.webp`])
+
+        if (deleteCandidatePhotoError) return fail(401, { msg: deleteCandidatePhotoError.message });
+        else if (deleteCandidatePhoto.length) return fail(200, { msg: "Candidate Deleted Successfully." });
     }
 
 };
