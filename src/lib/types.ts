@@ -16,7 +16,9 @@ export type Dashboard = {
 export type AdminState = {
     activeItem: string
     dashboard: Dashboard | null
-    votes: unknown,
+    votes: {
+        activeTab: "highschool" | "elementary"
+    }
     allvoters: {
         activeTab: "highschool" | "elementary"
         userList: UserListDB[] | null,
@@ -61,6 +63,7 @@ export type PositionsDB = {
     created_at: string
     position_name: string
     classification: string
+    maximum_votes: number
 }
 
 export type CandidatesDB = {
@@ -73,4 +76,6 @@ export type CandidatesDB = {
     position_id: number
     classification: "elementary" | "highschool"
     storage_id: string
+    vote_count: number
+    maximum_vote: number
 }

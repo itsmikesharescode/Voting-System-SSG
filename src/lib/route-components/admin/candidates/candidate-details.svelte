@@ -5,10 +5,22 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { CandidatesDB } from '$lib/types';
 	import * as Drawer from '$lib/components/ui/drawer';
-
-	import { fade } from 'svelte/transition';
+	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+	import { onMount } from 'svelte';
 
 	export let candidateObj: CandidatesDB | null;
+
+	let isLoading = false;
+	onMount(() => {
+		const img = new Image();
+		isLoading = true;
+		if (candidateObj?.candidate_photo_link) {
+			img.src = candidateObj.candidate_photo_link;
+			img.onload = () => {
+				isLoading = false;
+			};
+		}
+	});
 
 	const classifications = [
 		{ value: 'highschool', label: 'High School' },
@@ -44,10 +56,23 @@
 				<AlertDialog.Description>You are viewing the candidate details.</AlertDialog.Description>
 
 				<div class=" flex flex-col gap-[20px] pt-[20px]">
-					<div class="">
-						<img src={candidateObj?.candidate_photo_link} alt="poorConnection" class="rounded-lg" />
-					</div>
-
+					{#if isLoading}
+						<div class="flex items-center space-x-4">
+							<div class="space-y-2">
+								<Skeleton class="h-[50px] w-[150px]" />
+								<Skeleton class="h-[50px] w-[100px]" />
+								<Skeleton class="h-[50px] w-[150px]" />
+							</div>
+						</div>
+					{:else}
+						<div class="">
+							<img
+								src={candidateObj?.candidate_photo_link}
+								alt="poorConnection"
+								class="rounded-lg"
+							/>
+						</div>
+					{/if}
 					<div class="grid max-h-[300px] w-full gap-[20px] overflow-auto text-left">
 						<div class="grid w-full gap-[5px]">
 							<h3 class="text-[14px] font-semibold xs:text-[16px] sm:text-[18px]">

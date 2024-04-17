@@ -23,6 +23,7 @@
 	interface UpdateVoterVal {
 		classification: string[];
 		positionName: string[];
+		maximumVotes: string[];
 	}
 
 	let updatePositionLoader = false;
@@ -120,6 +121,22 @@
 							value={positionObj.position_name}
 						/>
 						{#each formActionErrors?.positionName ?? [] as errorMsg}
+							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
+						{/each}
+					</div>
+
+					<div class="grid w-full gap-1.5">
+						<Label class="text-left " for="maximumVotes">Maximum Votes</Label>
+						<Input
+							disabled={updatePositionLoader}
+							name="maximumVotes"
+							class="text-[14px] "
+							type="number"
+							id="maximumVotes"
+							placeholder="Enter position name"
+							value={positionObj.maximum_votes}
+						/>
+						{#each formActionErrors?.maximumVotes ?? [] as errorMsg}
 							<p class="text-left text-[14px] text-red-600" in:fade>{errorMsg}</p>
 						{/each}
 					</div>
