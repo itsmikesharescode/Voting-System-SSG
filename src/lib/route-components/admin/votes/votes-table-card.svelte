@@ -1,15 +1,26 @@
 <script lang="ts">
-	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
+	import { Badge } from '$lib/components/ui/badge/index';
 
 	export let position_name: string;
+	export let maxVote: number;
 	export let candidateArray: { candidateName: string; voteCount: number; candidatePhoto: string }[];
 </script>
 
 {#if candidateArray}
-	<p class="text-[16px] font-semibold text-mainred xs:text-[18px] md:text-[20px] lg:text-[22px]">
-		Running {position_name}
-	</p>
+	<div class="flex flex-wrap justify-between gap-[10px]">
+		<p
+			class="rounded-full bg-mainred px-[20px] text-[16px] font-semibold text-white xs:text-[18px] md:text-[20px] lg:text-[22px]"
+		>
+			Running {position_name}
+		</p>
+
+		<p
+			class="rounded-full bg-mainred px-[20px] text-[16px] font-semibold text-white xs:text-[18px] md:text-[20px] lg:text-[22px]"
+		>
+			Max Vote {maxVote}
+		</p>
+	</div>
 
 	<div class="mt-[10px] text-[14px] font-semibold text-white xs:text-[16px] md:text-[18px]">
 		<div

@@ -16,7 +16,9 @@ export type Dashboard = {
 export type AdminState = {
     activeItem: string
     dashboard: Dashboard | null
-    votes: unknown,
+    votes: {
+        activeTab: "highschool" | "elementary"
+    }
     allvoters: {
         activeTab: "highschool" | "elementary"
         userList: UserListDB[] | null,
