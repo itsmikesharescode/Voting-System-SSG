@@ -57,7 +57,7 @@
 				<div class="w-full">
 					<div class="flex w-full items-center gap-[10px]">
 						<CandidateDetails {candidateObj} />
-						<CandidateUpdate {positionList} {candidateObj} />
+						<!-- <CandidateUpdate {positionList} {candidateObj} /> -->
 						<CandidateDelete />
 					</div>
 				</div>

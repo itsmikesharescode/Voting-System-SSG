@@ -1,4 +1,4 @@
-import { createCandidateSchema, createPositionSchema, createVoterAccountSchema, migrationDataSchema, updatePositionSchema, updateVoterAccountSchema } from "$lib/schema";
+import { createCandidateSchema, createPositionSchema, createVoterAccountSchema, migrationDataSchema, updateCandidateSchema, updatePositionSchema, updateVoterAccountSchema } from "$lib/schema";
 import type { MigrationFile, PositionsDB } from "$lib/types";
 import { fail, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
@@ -244,11 +244,41 @@ export const actions: Actions = {
             return fail(400, { errors: fieldErrors });
         }
     },
-
-    updateCandidateAction: async ({ locals: { supabaseAdmin, compressImage }, request }) => {
+    // lazy will continue soon
+    /* updateCandidateAction: async ({ locals: { supabaseAdmin, compressImage }, request }) => {
         const formData = Object.fromEntries(await request.formData());
 
         try {
+            const result = updateCandidateSchema.parse(formData);
+            const position = JSON.parse(result.position) as PositionsDB;
+            const convertedBlob = await compressImage(result.candidatePhoto);
+
+            if (convertedBlob) {
+                const { data: updateCandidateBucket, error: updateCandidateBucketError } = await supabaseAdmin.storage.from("candidate_bucket").update(`${result.classification}/${position.position_name}/${result.fullName}.webp`, convertedBlob, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
+
+                if (updateCandidateBucketError) return fail(401, { msg: updateCandidateBucketError.message });
+                else {
+
+                    const { data: { publicUrl } } = supabaseAdmin.storage.from("candidate_bucket").getPublicUrl(updateCandidateBucket.path);
+                    if (publicUrl) {
+                        const { error: updateCandidateError } = await supabaseAdmin.from("created_candidates_tb").update([{
+                            position_id: position.id,
+                            candidate_fullname: result.fullName,
+                            candidate_motto: result.motto,
+                            candidate_position: position.position_name,
+                            candidate_photo_link: publicUrl,
+                            classification: position.classification,
+                        }]);
+
+                        if (updateCandidateError) return fail(401, { msg: updateCandidateError.message });
+                        else return fail(200, { msg: "Candidate Successfully Updated." });
+                    }
+
+                }
+            }
 
         } catch (error) {
             const zodError = error as ZodError;
@@ -256,6 +286,6 @@ export const actions: Actions = {
 
             return fail(400, { errors: fieldErrors });
         }
-    }
+    } */
 
 };
