@@ -13,6 +13,7 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession, supabas
         return {
             user_list: await supabaseAdmin.from("user_list_tb").select("*") as PostgrestSingleResponse<UserListDB[]>,
             created_positions: await supabaseAdmin.from("created_positions_tb").select("*") as PostgrestSingleResponse<PositionsDB[]>,
+            created_candidates: await supabaseAdmin.from("created_candidates_tb").select("*") as PostgrestSingleResponse<any[]>
         }
     }
 

@@ -59,3 +59,13 @@ export type PositionsDB = {
     position_name: string
     classification: string
 }
+
+export type CandidatesDB = {
+    id: number
+    created_at: string
+    candidate_fullname: string
+    candidate_motto: string
+    candidate_position: string
+    candidate_photo_link: string
+    position_id: number
+}
