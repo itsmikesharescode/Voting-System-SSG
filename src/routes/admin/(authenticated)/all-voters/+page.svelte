@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
-	import * as RadioGroup from '$lib/components/ui/radio-group/index.js';
-	import { Label } from '$lib/components/ui/label/index.js';
+	import * as RadioGroup from '$lib/components/ui/radio-group/index';
+	import { Label } from '$lib/components/ui/label/index';
 	import CreateVoter from '$lib/route-components/admin/all-voters/create-voter.svelte';
 	import ImportData from '$lib/route-components/admin/all-voters/import-data.svelte';
 	import { getAdminState } from '$lib/stores';

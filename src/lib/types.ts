@@ -28,7 +28,8 @@ export type AdminState = {
     }
     candidates: {
         activeTab: "highschool" | "elementary",
-        createdCandidates: CandidatesDB[] | null
+        createdCandidates: CandidatesDB[] | null,
+        filterSelection: string | null
     }
 }
 
@@ -69,4 +70,5 @@ export type CandidatesDB = {
     candidate_position: string
     candidate_photo_link: string
     position_id: number
+    classification: "elementary" | "highschool"
 }

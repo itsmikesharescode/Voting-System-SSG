@@ -1,5 +1,7 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
+	import * as RadioGroup from '$lib/components/ui/radio-group/index';
+	import { Label } from '$lib/components/ui/label/index';
 	import CandidateTableCard from '$lib/route-components/admin/candidates/candidate-table-card.svelte';
 	import CreateCandidate from '$lib/route-components/admin/candidates/create-candidate.svelte';
 	import { getAdminState } from '$lib/stores';
@@ -10,17 +12,17 @@
 	const adminState = getAdminState();
 
 	const handleSelections = (classification: 'highschool' | 'elementary') => {
-		/* $adminState.candidates.activeTab = classification;
+		$adminState.candidates.activeTab = classification;
 
-		const tempArray = data.created_positions.data?.filter(
-			(position) => position.classification === $adminState.candidates.activeTab
+		const tempArray = data.created_candidates.data?.filter(
+			(candidate) => candidate.classification === classification
 		);
 
-		if (tempArray) $adminState.candidates.availablePositions = tempArray; */
+		if (tempArray) $adminState.candidates.createdCandidates = tempArray;
 	};
 
 	$: if (data.created_candidates.data) {
-		$adminState.candidates.createdCandidates = data.created_candidates.data;
+		handleSelections($adminState.candidates.activeTab);
 	}
 </script>
 
@@ -48,6 +50,24 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="mt-[10px]">
+			<!---Filters-->
+			<RadioGroup.Root bind:value={$adminState.allvoters.filterSelection} class="mt-[20px]">
+				<div class="flex items-center space-x-2">
+					<RadioGroup.Item value="voted" id="r1" />
+					<Label for="r1">All</Label>
+				</div>
+				{#each data.created_positions.data ?? [] as position}
+					<div class="flex items-center space-x-2">
+						<RadioGroup.Item value="voted" id="r1" />
+						<Label for="r1">{position.position_name}</Label>
+					</div>
+				{/each}
+				<RadioGroup.Input name="spacing" />
+			</RadioGroup.Root>
+		</div>
+
 		<CandidateTableCard />
 	</Tabs.Root>
 </div>

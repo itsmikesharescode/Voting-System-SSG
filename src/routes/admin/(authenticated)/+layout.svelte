@@ -18,7 +18,9 @@
 			createdPositions: null
 		},
 		candidates: {
-			activeTab: 'highschool'
+			activeTab: 'highschool',
+			createdCandidates: null,
+			filterSelection: null
 		}
 	};
 

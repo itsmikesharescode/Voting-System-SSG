@@ -234,7 +234,6 @@ export const actions: Actions = {
                         else return fail(200, { msg: "Candidate Successfully Created." });
                     }
 
-
                 }
             }
 
