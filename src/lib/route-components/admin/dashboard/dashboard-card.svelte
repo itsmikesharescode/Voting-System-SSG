@@ -2,7 +2,7 @@
 	import * as Card from '$lib/components/ui/card';
 
 	export let title = '';
-	export let total = '';
+	export let total: number | undefined = 0;
 	export let imageUrl = '';
 </script>
 
