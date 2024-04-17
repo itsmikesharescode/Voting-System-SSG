@@ -9,24 +9,27 @@
 
 	export let data: LayoutServerData;
 
+	const positionsArray = data.created_positions.data;
+
 	const adminState = getAdminState();
 
 	const handleSelections = (classification: 'highschool' | 'elementary') => {
 		$adminState.candidates.activeTab = classification;
-
-		const posTempArray = data.created_positions.data?.filter(
-			(position) => (position.classification = classification)
-		);
-
-		if (posTempArray) {
-			$adminState.candidates.filterSelection = posTempArray[0].position_name;
-		}
 
 		const tempArray = data.created_candidates.data?.filter(
 			(candidate) => candidate.classification === classification
 		);
 
 		if (tempArray) $adminState.candidates.createdCandidates = tempArray;
+
+		const posTempArray = positionsArray?.filter(
+			(position) => position.classification === classification
+		);
+
+		if (posTempArray) {
+			$adminState.candidates.filterSelection = posTempArray[0].position_name;
+			$adminState.candidates.positions = posTempArray.map((position) => position.position_name);
+		}
 	};
 
 	$: if (data.created_candidates.data) {
@@ -61,15 +64,15 @@
 
 		<div class="mt-[10px]">
 			<!---Filters-->
-			<RadioGroup.Root bind:value={$adminState.allvoters.filterSelection} class="mt-[20px]">
+			<RadioGroup.Root bind:value={$adminState.candidates.filterSelection} class="mt-[20px]">
 				<div class="flex items-center space-x-2">
 					<RadioGroup.Item value="voted" id="r1" />
 					<Label for="r1">All</Label>
 				</div>
-				{#each data.created_positions.data ?? [] as position}
+				{#each $adminState.candidates.positions ?? [] as position}
 					<div class="flex items-center space-x-2">
 						<RadioGroup.Item value="voted" id="r1" />
-						<Label for="r1">{position.position_name}</Label>
+						<Label for="r1">{position}</Label>
 					</div>
 				{/each}
 				<RadioGroup.Input name="spacing" />

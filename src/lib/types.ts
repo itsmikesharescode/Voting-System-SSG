@@ -29,7 +29,7 @@ export type AdminState = {
     candidates: {
         activeTab: "highschool" | "elementary",
         createdCandidates: CandidatesDB[] | null,
-        filterSelection: string | null,
+        filterSelection: string | undefined,
         positions: string[] | null
     }
 }

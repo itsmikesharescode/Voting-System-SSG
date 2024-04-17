@@ -13,14 +13,13 @@
 		$adminState.positions.activeTab = classification;
 
 		const tempArray = data.created_positions.data?.filter(
-			(position) => position.classification === $adminState.positions.activeTab
+			(position) => position.classification === classification
 		);
 
 		if (tempArray) $adminState.positions.createdPositions = tempArray;
 	};
 
 	$: if (data.created_positions.data) {
-		$adminState.positions.createdPositions = data.created_positions.data;
 		handleSelections($adminState.positions.activeTab);
 	}
 </script>
