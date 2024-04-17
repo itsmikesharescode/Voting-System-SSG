@@ -74,4 +74,6 @@ export type CandidatesDB = {
     position_id: number
     classification: "elementary" | "highschool"
     storage_id: string
+    vote_count: number
+    maximum_vote: number
 }

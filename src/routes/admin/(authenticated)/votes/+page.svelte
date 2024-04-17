@@ -2,6 +2,11 @@
 	import VotesTableCard from '$lib/route-components/admin/votes/votes-table-card.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import VotesPrint from '$lib/route-components/admin/votes/votes-print.svelte';
+	import type { LayoutServerData } from '../$types';
+
+	export let data: LayoutServerData;
+
+	let candidates = data.created_candidates.data;
 
 	const mockData = [
 		{
@@ -19,6 +24,8 @@
 			total_votes: '20'
 		}
 	];
+
+	const runningCandidates = data.created_candidates.data?.map((candidate) => ({}));
 </script>
 
 <div class="mt-[30px] p-[22px]">
@@ -35,15 +42,13 @@
 				<VotesPrint />
 			</div>
 		</div>
-		<Tabs.Content value="highschool" class="mt-[30px] ">
-			<div class="grid grid-cols-1 gap-[20px] lg:grid-cols-2">
-				{#each Array(10) as sample}
-					<div class="">
-						<VotesTableCard position_name="President" candidateArray={mockData} />
-					</div>
-				{/each}
-			</div>
-		</Tabs.Content>
-		<Tabs.Content value="elementary" class="mt-[30px]">Elementary Votes</Tabs.Content>
+
+		<div class="mt-[20px] grid gap-[20px] lg:grid-cols-2">
+			{#each candidates ?? [] as candidateObj}
+				<div class="">
+					<VotesTableCard position_name="President" candidateArray={mockData} />
+				</div>
+			{/each}
+		</div>
 	</Tabs.Root>
 </div>
