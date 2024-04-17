@@ -167,7 +167,8 @@ export const actions: Actions = {
 
             const { error: updatePositonError } = await supabaseAdmin.from("created_positions_tb").update([{
                 position_name: result.positionName,
-                classification: result.classification
+                classification: result.classification,
+                maximum_votes: result.maximumVotes
             }]).eq("id", result.positionId);
 
             if (updatePositonError) return fail(401, { msg: updatePositonError.message });
