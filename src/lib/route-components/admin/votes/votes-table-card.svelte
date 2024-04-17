@@ -2,13 +2,8 @@
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 
-	type CandidateObj = {
-		candidate_name: string;
-		total_votes: string;
-	};
-
 	export let position_name: string;
-	export let candidateArray: CandidateObj[];
+	export let candidateArray: { candidateName: string; voteCount: number; candidatePhoto: string }[];
 </script>
 
 {#if candidateArray}
@@ -31,19 +26,26 @@
 		<div
 			class="  flex max-h-[400px] flex-col gap-[10px] overflow-auto scroll-smooth text-mainred md:gap-[5px]"
 		>
-			{#each Array(10) ?? [] as positionObj}
+			{#each candidateArray ?? [] as candidateObj}
 				<div
 					in:fade
 					class="grid items-center gap-[20px] border-b-[1px] bg-subwhite p-[10px] md:grid md:grid-cols-[1fr,190px]"
 				>
 					<div class="grid overflow-auto">
 						<p class="md:hidden">Candidate Name:</p>
-						<p>Peter Cayatano</p>
+						<div class="flex items-center gap-[10px]">
+							<img
+								src={candidateObj.candidatePhoto}
+								alt="pootConnection"
+								class="w-[30px] rounded-full"
+							/>
+							<p>{candidateObj.candidateName}</p>
+						</div>
 					</div>
 
 					<div class="grid overflow-auto md:items-center md:justify-center">
 						<p class="md:hidden">Total Votes:</p>
-						<p>2</p>
+						<p>{candidateObj.voteCount}</p>
 					</div>
 				</div>
 			{/each}
