@@ -146,6 +146,7 @@ export const actions: Actions = {
             const { error: createPositionError } = await supabaseAdmin.rpc("create_position", {
                 classification_param: result.classification,
                 position_name_param: result.positionName,
+                maximum_votes_param: Math.abs(Number(result.maximumVotes))
             });
 
             if (createPositionError) return fail(401, { msg: createPositionError.message });
