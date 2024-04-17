@@ -6,35 +6,46 @@
 	import CreateCandidate from '$lib/route-components/admin/candidates/create-candidate.svelte';
 	import { getAdminState } from '$lib/stores';
 	import type { LayoutServerData } from '../$types';
+	import { onDestroy } from 'svelte';
+
+	const adminState = getAdminState();
 
 	export let data: LayoutServerData;
 
 	const positionsArray = data.created_positions.data;
 
-	const adminState = getAdminState();
+	$: if (data.created_candidates.data) {
+		handleSelections($adminState.candidates.activeTab);
+	}
 
 	const handleSelections = (classification: 'highschool' | 'elementary') => {
 		$adminState.candidates.activeTab = classification;
-
-		const tempArray = data.created_candidates.data?.filter(
-			(candidate) => candidate.classification === classification
-		);
-
-		if (tempArray) $adminState.candidates.createdCandidates = tempArray;
 
 		const posTempArray = positionsArray?.filter(
 			(position) => position.classification === classification
 		);
 
 		if (posTempArray) {
-			$adminState.candidates.filterSelection = posTempArray[0].position_name;
 			$adminState.candidates.positions = posTempArray.map((position) => position.position_name);
+			$adminState.candidates.positions.push('All');
+		}
+
+		if ($adminState.candidates.filterSelection !== 'All') {
+			const tempArray = data.created_candidates.data?.filter(
+				(candidate) =>
+					candidate.classification === classification &&
+					candidate.candidate_position === $adminState.candidates.filterSelection
+			);
+
+			if (tempArray) $adminState.candidates.createdCandidates = tempArray;
+		} else {
+			const tempArray = data.created_candidates.data?.filter(
+				(candidate) => candidate.classification === classification
+			);
+
+			if (tempArray) $adminState.candidates.createdCandidates = tempArray;
 		}
 	};
-
-	$: if (data.created_candidates.data) {
-		handleSelections($adminState.candidates.activeTab);
-	}
 </script>
 
 <div class="mt-[30px] p-[22px]">
@@ -65,17 +76,16 @@
 		<div class="mt-[10px]">
 			<!---Filters-->
 			<RadioGroup.Root bind:value={$adminState.candidates.filterSelection} class="mt-[20px]">
-				<div class="flex items-center space-x-2">
-					<RadioGroup.Item value="voted" id="r1" />
-					<Label for="r1">All</Label>
-				</div>
 				{#each $adminState.candidates.positions ?? [] as position}
-					<div class="flex items-center space-x-2">
-						<RadioGroup.Item value="voted" id="r1" />
-						<Label for="r1">{position}</Label>
-					</div>
+					{#key position}
+						<div class="flex items-center space-x-2">
+							<RadioGroup.Item value={position} id={position} />
+							<Label for={position}>{position}</Label>
+						</div>
+					{/key}
 				{/each}
-				<RadioGroup.Input name="spacing" />
+
+				<RadioGroup.Input />
 			</RadioGroup.Root>
 		</div>
 

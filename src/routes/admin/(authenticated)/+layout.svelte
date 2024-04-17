@@ -20,7 +20,7 @@
 		candidates: {
 			activeTab: 'highschool',
 			createdCandidates: null,
-			filterSelection: undefined,
+			filterSelection: 'All',
 			positions: null
 		}
 	};

@@ -10,10 +10,14 @@
 
 <div class="mt-[10px] text-[14px] font-semibold text-white xs:text-[16px] md:text-[18px]">
 	<div
-		class="hidden w-full gap-[20px] overflow-auto bg-mainred p-[10px] lg:grid lg:grid-cols-[1fr,300px,300px]"
+		class="hidden w-full gap-[20px] overflow-auto bg-mainred p-[10px] lg:grid lg:grid-cols-[1fr,300px,300px,300px]"
 	>
 		<div class="grid overflow-auto">
 			<p class="">Candidate Full Name</p>
+		</div>
+
+		<div class="grid overflow-auto">
+			<p class="">Position</p>
 		</div>
 
 		<div class="grid overflow-auto">
@@ -30,10 +34,14 @@
 			<div
 				animate:flip={{ duration: 350 }}
 				in:fade
-				class="grid items-center gap-[20px] border-b-[1px] bg-subwhite p-[10px] lg:grid lg:grid-cols-[1fr,300px,300px]"
+				class="grid items-center gap-[20px] border-b-[1px] bg-subwhite p-[10px] lg:grid lg:grid-cols-[1fr,300px,300px,300px]"
 			>
 				<div class="grid overflow-auto">
 					<p>{candidateObj.candidate_fullname}</p>
+				</div>
+
+				<div class="grid overflow-auto">
+					<p>{candidateObj.candidate_position}</p>
 				</div>
 
 				<div class="grid overflow-auto">
