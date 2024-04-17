@@ -130,6 +130,7 @@
 										class="h-[150px] w-[150px] rounded-[10px]"
 									/>
 									<input
+										disabled={createCandidateLoader}
 										name="candidatePhoto"
 										type="file"
 										class="hidden"
