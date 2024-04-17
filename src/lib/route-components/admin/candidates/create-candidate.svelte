@@ -22,7 +22,7 @@
 	];
 	let availablePositions: PositionsDB[] | undefined = undefined;
 
-	let selected: Selected<{ value: string; label: string }>;
+	let selected: Selected<{ value: string; label: string }> | undefined = undefined;
 	const handleSelections = (classification: string) => {
 		availablePositions = positionList?.filter(
 			(position) => position.classification === classification
@@ -226,10 +226,12 @@
 				</AlertDialog.Header>
 				<AlertDialog.Footer class="mt-[20px]">
 					<AlertDialog.Cancel
+						disabled={createCandidateLoader}
 						on:click={() => {
 							formActionErrors = null;
 							files = undefined;
 							previewURL = undefined;
+							selected = undefined;
 						}}>Cancel</AlertDialog.Cancel
 					>
 					<Button
@@ -380,8 +382,14 @@
 							{/if}
 						</Button>
 						<Drawer.Close
+							disabled={createCandidateLoader}
 							class="h-10 rounded-sm bg-subwhite px-4 py-2 text-[14px] font-semibold "
-							on:click={() => (formActionErrors = null)}
+							on:click={() => {
+								formActionErrors = null;
+								files = undefined;
+								previewURL = undefined;
+								selected = undefined;
+							}}
 							>Cancel
 						</Drawer.Close>
 					</Drawer.Footer>
