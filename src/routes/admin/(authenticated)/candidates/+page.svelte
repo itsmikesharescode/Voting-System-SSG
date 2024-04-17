@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
+	import CandidateTableCard from '$lib/route-components/admin/candidates/candidate-table-card.svelte';
 	import CreateCandidate from '$lib/route-components/admin/candidates/create-candidate.svelte';
 	import { getAdminState } from '$lib/stores';
 	import type { LayoutServerData } from '../$types';
@@ -17,6 +18,10 @@
 
 		if (tempArray) $adminState.candidates.availablePositions = tempArray; */
 	};
+
+	$: if (data.created_candidates) {
+		$adminState.candidates.createdCandidates = data.created_candidates.data;
+	}
 </script>
 
 <div class="mt-[30px] p-[22px]">
@@ -43,6 +48,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- <PositionTableCard /> -->
+		<CandidateTableCard />
 	</Tabs.Root>
 </div>
