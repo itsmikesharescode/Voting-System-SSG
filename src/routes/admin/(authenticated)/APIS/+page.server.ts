@@ -243,6 +243,19 @@ export const actions: Actions = {
 
             return fail(400, { errors: fieldErrors });
         }
+    },
+
+    updateCandidateAction: async ({ locals: { supabaseAdmin, compressImage }, request }) => {
+        const formData = Object.fromEntries(await request.formData());
+
+        try {
+
+        } catch (error) {
+            const zodError = error as ZodError;
+            const { fieldErrors } = zodError.flatten();
+
+            return fail(400, { errors: fieldErrors });
+        }
     }
 
 };

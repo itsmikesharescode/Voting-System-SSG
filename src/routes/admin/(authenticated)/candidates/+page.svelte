@@ -89,6 +89,6 @@
 			</RadioGroup.Root>
 		</div>
 
-		<CandidateTableCard />
+		<CandidateTableCard positionList={data.created_positions.data} />
 	</Tabs.Root>
 </div>

@@ -7,6 +7,9 @@
 	import CandidateDetails from './candidate-details.svelte';
 	import CandidateUpdate from './candidate-update.svelte';
 	import CandidateDelete from './candidate-delete.svelte';
+	import type { PositionsDB } from '$lib/types';
+
+	export let positionList: PositionsDB[] | null;
 
 	const adminState = getAdminState();
 </script>
@@ -54,7 +57,7 @@
 				<div class="w-full">
 					<div class="flex w-full items-center gap-[10px]">
 						<CandidateDetails {candidateObj} />
-						<CandidateUpdate />
+						<CandidateUpdate {positionList} {candidateObj} />
 						<CandidateDelete />
 					</div>
 				</div>
