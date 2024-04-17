@@ -14,6 +14,14 @@
 	const handleSelections = (classification: 'highschool' | 'elementary') => {
 		$adminState.candidates.activeTab = classification;
 
+		const posTempArray = data.created_positions.data?.filter(
+			(position) => (position.classification = classification)
+		);
+
+		if (posTempArray) {
+			$adminState.candidates.filterSelection = posTempArray[0].position_name;
+		}
+
 		const tempArray = data.created_candidates.data?.filter(
 			(candidate) => candidate.classification === classification
 		);
