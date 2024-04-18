@@ -3,7 +3,9 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import type { UserListDB } from '$lib/types';
+	import type { ResultModel, UserListDB } from '$lib/types';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { toast } from 'svelte-sonner';
 
 	export let voterClientData: UserListDB | null;
 
@@ -14,13 +16,43 @@
 
 	let updateAccountLoader = false;
 	let formActionErrors: UpdateAccountVal | null = null;
+
+	const updateAccountNews: SubmitFunction = () => {
+		updateAccountLoader = true;
+		return async ({ result, update }) => {
+			const {
+				status,
+				data: { msg, errors }
+			} = result as ResultModel<{ msg: string; errors: UpdateAccountVal }>;
+
+			switch (status) {
+				case 200:
+					toast.success('Update Account', { description: msg });
+					formActionErrors = null;
+					updateAccountLoader = false;
+					break;
+
+				case 400:
+					formActionErrors = errors;
+					updateAccountLoader = false;
+					break;
+
+				case 401:
+					toast.error('Update Account', { description: msg });
+					formActionErrors = null;
+					updateAccountLoader = false;
+					break;
+			}
+			await update();
+		};
+	};
 </script>
 
 <form
 	method="post"
-	action="?/loginAction"
+	action="?/updateAccount"
 	enctype="multipart/form-data"
-	use:enhance
+	use:enhance={updateAccountNews}
 	class="px-[55px] py-[32px] xs:px-[40px] xs:py-[88px]"
 >
 	<div
