@@ -49,6 +49,7 @@ export const actions: Actions = {
             const result = updateAccountSchema.parse(formData);
             const lrnVoterEmail = JSON.parse(result.lrnVoterEmail) as { email: string, lrn: string };
 
+
         } catch (error) {
             const zodError = error as ZodError;
             const { fieldErrors } = zodError.flatten();

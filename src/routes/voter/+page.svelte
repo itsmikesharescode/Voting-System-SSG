@@ -8,6 +8,7 @@
 	import type { ResultModel, UserListDB } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 	import UpdateAccount from '$lib/route-components/voter/update-account/update-account.svelte';
+	import { fade } from 'svelte/transition';
 
 	interface VoterLoginVal {
 		lrn: string[];
@@ -130,11 +131,14 @@
 				{/if}
 			</Button>
 
-			<a
-				href="/voter/forgot-password"
-				class="mx-auto text-[14px] font-semibold text-red-900 underline transition-all hover:text-[#2d2b29]"
-				>Forgot Password</a
-			>
+			{#if !loginLoader}
+				<a
+					in:fade
+					href="/voter/forgot-password"
+					class="mx-auto text-[14px] font-semibold text-red-900 underline transition-all hover:text-[#2d2b29]"
+					>Forgot Password</a
+				>
+			{/if}
 		</div>
 	</form>
 {/if}

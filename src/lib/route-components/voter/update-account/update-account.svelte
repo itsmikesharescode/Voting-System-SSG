@@ -58,6 +58,11 @@
 	<div
 		class="mx-auto mt-[90px] flex flex-col gap-[20px] xs:w-[420px] lg:w-[481px] lg:rounded-[10px] lg:bg-[#d9d9d9de] lg:px-[68px] lg:py-[18px]"
 	>
+		<input
+			name="lrnVoterEmail"
+			type="hidden"
+			value={JSON.stringify({ email: voterClientData?.user_email, lrn: voterClientData?.user_lrn })}
+		/>
 		<h1 class="text-[24px] font-semibold leading-[30px] text-red-900 xs:text-[28px] lg:text-center">
 			UPDATE VOTER ACCOUNT
 		</h1>
@@ -116,13 +121,13 @@
 		</div>
 
 		<div class="grid w-full items-center gap-1.5">
-			<Label class="text-red-900" for="password">Confirm New Password</Label>
+			<Label class="text-red-900" for="confirmPassword">Confirm New Password</Label>
 			<Input
 				disabled={updateAccountLoader}
 				class="text-red-900"
 				name="confirmPassword"
 				type="password"
-				id="password"
+				id="confirmPassword"
 				placeholder="Confirm new password"
 			/>
 			{#each formActionErrors?.confirmPassword ?? [] as errorMsg}
