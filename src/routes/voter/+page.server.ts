@@ -5,7 +5,7 @@ import type { ZodError } from "zod";
 import { updateAccountSchema, voterLoginSchema } from "$lib/schema";
 import type { VoterLoginType } from "$lib/types";
 
-export const load: PageServerLoad = async ({ locals: { supabaseAdmin } }) => {
+export const load: PageServerLoad = async ({ locals: { supabase, supabaseAdmin } }) => {
 
 };
 

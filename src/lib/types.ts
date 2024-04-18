@@ -84,3 +84,9 @@ export type VoterLoginType = {
     registered: boolean,
     voterData: UserListDB[]
 }
+
+export type ActivateVoting = {
+    id: number
+    created_at: string
+    voting_active: boolean
+}

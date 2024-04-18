@@ -2,10 +2,11 @@
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
+	import type { ActivateVoting } from '$lib/types';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { toast } from 'svelte-sonner';
 
-	export let isActive: { id: number; created_at: string; voting_active: boolean };
+	export let isActive: ActivateVoting;
 
 	let activateLoader = false;
 
