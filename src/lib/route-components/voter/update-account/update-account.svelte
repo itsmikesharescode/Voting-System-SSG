@@ -7,8 +7,13 @@
 
 	export let voterClientData: UserListDB | null;
 
+	interface UpdateAccountVal {
+		password: string[];
+		confirmPassword: string[];
+	}
+
 	let updateAccountLoader = false;
-	let formActionErrors = null;
+	let formActionErrors: UpdateAccountVal | null = null;
 </script>
 
 <form
@@ -36,9 +41,6 @@
 				placeholder="Enter LRN"
 				value={voterClientData?.user_lrn}
 			/>
-			<!-- {#each formActionErrors?.lrn ?? [] as errorMsg}
-				<p class="text-[14px] text-red-600">{errorMsg}</p>
-			{/each} -->
 		</div>
 
 		<div class="grid w-full items-center gap-1.5">
@@ -76,6 +78,24 @@
 				placeholder="Enter new password"
 				value={voterClientData?.user_password}
 			/>
+			{#each formActionErrors?.password ?? [] as errorMsg}
+				<p class="text-[14px] text-red-600">{errorMsg}</p>
+			{/each}
+		</div>
+
+		<div class="grid w-full items-center gap-1.5">
+			<Label class="text-red-900" for="password">Confirm New Password</Label>
+			<Input
+				disabled={updateAccountLoader}
+				class="text-red-900"
+				name="confirmPassword"
+				type="password"
+				id="password"
+				placeholder="Confirm new password"
+			/>
+			{#each formActionErrors?.confirmPassword ?? [] as errorMsg}
+				<p class="text-[14px] text-red-600">{errorMsg}</p>
+			{/each}
 		</div>
 
 		<Button

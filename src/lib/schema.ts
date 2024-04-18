@@ -104,5 +104,14 @@ export const voterLoginSchema = z.object({
 
 export const updateAccountSchema = z.object({
     lrnVoterEmail: z.string(),
-    password: z.string().min(6, { message: "Must choose a strong password." })
+    password: z.string().min(6, { message: "Must choose a strong password." }),
+    confirmPassword: z.string()
+}).superRefine(({ password, confirmPassword }, ctx) => {
+    if (confirmPassword !== password) {
+        ctx.addIssue({
+            code: "custom",
+            message: "Password and Confirm Password must match",
+            path: ["confirmPassword"]
+        });
+    }
 })
