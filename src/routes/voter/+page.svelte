@@ -5,29 +5,47 @@
 	import landingDesktopBg from '$lib/assets/landing_desktop_bg.png';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import type { ResultModel } from '$lib/types';
+	import { toast } from 'svelte-sonner';
 
 	interface VoterLoginVal {
-		email: string[];
+		lrn: string[];
 		password: string[];
 	}
 
+	let loginLoader = false;
+	let formActionErrors: VoterLoginVal | null = null;
+
 	const loginActionNews: SubmitFunction = () => {
+		loginLoader = true;
 		return async ({ result, update }) => {
-			const { status } = result;
+			const {
+				status,
+				data: { msg, errors }
+			} = result as ResultModel<{ msg: string; errors: VoterLoginVal }>;
 
 			switch (status) {
 				case 200:
+					toast.success('Voter Login', { description: msg });
+					formActionErrors = null;
+					loginLoader = false;
 					break;
+
 				case 201:
+					toast.success('Voter Login', { description: msg });
+					formActionErrors = null;
+					loginLoader = false;
 					break;
 
 				case 400:
+					formActionErrors = errors;
+					loginLoader = false;
 					break;
 
 				case 401:
-					break;
-
-				default:
+					toast.error('Vote Login', { description: msg });
+					formActionErrors = null;
+					loginLoader = false;
 					break;
 			}
 			await update();
@@ -59,17 +77,43 @@
 
 		<div class="grid w-full items-center gap-1.5">
 			<Label class="text-red-900" for="username">LRN</Label>
-			<Input class="text-red-900" type="text" id="username" placeholder="Enter LRN" />
+			<Input
+				disabled={loginLoader}
+				class="text-red-900"
+				type="text"
+				id="username"
+				placeholder="Enter LRN"
+			/>
+			{#each formActionErrors?.lrn ?? [] as errorMsg}
+				<p class="text-[14px] text-red-600">{errorMsg}</p>
+			{/each}
 		</div>
 
 		<div class="grid w-full items-center gap-1.5">
 			<Label class="text-red-900" for="password">Password</Label>
-			<Input class="text-red-900" type="password" id="password" placeholder="Enter password" />
+			<Input
+				disabled={loginLoader}
+				class="text-red-900"
+				type="password"
+				id="password"
+				placeholder="Enter password"
+			/>
+			{#each formActionErrors?.lrn ?? [] as errorMsg}
+				<p class="text-[14px] text-red-600">{errorMsg}</p>
+			{/each}
 		</div>
 
-		<Button class=" mx-auto w-[210px] rounded-[10px] bg-mainred text-[14px] font-semibold"
-			>Log in</Button
+		<Button
+			disabled={loginLoader}
+			class="{loginLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
+			mx-auto w-[210px] rounded-[10px]  text-[14px] font-semibold transition-all"
 		>
+			{#if loginLoader}
+				Logging in...
+			{:else}
+				Log in
+			{/if}
+		</Button>
 
 		<a
 			href="/voter/forgot-password"
