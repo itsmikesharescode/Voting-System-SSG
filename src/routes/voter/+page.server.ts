@@ -2,7 +2,7 @@ import { fail, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { ZodError } from "zod";
-import { voterLoginSchema } from "$lib/schema";
+import { updateAccountSchema, voterLoginSchema } from "$lib/schema";
 import type { VoterLoginType } from "$lib/types";
 
 export const load: PageServerLoad = async ({ locals: { supabaseAdmin } }) => {
@@ -46,6 +46,8 @@ export const actions: Actions = {
         const formData = Object.fromEntries(await request.formData());
 
         try {
+            const result = updateAccountSchema.parse(formData);
+            const lrnVoterEmail = JSON.parse(result.lrnVoterEmail) as { email: string, lrn: string };
 
         } catch (error) {
             const zodError = error as ZodError;

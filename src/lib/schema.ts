@@ -100,4 +100,9 @@ export const updateCandidateSchema = z.object({
 export const voterLoginSchema = z.object({
     lrn: z.string().min(8, { message: "Must enter a valid LRN." }),
     password: z.string().min(1, { message: "Must enter a password." })
+});
+
+export const updateAccountSchema = z.object({
+    lrnVoterEmail: z.string(),
+    password: z.string().min(6, { message: "Must choose a strong password." })
 })
