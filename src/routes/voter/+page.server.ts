@@ -32,7 +32,7 @@ export const actions: Actions = {
                 return fail(200, { msg: "Login Success." });
             }
 
-            return fail(201, { msg: "Not Registered.", voterData: loginCheck?.voterData });
+            return fail(201, { msg: `Hi ${loginCheck?.voterData[0].user_fullname}, good to see you! `, voterData: loginCheck?.voterData[0] });
 
         } catch (error) {
             const zodError = error as ZodError;
