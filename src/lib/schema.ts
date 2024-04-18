@@ -94,3 +94,10 @@ export const updateCandidateSchema = z.object({
     }),
     motto: z.string().min(4, { message: "Must enter a valid motto." })
 });
+
+
+//voter schemas
+export const voterLoginSchema = z.object({
+    email: z.string().email({ message: "Must be a valid email." }),
+    password: z.string().min(1, { message: "Must enter a password." })
+})
