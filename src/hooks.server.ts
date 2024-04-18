@@ -1,6 +1,7 @@
 
+
 import { createServerClient } from '@supabase/ssr'
-import { redirect, type Handle } from '@sveltejs/kit'
+import { type Handle } from '@sveltejs/kit'
 import sharp from 'sharp';
 
 const supabaseURL: string = import.meta.env.VITE_SUPABASE_URL;
@@ -8,7 +9,6 @@ const supabaseKEY: string = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabaseAdminKEY: string = import.meta.env.VITE_SUPABASE_ADMIN_KEY;
 
 export const handle: Handle = async ({ event, resolve }) => {
-
 
     event.locals.supabase = createServerClient(supabaseURL, supabaseKEY, {
         cookies: {

@@ -94,3 +94,24 @@ export const updateCandidateSchema = z.object({
     }),
     motto: z.string().min(4, { message: "Must enter a valid motto." })
 });
+
+
+//voter schemas
+export const voterLoginSchema = z.object({
+    lrn: z.string().min(8, { message: "Must enter a valid LRN." }),
+    password: z.string().min(1, { message: "Must enter a password." })
+});
+
+export const updateAccountSchema = z.object({
+    lrnVoterEmail: z.string(),
+    password: z.string().min(6, { message: "Must choose a strong password." }),
+    confirmPassword: z.string()
+}).superRefine(({ password, confirmPassword }, ctx) => {
+    if (confirmPassword !== password) {
+        ctx.addIssue({
+            code: "custom",
+            message: "Password and Confirm Password must match",
+            path: ["confirmPassword"]
+        });
+    }
+})
