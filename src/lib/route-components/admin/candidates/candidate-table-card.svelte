@@ -47,7 +47,7 @@
 					<div class="flex items-center gap-[10px]">
 						<Avatar.Root>
 							<Avatar.Image src={candidateObj.candidate_photo_link} alt="@shadcn" />
-							<Avatar.Fallback>P</Avatar.Fallback>
+							<Avatar.Fallback>{candidateObj.candidate_fullname[0].toUpperCase()}</Avatar.Fallback>
 						</Avatar.Root>
 						<p>{candidateObj.candidate_fullname}</p>
 					</div>
