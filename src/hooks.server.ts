@@ -1,5 +1,7 @@
 
+import type { ActivateVoting } from '$lib/types';
 import { createServerClient } from '@supabase/ssr'
+import type { PostgrestError } from '@supabase/supabase-js';
 import { redirect, type Handle } from '@sveltejs/kit'
 import sharp from 'sharp';
 
@@ -9,6 +11,8 @@ const supabaseAdminKEY: string = import.meta.env.VITE_SUPABASE_ADMIN_KEY;
 
 export const handle: Handle = async ({ event, resolve }) => {
 
+
+    const { url } = event;
 
     event.locals.supabase = createServerClient(supabaseURL, supabaseKEY, {
         cookies: {
@@ -85,6 +89,20 @@ export const handle: Handle = async ({ event, resolve }) => {
             data: { session },
         } = await event.locals.supabase.auth.getSession()
         return { session, user }
+    }
+
+    if (url.pathname.startsWith("/voter")) {
+        const { user } = await event.locals.safeGetSession();
+        const { data, error } = await event.locals.supabase.from("activate_vote").select("*") as { data: ActivateVoting[], error: PostgrestError | null }
+
+        if (data[0].voting_active) {
+            if (user) {
+                const { role } = user;
+
+                if (role !== "authenticated") return redirect(301, "/admin/dashboard");
+
+            }
+        } else return redirect(302, "/?Voting-Not-Active");
     }
 
     return resolve(event, {
