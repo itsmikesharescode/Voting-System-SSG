@@ -1,11 +1,23 @@
-import { fail, type Actions } from "@sveltejs/kit";
+import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { ZodError } from "zod";
 import { updateAccountSchema, voterLoginSchema } from "$lib/schema";
-import type { VoterLoginType } from "$lib/types";
+import type { ActivateVoting, VoterLoginType } from "$lib/types";
 
-export const load: PageServerLoad = async ({ locals: { supabase, supabaseAdmin } }) => {
+export const load: PageServerLoad = async ({ locals: { supabase, supabaseAdmin, safeGetSession } }) => {
+
+    const { user } = await safeGetSession();
+    const { data, error } = await supabase.from("activate_vote").select("*") as { data: ActivateVoting[], error: PostgrestError | null }
+
+    if (data[0].voting_active) {
+        if (user) {
+            const { role } = user;
+
+            if (role !== "authenticated") return redirect(301, "/admin/dashboard");
+
+        }
+    } else return redirect(302, "/?Voting-Not-Active");
 
 };
 
