@@ -7,6 +7,20 @@ import type { ZodError } from "zod";
 export const actions: Actions = {
 
     // all voter route actions
+    activeVotingAction: async ({ locals: { supabase, supabaseAdmin }, request }) => {
+
+        const formData = await request.formData();
+        const isActive = JSON.parse(formData.get("isActive") as string);
+        const id = formData.get("id") as string;
+
+        const { error: updateVotingError } = await supabaseAdmin.from("activate_vote").update([{
+            voting_active: isActive
+        }]).eq("id", Number(id));
+        console.log(updateVotingError?.message)
+        if (updateVotingError) return fail(401, { msg: updateVotingError.message });
+        else return fail(200, { msg: "Success" });
+    },
+
     createVoterAction: async ({ locals: { supabase, supabaseAdmin }, request }) => {
         const formData = Object.fromEntries(await request.formData());
         try {
