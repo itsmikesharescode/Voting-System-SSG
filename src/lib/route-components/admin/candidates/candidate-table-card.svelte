@@ -2,6 +2,7 @@
 	import { formatDate } from '$lib/helpers';
 	import { getAdminState } from '$lib/stores';
 	import { flip } from 'svelte/animate';
+	import * as Avatar from '$lib/components/ui/avatar/index';
 
 	import { fade } from 'svelte/transition';
 	import CandidateDetails from './candidate-details.svelte';
@@ -43,7 +44,13 @@
 				class="grid items-center gap-[20px] border-b-[1px] bg-subwhite p-[10px] lg:grid lg:grid-cols-[1fr,300px,300px,300px]"
 			>
 				<div class="grid overflow-auto">
-					<p>{candidateObj.candidate_fullname}</p>
+					<div class="flex items-center gap-[10px]">
+						<Avatar.Root>
+							<Avatar.Image src={candidateObj.candidate_photo_link} alt="@shadcn" />
+							<Avatar.Fallback>P</Avatar.Fallback>
+						</Avatar.Root>
+						<p>{candidateObj.candidate_fullname}</p>
+					</div>
 				</div>
 
 				<div class="grid overflow-auto">
