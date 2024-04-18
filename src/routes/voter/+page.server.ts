@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, supabaseAdmin, 
             const { role } = user;
 
             if (role !== "authenticated") return redirect(301, "/admin/dashboard");
-
+            else return redirect(301, "/voter/voting-process");
         }
     } else {
 

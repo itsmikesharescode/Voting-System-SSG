@@ -14,7 +14,7 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, safeGetSessio
 
             if (role !== "authenticated") return redirect(301, "/admin/dashboard");
 
-        }
+        } else return redirect(301, "/voter");
     } else {
 
         if (user) {
