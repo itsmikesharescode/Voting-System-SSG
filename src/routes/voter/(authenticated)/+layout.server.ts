@@ -1,7 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
-import type { ActivateVoting } from "$lib/types";
-import type { PostgrestError } from "@supabase/supabase-js";
+import type { ActivateVoting, UserListDB } from "$lib/types";
+import type { PostgrestError, PostgrestSingleResponse } from "@supabase/supabase-js";
 
 export const load: LayoutServerLoad = async ({ locals: { supabase, supabaseAdmin, safeGetSession }, cookies }) => {
 
@@ -15,7 +15,7 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, supabaseAdmin
             if (role !== "authenticated") return redirect(301, "/admin/dashboard");
 
             return {
-                userData: await supabaseAdmin.from("user_list_tb").select("*").eq("user_id", user?.id).single()
+                userData: await supabaseAdmin.from("user_list_tb").select("*").eq("user_id", user?.id).single() as PostgrestSingleResponse<UserListDB>
             }
 
         } else return redirect(301, "/voter");

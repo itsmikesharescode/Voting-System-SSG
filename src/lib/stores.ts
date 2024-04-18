@@ -1,8 +1,7 @@
 import { writable } from "svelte/store";
 import type { Writable } from "svelte/store";
 import { getContext, setContext } from "svelte";
-import type { AdminState } from "./types";
-import type { User } from "@supabase/supabase-js";
+import type { AdminState, UserListDB } from "./types";
 
 export const setAdminState = (state: AdminState) => {
     const stateGenerator = writable(state);
@@ -11,9 +10,10 @@ export const setAdminState = (state: AdminState) => {
 
 export const getAdminState = () => getContext<Writable<AdminState>>("adminState");
 
-export const setUserState = (state: User) => {
+export const setUserState = (state: UserListDB | null) => {
     const stateGenerator = writable(state);
     setContext("userState", stateGenerator);
 };
 
-export const getUserState = () => getContext<Writable<User>>("userState");
+export const getUserState = () => getContext<Writable<UserListDB | null>>("userState");
+
