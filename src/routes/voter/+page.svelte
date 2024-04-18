@@ -5,7 +5,7 @@
 	import landingDesktopBg from '$lib/assets/landing_desktop_bg.png';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { ResultModel } from '$lib/types';
+	import type { ResultModel, VoterLoginType } from '$lib/types';
 	import { toast } from 'svelte-sonner';
 
 	interface VoterLoginVal {
@@ -21,8 +21,8 @@
 		return async ({ result, update }) => {
 			const {
 				status,
-				data: { msg, errors }
-			} = result as ResultModel<{ msg: string; errors: VoterLoginVal }>;
+				data: { msg, errors, voterData }
+			} = result as ResultModel<{ msg: string; errors: VoterLoginVal; voterData: VoterLoginType }>;
 
 			switch (status) {
 				case 200:
@@ -32,6 +32,7 @@
 					break;
 
 				case 201:
+					console.log(voterData);
 					toast.success('Voter Login', { description: msg });
 					formActionErrors = null;
 					loginLoader = false;
@@ -79,6 +80,7 @@
 			<Label class="text-red-900" for="username">LRN</Label>
 			<Input
 				disabled={loginLoader}
+				name="lrn"
 				class="text-red-900"
 				type="text"
 				id="username"
@@ -94,6 +96,7 @@
 			<Input
 				disabled={loginLoader}
 				class="text-red-900"
+				name="password"
 				type="password"
 				id="password"
 				placeholder="Enter password"
@@ -104,6 +107,7 @@
 		</div>
 
 		<Button
+			type="submit"
 			disabled={loginLoader}
 			class="{loginLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
 			mx-auto w-[210px] rounded-[10px]  text-[14px] font-semibold transition-all"
