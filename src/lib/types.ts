@@ -1,4 +1,3 @@
-import { string } from "zod"
 
 export type ResultModel<T> = {
     status: number
@@ -82,7 +81,7 @@ export type CandidatesDB = {
 
 export type VoterLoginType = {
     registered: boolean,
-    voterData: UserListDB[]
+    voterData: UserListDB
 }
 
 export type ActivateVoting = {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import { Badge } from '$lib/components/ui/badge/index';
+	import * as Avatar from '$lib/components/ui/avatar/index';
 
 	export let position_name: string;
 	export let maxVote: number;
@@ -45,11 +45,11 @@
 					<div class="grid overflow-auto">
 						<p class="md:hidden">Candidate Name:</p>
 						<div class="flex items-center gap-[10px]">
-							<img
-								src={candidateObj.candidatePhoto}
-								alt="pootConnection"
-								class="w-[30px] rounded-full"
-							/>
+							<Avatar.Root>
+								<Avatar.Image src={candidateObj.candidatePhoto} alt="@shadcn" />
+								<Avatar.Fallback>{candidateObj.candidateName[0].toUpperCase()}</Avatar.Fallback>
+							</Avatar.Root>
+
 							<p>{candidateObj.candidateName}</p>
 						</div>
 					</div>
