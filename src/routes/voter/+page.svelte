@@ -9,6 +9,7 @@
 	import { toast } from 'svelte-sonner';
 	import UpdateAccount from '$lib/route-components/voter/update-account/update-account.svelte';
 	import { fade } from 'svelte/transition';
+	import { goto } from '$app/navigation';
 
 	interface VoterLoginVal {
 		lrn: string[];
@@ -36,6 +37,7 @@
 					toast.success('Voter Login', { description: msg });
 					formActionErrors = null;
 					loginLoader = false;
+					goto('/voter/voting-process');
 					break;
 
 				case 201:

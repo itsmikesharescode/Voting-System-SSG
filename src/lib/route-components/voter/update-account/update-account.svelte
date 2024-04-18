@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
@@ -30,6 +31,7 @@
 					toast.success('Update Account', { description: msg });
 					formActionErrors = null;
 					updateAccountLoader = false;
+					goto('/voter/voting-process');
 					break;
 
 				case 400:
