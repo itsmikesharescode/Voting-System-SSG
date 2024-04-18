@@ -49,6 +49,23 @@ export const actions: Actions = {
             const result = updateAccountSchema.parse(formData);
             const lrnVoterEmail = JSON.parse(result.lrnVoterEmail) as { email: string, lrn: string };
 
+            const { data: { user }, error: updateAccountError } = await supabase.auth.signUp({
+                email: lrnVoterEmail.email,
+                password: result.password
+            });
+
+            if (updateAccountError) return fail(401, { msg: updateAccountError.message });
+            else if (user) {
+                const { error: updateUserListError } = await supabaseAdmin.from("user_list_tb").update([{
+                    user_password: result.password,
+                    not_registered: false,
+                    user_id: user.id,
+                }]);
+
+                if (updateUserListError) return fail(401, { msg: updateUserListError.message });
+                else return fail(200, { msg: "Account Updated Successfully." });
+            }
+
 
         } catch (error) {
             const zodError = error as ZodError;
