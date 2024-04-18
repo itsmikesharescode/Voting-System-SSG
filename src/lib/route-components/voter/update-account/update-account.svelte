@@ -61,7 +61,11 @@
 		<input
 			name="lrnVoterEmail"
 			type="hidden"
-			value={JSON.stringify({ email: voterClientData?.user_email, lrn: voterClientData?.user_lrn })}
+			value={JSON.stringify({
+				id: voterClientData?.id,
+				email: voterClientData?.user_email,
+				lrn: voterClientData?.user_lrn
+			})}
 		/>
 		<h1 class="text-[24px] font-semibold leading-[30px] text-red-900 xs:text-[28px] lg:text-center">
 			UPDATE VOTER ACCOUNT
@@ -113,7 +117,6 @@
 				type="password"
 				id="password"
 				placeholder="Enter new password"
-				value={voterClientData?.user_password}
 			/>
 			{#each formActionErrors?.password ?? [] as errorMsg}
 				<p class="text-[14px] text-red-600">{errorMsg}</p>
