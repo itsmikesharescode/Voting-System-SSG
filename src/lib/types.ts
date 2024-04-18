@@ -79,3 +79,8 @@ export type CandidatesDB = {
     vote_count: number
     maximum_vote: number
 }
+
+export type VoterLoginType = {
+    registered: boolean,
+    voterData: UserListDB[]
+}

@@ -98,7 +98,7 @@
 				id="password"
 				placeholder="Enter password"
 			/>
-			{#each formActionErrors?.lrn ?? [] as errorMsg}
+			{#each formActionErrors?.password ?? [] as errorMsg}
 				<p class="text-[14px] text-red-600">{errorMsg}</p>
 			{/each}
 		</div>
