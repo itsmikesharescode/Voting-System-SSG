@@ -5,7 +5,7 @@ import type { ZodError } from "zod";
 import { updateAccountSchema, voterLoginSchema } from "$lib/schema";
 import type { ActivateVoting, VoterLoginType } from "$lib/types";
 
-export const load: PageServerLoad = async ({ locals: { supabase, supabaseAdmin, safeGetSession } }) => {
+export const load: PageServerLoad = async ({ locals: { supabase, supabaseAdmin, safeGetSession }, cookies }) => {
 
     const { user } = await safeGetSession();
     const { data, error } = await supabase.from("activate_vote").select("*") as { data: ActivateVoting[], error: PostgrestError | null }
@@ -17,7 +17,18 @@ export const load: PageServerLoad = async ({ locals: { supabase, supabaseAdmin, 
             if (role !== "authenticated") return redirect(301, "/admin/dashboard");
 
         }
-    } else return redirect(302, "/?Voting-Not-Active");
+    } else {
+
+        if (user) {
+            const { role } = user;
+
+            if (role === "authenticated") cookies.delete("sb-fitdzbkvazihynsvrsrg-auth-token", { path: "/" });
+            return redirect(302, "/?Voting-Not-Active");
+        }
+
+        return redirect(302, "/?Voting-Not-Active");
+    }
+
 
 };
 
