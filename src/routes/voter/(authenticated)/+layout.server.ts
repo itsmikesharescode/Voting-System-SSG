@@ -17,13 +17,6 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, safeGetSessio
         } else return redirect(301, "/voter");
     } else {
 
-        if (user) {
-            const { role } = user;
-
-            if (role === "authenticated") cookies.delete("sb-fitdzbkvazihynsvrsrg-auth-token", { path: "/" });
-            return redirect(302, "/?Voting-Not-Active");
-        }
-
         return redirect(302, "/?Voting-Not-Active");
     }
 };

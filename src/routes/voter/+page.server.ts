@@ -19,13 +19,6 @@ export const load: PageServerLoad = async ({ locals: { supabase, supabaseAdmin, 
         }
     } else {
 
-        if (user) {
-            const { role } = user;
-
-            if (role === "authenticated") cookies.delete("sb-fitdzbkvazihynsvrsrg-auth-token", { path: "/" });
-            return redirect(302, "/?Voting-Not-Active");
-        }
-
         return redirect(302, "/?Voting-Not-Active");
     }
 
@@ -46,16 +39,17 @@ export const actions: Actions = {
             }) as { data: VoterLoginType | null, error: PostgrestError | null }
 
             if (loginCheckError) return fail(401, { msg: loginCheckError.message });
+
             else if (loginCheck?.registered) {
                 const { data: { user }, error: loginError } = await supabase.auth.signInWithPassword({
-                    email: loginCheck.voterData[0].user_email,
+                    email: loginCheck.voterData.user_email,
                     password: result.password
                 });
 
                 return fail(200, { msg: "Login Success." });
             }
 
-            return fail(201, { msg: `Hi ${loginCheck?.voterData[0].user_fullname}, good to see you! `, voterData: loginCheck?.voterData[0] });
+            return fail(201, { msg: `Hi ${loginCheck?.voterData.user_fullname}, good to see you! `, voterData: loginCheck?.voterData });
 
         } catch (error) {
             const zodError = error as ZodError;

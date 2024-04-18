@@ -82,7 +82,7 @@ export type CandidatesDB = {
 
 export type VoterLoginType = {
     registered: boolean,
-    voterData: UserListDB[]
+    voterData: UserListDB
 }
 
 export type ActivateVoting = {
