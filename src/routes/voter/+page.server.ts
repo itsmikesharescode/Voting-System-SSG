@@ -17,8 +17,8 @@ export const actions: Actions = {
             const result = voterLoginSchema.parse(formData);
 
             const { data: checkRecord, error: checkRecordError } = await supabaseAdmin.rpc("login_checker", {
-                email_param: "andrewbayudan@gmail.com",
-                password_param: "default password",
+                email_param: result.email,
+                password_param: result.password,
             }) as { data: boolean, error: PostgrestError | null };
 
             if (checkRecordError) return fail(401, { msg: checkRecordError.message });
@@ -26,8 +26,8 @@ export const actions: Actions = {
             else if (checkRecord) return fail(201, { msg: "Not Registered." });
 
             const { data: { user }, error: loginError } = await supabase.auth.signInWithPassword({
-                email: "",
-                password: "",
+                email: result.email,
+                password: result.password,
             });
 
             if (loginError) return fail(401, { msg: loginError.message });
