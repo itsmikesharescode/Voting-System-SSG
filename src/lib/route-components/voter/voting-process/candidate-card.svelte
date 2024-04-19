@@ -2,26 +2,11 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { createEventDispatcher } from 'svelte';
+	import type { DataModel, VotesCandidate } from '$lib/types';
+	import CandidatePlaltform from './candidate-plaltform.svelte';
 	const dispatch = createEventDispatcher();
-	type Candidates = {
-		id: number;
-		candidateName: string;
-		candidateMotto: string;
-		candidatePhoto: string;
-	};
-
-	interface VotesCandidate {
-		runningPosition: string;
-		maxVote: number;
-		candidates: Candidates[];
-	}
 
 	export let candidateObj: VotesCandidate;
-
-	interface DataModel {
-		position: string;
-		candidate: Candidates;
-	}
 
 	export let selected: DataModel[] = [];
 
@@ -51,33 +36,35 @@
 	{/if}
 
 	<div class="mt-[20px] max-h-[400px] overflow-auto">
-		{#each candidateObj.candidates as candidate, index}
-			<div class="flex items-center gap-[20px] p-[20px]">
-				<div class="flex items-center space-x-2">
-					<label class="container">
-						<input
-							name="mike"
-							type="checkbox"
-							bind:group={selected}
-							value={{ position: candidateObj.runningPosition, candidate }}
-							disabled={selected.length >= candidateObj.maxVote &&
-								!selected.includes({ position: candidateObj.runningPosition, candidate })}
-						/>
-						<span class="checkmark"></span>
-					</label>
+		<div class="flex flex-wrap">
+			{#each candidateObj.candidates as candidate}
+				<div class="flex items-center gap-[20px] p-[20px]">
+					<div class="flex items-center space-x-2">
+						<label title={`Vote for ${candidate.candidateName}?`} class="container">
+							<input
+								type="checkbox"
+								bind:group={selected}
+								value={{ position: candidateObj.runningPosition, candidate }}
+								disabled={selected.length >= candidateObj.maxVote &&
+									!selected.includes({ position: candidateObj.runningPosition, candidate })}
+							/>
+							<span class="checkmark"></span>
+						</label>
+					</div>
+					<Avatar.Root class="h-[100px] w-[100px]">
+						<Avatar.Image src={candidate.candidatePhoto} alt="@shadcn" />
+						<Avatar.Fallback>{candidate.candidateName[0].toUpperCase()}</Avatar.Fallback>
+					</Avatar.Root>
 
-					<Button class="bg-mainred active:bg-clicked">PLATFORM</Button>
+					<div class="">
+						<p class="text-[14px] font-semibold text-mainred xs:text-[16px] sm:text-[18px]">
+							{candidate.candidateName}
+						</p>
+						<CandidatePlaltform {candidate} />
+					</div>
 				</div>
-				<Avatar.Root class="h-[100px] w-[100px]">
-					<Avatar.Image src={candidate.candidatePhoto} alt="@shadcn" />
-					<Avatar.Fallback>{candidate.candidateName[0].toUpperCase()}</Avatar.Fallback>
-				</Avatar.Root>
-
-				<p class="text-[14px] font-semibold text-mainred xs:text-[16px] sm:text-[18px]">
-					{candidate.candidateName}
-				</p>
-			</div>
-		{/each}
+			{/each}
+		</div>
 	</div>
 </div>
 

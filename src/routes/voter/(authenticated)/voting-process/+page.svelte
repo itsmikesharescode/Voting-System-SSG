@@ -77,7 +77,7 @@
 		{$userState?.classification.toUpperCase()} ELECTION
 	</p>
 
-	<div class="mx-auto mt-[20px] flex flex-col gap-[20px] p-[22px] md:max-w-[800px]">
+	<div class="mx-auto mt-[20px] flex flex-col gap-[20px] p-[22px]">
 		{#each candidates ?? [] as candidateObj}
 			<CandidateCard {candidateObj} on:votedCandidate={votedData} />
 		{/each}
