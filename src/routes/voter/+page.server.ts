@@ -68,7 +68,12 @@ export const actions: Actions = {
 
             const { data: { user }, error: updateAccountError } = await supabase.auth.signUp({
                 email: lrnVoterEmail.email,
-                password: result.password
+                password: result.password,
+                options: {
+                    data: {
+
+                    }
+                }
             });
 
             if (updateAccountError) return fail(401, { msg: updateAccountError.message });
