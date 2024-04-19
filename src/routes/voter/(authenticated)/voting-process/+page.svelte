@@ -1,7 +1,10 @@
 <script lang="ts">
 	import CandidateCard from '$lib/route-components/voter/voting-process/candidate-card.svelte';
 	import { getUserState } from '$lib/stores';
+	import { onMount } from 'svelte';
 	import type { LayoutServerData } from '../$types';
+	import { enhance } from '$app/forms';
+	import { voterLoginSchema } from '$lib/schema';
 
 	export let data: LayoutServerData;
 
@@ -11,6 +14,7 @@
 		runningPosition: string;
 		maxVote: number;
 		candidates: {
+			id: number;
 			candidateName: string;
 			candidateMotto: string;
 			candidatePhoto: string;
@@ -42,6 +46,7 @@
 
 						// Add candidate data to positionObj
 						positionObj.candidates.push({
+							id: candidate.id,
 							candidateName: candidate.candidate_fullname,
 							candidatePhoto: candidate.candidate_photo_link,
 							candidateMotto: candidate.candidate_motto
@@ -53,7 +58,12 @@
 				[] as {
 					runningPosition: string;
 					maxVote: number;
-					candidates: { candidateName: string; candidateMotto: string; candidatePhoto: string }[];
+					candidates: {
+						id: number;
+						candidateName: string;
+						candidateMotto: string;
+						candidatePhoto: string;
+					}[];
 				}[]
 			);
 
@@ -61,9 +71,28 @@
 		};
 
 		candidates = customCandidateArray();
-
-		console.log(candidates);
 	}
+
+	type Candidates = {
+		id: number;
+		candidateName: string;
+		candidateMotto: string;
+		candidatePhoto: string;
+	};
+
+	interface DataModel {
+		position: string;
+		candidate: Candidates;
+	}
+
+	let votedCandidates = new Set();
+	const votedData = (e: CustomEvent<DataModel>) => {
+		if (votedCandidates.has(JSON.stringify(e.detail)))
+			votedCandidates.delete(JSON.stringify(e.detail));
+		else votedCandidates.add(JSON.stringify(e.detail));
+
+		console.log(votedCandidates);
+	};
 </script>
 
 <div class="">
@@ -75,7 +104,7 @@
 
 	<div class="mx-auto mt-[20px] flex flex-col gap-[20px] p-[22px] md:max-w-[800px]">
 		{#each candidates ?? [] as candidateObj}
-			<CandidateCard {candidateObj} />
+			<CandidateCard {candidateObj} on:votedCandidate={votedData} />
 		{/each}
 	</div>
 </div>
