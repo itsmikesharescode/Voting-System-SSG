@@ -64,14 +64,14 @@ export const actions: Actions = {
 
         try {
             const result = updateAccountSchema.parse(formData);
-            const lrnVoterEmail = JSON.parse(result.lrnVoterEmail) as { id: number, email: string, lrn: string };
+            const lrnVoterEmail = JSON.parse(result.lrnVoterEmail) as { id: number, email: string, lrn: string, classification: string };
 
             const { data: { user }, error: updateAccountError } = await supabase.auth.signUp({
                 email: lrnVoterEmail.email,
                 password: result.password,
                 options: {
                     data: {
-
+                        classification: lrnVoterEmail.classification
                     }
                 }
             });
