@@ -66,7 +66,8 @@
 			value={JSON.stringify({
 				id: voterClientData?.id,
 				email: voterClientData?.user_email,
-				lrn: voterClientData?.user_lrn
+				lrn: voterClientData?.user_lrn,
+				classification: voterClientData?.classification
 			})}
 		/>
 		<h1 class="text-[24px] font-semibold leading-[30px] text-red-900 xs:text-[28px] lg:text-center">

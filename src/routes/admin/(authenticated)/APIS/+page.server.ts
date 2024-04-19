@@ -29,7 +29,10 @@ export const actions: Actions = {
             const { data: { user }, error: createVoterError } = await supabaseAdmin.auth.admin.createUser({
                 email: result.email,
                 password: result.password,
-                email_confirm: true
+                email_confirm: true,
+                user_metadata: {
+                    classification: result.classification
+                }
             });
 
             if (createVoterError) return fail(401, { msg: createVoterError.message });
@@ -114,7 +117,10 @@ export const actions: Actions = {
             else {
                 const { data: { user }, error: updateAuthError } = await supabaseAdmin.auth.admin.updateUserById(result.userId, {
                     email: result.email,
-                    password: result.password
+                    password: result.password,
+                    user_metadata: {
+                        classification: result.classification
+                    }
                 });
 
                 if (updateAuthError) return fail(401, { msg: updateAuthError.message });

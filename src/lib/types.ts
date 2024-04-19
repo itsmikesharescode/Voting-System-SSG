@@ -89,3 +89,28 @@ export type ActivateVoting = {
     created_at: string
     voting_active: boolean
 }
+
+
+//voter types
+export type Candidates = {
+    id: number;
+    candidateName: string;
+    candidateMotto: string;
+    candidatePhoto: string;
+};
+
+export interface DataModel {
+    position: string;
+    candidate: Candidates;
+}
+
+export interface VotesCandidate {
+    runningPosition: string;
+    maxVote: number;
+    candidates: {
+        id: number;
+        candidateName: string;
+        candidateMotto: string;
+        candidatePhoto: string;
+    }[];
+}
