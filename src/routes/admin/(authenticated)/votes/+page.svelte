@@ -4,7 +4,6 @@
 	import VotesPrint from '$lib/route-components/admin/votes/votes-print.svelte';
 	import type { LayoutServerData } from '../$types';
 	import { getAdminState } from '$lib/stores';
-	import type { CandidatesDB } from '$lib/types';
 
 	const adminState = getAdminState();
 

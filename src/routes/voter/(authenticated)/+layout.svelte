@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LayoutServerData } from './$types';
-	import { setUserState } from '$lib/stores';
+	import { getUserState, setUserState } from '$lib/stores';
 	import NavVoterHeader from '$lib/route-components/general/nav-voter-header.svelte';
 
 	export let data: LayoutServerData;
