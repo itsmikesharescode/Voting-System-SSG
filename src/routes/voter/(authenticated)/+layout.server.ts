@@ -16,6 +16,7 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, supabaseAdmin
 
             return {
                 userData: await supabaseAdmin.from("user_list_tb").select("*").eq("user_id", user?.id).single() as PostgrestSingleResponse<UserListDB>
+
             }
 
         } else return redirect(301, "/voter");
