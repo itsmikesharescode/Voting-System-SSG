@@ -12,7 +12,9 @@
 		{$userState?.classification.toUpperCase()} ELECTION
 	</p>
 
-	<div class="mx-auto mt-[20px] p-[22px] md:max-w-[800px]">
-		<CandidateCard />
+	<div class="mx-auto mt-[20px] flex flex-col gap-[20px] p-[22px] md:max-w-[800px]">
+		{#each Array(10) as sample}
+			<CandidateCard />
+		{/each}
 	</div>
 </div>
