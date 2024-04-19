@@ -117,7 +117,10 @@ export const actions: Actions = {
             else {
                 const { data: { user }, error: updateAuthError } = await supabaseAdmin.auth.admin.updateUserById(result.userId, {
                     email: result.email,
-                    password: result.password
+                    password: result.password,
+                    user_metadata: {
+                        classification: result.classification
+                    }
                 });
 
                 if (updateAuthError) return fail(401, { msg: updateAuthError.message });
