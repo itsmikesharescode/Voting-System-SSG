@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import Button from '$lib/components/ui/button/button.svelte';
 	import CandidateCard from '$lib/route-components/voter/voting-process/candidate-card.svelte';
 	import { getUserState } from '$lib/stores';
 	import type { DataModel, VotesCandidate } from '$lib/types';
@@ -61,12 +63,21 @@
 	}
 
 	//converted to strings then parse at server
-	let votedCandidates = new Set();
+	let votedCandidates = new Set<string>();
 
 	const votedData = (e: CustomEvent<DataModel>) => {
 		if (votedCandidates.has(JSON.stringify(e.detail)))
 			votedCandidates.delete(JSON.stringify(e.detail));
 		else votedCandidates.add(JSON.stringify(e.detail));
+		testFactory();
+	};
+
+	//will continue alter sleepy!
+	const testFactory = () => {
+		const tempArray: any[] = [];
+		votedCandidates.forEach((v) => {
+			tempArray.push(JSON.parse(v));
+		});
 	};
 </script>
 
@@ -82,4 +93,16 @@
 			<CandidateCard {candidateObj} on:votedCandidate={votedData} />
 		{/each}
 	</div>
+
+	<form
+		method="post"
+		action="?/submitVotes"
+		enctype="multipart/form-data"
+		use:enhance
+		class="fixed bottom-0 right-0 m-[40px]"
+	>
+		<input name="setsOfvotes" type="hidden" value={votedCandidates} />
+
+		<Button type="submit">Submit Votes</Button>
+	</form>
 </div>

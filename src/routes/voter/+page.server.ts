@@ -102,10 +102,4 @@ export const actions: Actions = {
         else return fail(200, { msg: "Thank you for use our system! come back again." });
     },
 
-    test: async ({ request }) => {
-
-        const formData = await request.formData();
-        const sample = formData.get("mike") as string;
-        console.log('here', sample);
-    }
 };
