@@ -1,25 +1,12 @@
 <script lang="ts">
 	import CandidateCard from '$lib/route-components/voter/voting-process/candidate-card.svelte';
 	import { getUserState } from '$lib/stores';
-	import { onMount } from 'svelte';
+	import type { DataModel, VotesCandidate } from '$lib/types';
 	import type { LayoutServerData } from '../$types';
-	import { enhance } from '$app/forms';
-	import { voterLoginSchema } from '$lib/schema';
 
 	export let data: LayoutServerData;
 
 	const userState = getUserState();
-
-	interface VotesCandidate {
-		runningPosition: string;
-		maxVote: number;
-		candidates: {
-			id: number;
-			candidateName: string;
-			candidateMotto: string;
-			candidatePhoto: string;
-		}[];
-	}
 
 	let candidates: VotesCandidate[] | undefined = undefined;
 
@@ -73,25 +60,13 @@
 		candidates = customCandidateArray();
 	}
 
-	type Candidates = {
-		id: number;
-		candidateName: string;
-		candidateMotto: string;
-		candidatePhoto: string;
-	};
-
-	interface DataModel {
-		position: string;
-		candidate: Candidates;
-	}
-
+	//converted to strings then parse at server
 	let votedCandidates = new Set();
+
 	const votedData = (e: CustomEvent<DataModel>) => {
 		if (votedCandidates.has(JSON.stringify(e.detail)))
 			votedCandidates.delete(JSON.stringify(e.detail));
 		else votedCandidates.add(JSON.stringify(e.detail));
-
-		console.log(votedCandidates);
 	};
 </script>
 
