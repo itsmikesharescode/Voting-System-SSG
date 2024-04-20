@@ -114,4 +114,22 @@ export const updateAccountSchema = z.object({
             path: ["confirmPassword"]
         });
     }
-})
+});
+
+export const resetPasswordSchema = z.object({
+    email: z.string().email({ message: "Must enter a valid email." }),
+});
+
+export const updatePasswordSchema = z.object({
+    password: z.string().min(6, { message: "Must choose a strong password." }),
+    confirmPassword: z.string(),
+}).superRefine(({ password, confirmPassword }, ctx) => {
+
+    if (password !== confirmPassword) {
+        ctx.addIssue({
+            code: "custom",
+            message: "Password and Confirm Password must match",
+            path: ["confirmPassword"]
+        });
+    }
+});

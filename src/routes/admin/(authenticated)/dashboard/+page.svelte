@@ -6,6 +6,8 @@
 	import type { LayoutServerData } from '../$types';
 
 	export let data: LayoutServerData;
+
+	const totalVoted = data.user_list.data?.filter((voter) => voter.not_voted === false);
 </script>
 
 <div class="  mt-[30px] grid gap-[20px] px-[15px] lg:grid-cols-2">
@@ -18,7 +20,7 @@
 	</div>
 
 	<div class="">
-		<DashboardCard title="Total Voted" total={0} imageUrl={totalUsersIcon} />
+		<DashboardCard title="Total Voted" total={totalVoted?.length} imageUrl={totalUsersIcon} />
 	</div>
 
 	<div class="">

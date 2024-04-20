@@ -12,6 +12,8 @@
 
 	export let data: LayoutServerData;
 
+	console.log(data.candidates.data);
+
 	const userState = getUserState();
 
 	$: data.userData.data ? ($userState = data.userData.data) : '';
@@ -121,12 +123,18 @@
 {#if $userState?.not_voted}
 	<div class="">
 		<div class="mx-auto mt-[20px] flex flex-col gap-[20px] p-[22px]">
-			{#each candidates ?? [] as candidateObj}
-				<CandidateCard {candidateObj} on:votedCandidate={votedData} />
-			{/each}
+			{#if candidates?.length}
+				{#each candidates ?? [] as candidateObj}
+					<CandidateCard {candidateObj} on:votedCandidate={votedData} />
+				{/each}
+			{:else}
+				<p class="text-center text-[16px] font-semibold text-mainred">
+					There is no available candidates for elementary.
+				</p>
+			{/if}
 		</div>
 
-		{#if candidates}
+		{#if candidates?.length}
 			{#if votedArrays.length >= candidates.length}
 				<form
 					method="post"
