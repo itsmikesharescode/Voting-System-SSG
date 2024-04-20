@@ -117,6 +117,6 @@ export const actions: Actions = {
             const { fieldErrors } = zodError.flatten();
             return fail(400, { errors: fieldErrors });
         }
-    }
+    },
 
 };
