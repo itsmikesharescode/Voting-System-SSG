@@ -3,6 +3,13 @@
 	import { Toaster } from 'svelte-sonner';
 	import { navigating } from '$app/stores';
 	import { Circle3 } from 'svelte-loading-spinners';
+	import { supabaseStore } from '$lib/stores';
+
+	import type { LayoutData } from './$types';
+
+	export let data: LayoutData;
+
+	supabaseStore.set(data.supabase);
 </script>
 
 <Toaster richColors />

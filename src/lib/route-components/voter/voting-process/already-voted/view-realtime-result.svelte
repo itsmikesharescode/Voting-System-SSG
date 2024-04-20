@@ -1,15 +1,14 @@
 <script lang="ts">
+	import { Button } from '$lib/components/ui/button';
 	import VotesTableCard from '$lib/route-components/admin/votes/votes-table-card.svelte';
-	import * as Tabs from '$lib/components/ui/tabs';
-	import VotesPrint from '$lib/route-components/admin/votes/votes-print.svelte';
-	import type { LayoutServerData } from '../$types';
-	import { getAdminState, supabaseStore } from '$lib/stores';
-	import type { CandidatesDB, RealTimeVotesType } from '$lib/types';
+	import { getUserState, supabaseStore } from '$lib/stores';
+	import type { CandidatesDB, RealTimeVotesType, VotesCandidate } from '$lib/types';
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 
-	const adminState = getAdminState();
+	const userState = getUserState();
 
-	let candidates: RealTimeVotesType[] | undefined = undefined;
+	export let showRealTimeResult = false;
 
 	//data structure for realtime vote count
 	const customCandidateArray = (tempArray: CandidatesDB[] | undefined) => {
@@ -52,7 +51,7 @@
 		return newArray;
 	};
 
-	$: $adminState.votes.activeTab ? getLatestVotes() : getLatestVotes();
+	let candidates: RealTimeVotesType[] | undefined = undefined;
 
 	const getLatestVotes = async () => {
 		const { data, error } = await $supabaseStore
@@ -61,7 +60,7 @@
 			.order('vote_count', { ascending: false });
 
 		const tempArray = data?.filter(
-			(candidate) => candidate.classification === $adminState.votes.activeTab
+			(candidate) => candidate.classification === $userState?.classification
 		);
 
 		candidates = customCandidateArray(tempArray);
@@ -81,31 +80,23 @@
 	onMount(async () => await getLatestVotes());
 </script>
 
-<div class="mt-[30px] p-[22px]">
-	<Tabs.Root bind:value={$adminState.votes.activeTab} class="w-full">
-		<div class="flex flex-wrap justify-between gap-[10px]">
-			<div class="">
-				<Tabs.List class="">
-					<Tabs.Trigger class="w-full" value="highschool">High School</Tabs.Trigger>
-					<Tabs.Trigger class="w-full" value="elementary">Elementary</Tabs.Trigger>
-				</Tabs.List>
-			</div>
+<div class="m-[20px] md:m-[40px]" in:fade>
+	<Button on:click={() => (showRealTimeResult = false)}>Back</Button>
+	<h2
+		class="mt-[20px] text-[22px] font-semibold text-mainred xs:text-[24px] sm:text-[26px] lg:text-[28px]"
+	>
+		Viewing Realtime Results
+	</h2>
 
+	<div class="mt-[20px] grid gap-[20px] lg:grid-cols-2">
+		{#each candidates ?? [] as candidateObj}
 			<div class="">
-				<VotesPrint />
+				<VotesTableCard
+					position_name={candidateObj.runningPosition}
+					candidateArray={candidateObj.candidates}
+					maxVote={candidateObj.maxVote}
+				/>
 			</div>
-		</div>
-
-		<div class="mt-[20px] grid gap-[20px] lg:grid-cols-2">
-			{#each candidates ?? [] as candidateObj}
-				<div class="">
-					<VotesTableCard
-						position_name={candidateObj.runningPosition}
-						candidateArray={candidateObj.candidates}
-						maxVote={candidateObj.maxVote}
-					/>
-				</div>
-			{/each}
-		</div>
-	</Tabs.Root>
+		{/each}
+	</div>
 </div>
