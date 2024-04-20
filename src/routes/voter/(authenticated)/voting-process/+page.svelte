@@ -103,7 +103,9 @@
 				class="fixed bottom-0 right-0 m-[40px]"
 			>
 				<input name="setsOfvotes" type="hidden" value={JSON.stringify(votedArrays)} />
-
+				<input name="userId" type="hidden" value={$userState?.user_id} />
+				<input name="userFullname" type="hidden" value={$userState?.user_fullname} />
+				<input name="classification" type="hidden" value={$userState?.classification} />
 				<Button type="submit">Submit Votes</Button>
 			</form>
 		{/if}
