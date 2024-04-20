@@ -62,8 +62,6 @@
 	use:enhance={updatePasswordActionNews}
 	class="px-[55px] py-[32px] xs:px-[40px] xs:py-[88px]"
 >
-	<a href="/" class=" text-[14px] font-semibold text-red-900 underline">BACK TO HOME</a>
-
 	<div
 		class="mx-auto mt-[90px] flex flex-col gap-[20px] xs:w-[420px] lg:w-[481px] lg:rounded-[10px] lg:bg-[#d9d9d9de] lg:px-[68px] lg:py-[18px]"
 	>
