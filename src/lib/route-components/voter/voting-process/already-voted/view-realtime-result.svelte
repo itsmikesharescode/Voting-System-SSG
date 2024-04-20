@@ -71,13 +71,13 @@
 		.on(
 			'postgres_changes',
 			{ event: '*', schema: 'public', table: 'created_candidates_tb' },
-			(payload) => {
-				getLatestVotes();
+			async (payload) => {
+				await getLatestVotes();
 			}
 		)
 		.subscribe();
 
-	onMount(() => getLatestVotes());
+	onMount(async () => await getLatestVotes());
 </script>
 
 <div class="m-[20px] md:m-[40px]" in:fade>
