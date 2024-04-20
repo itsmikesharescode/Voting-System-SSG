@@ -6,25 +6,38 @@
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { ResultModel } from '$lib/types';
+	import { toast } from 'svelte-sonner';
+
+	interface ResetPassVal {
+		email: string[];
+	}
 
 	let resetPwsLoader = false;
-	let formActionErrors = null;
+	let formActionErrors: ResetPassVal | null = null;
 
 	const resetPasswordActionNews: SubmitFunction = () => {
 		return async ({ result, update }) => {
 			resetPwsLoader = true;
-			const { status } = result as ResultModel<{ msg: string }>;
+			const {
+				status,
+				data: { msg, errors }
+			} = result as ResultModel<{ msg: string; errors: ResetPassVal }>;
 
 			switch (status) {
 				case 200:
+					formActionErrors = null;
+					toast.success('Forgot Password', { description: msg });
 					resetPwsLoader = false;
 					break;
 
 				case 400:
+					formActionErrors = errors;
 					resetPwsLoader = false;
 					break;
 
 				case 401:
+					formActionErrors = null;
+					toast.error('Forgot Password', { description: msg });
 					resetPwsLoader = false;
 					break;
 			}
