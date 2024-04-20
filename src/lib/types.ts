@@ -124,4 +124,5 @@ export type VotedCandidatesDB = {
     position: string
     candidate_name: string
     user_fullname: string
+    candidate_photo: string
 }

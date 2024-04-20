@@ -12,7 +12,7 @@
 </script>
 
 {#if showBallot}
-	<ViewBallot bind:showBallot />
+	<ViewBallot bind:showBallot {votedCandidates} />
 {:else if showRealTimeResult}
 	<ViewRealtimeResult />
 {:else}
