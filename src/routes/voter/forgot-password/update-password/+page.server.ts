@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ locals: { supabase } }) => {
 };
 
 export const actions: Actions = {
-    updatePassword: async ({ locals: { supabase }, request }) => {
+    updatePasswordAction: async ({ locals: { supabase }, request }) => {
         const formData = Object.fromEntries(await request.formData());
 
         try {
