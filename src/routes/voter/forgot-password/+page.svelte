@@ -1,9 +1,36 @@
-<script>
+<script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import landingDesktopBg from '$lib/assets/landing_desktop_bg.png';
 	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import type { ResultModel } from '$lib/types';
+
+	let resetPwsLoader = false;
+	let formActionErrors = null;
+
+	const resetPasswordActionNews: SubmitFunction = () => {
+		return async ({ result, update }) => {
+			resetPwsLoader = true;
+			const { status } = result as ResultModel<{ msg: string }>;
+
+			switch (status) {
+				case 200:
+					resetPwsLoader = false;
+					break;
+
+				case 400:
+					resetPwsLoader = false;
+					break;
+
+				case 401:
+					resetPwsLoader = false;
+					break;
+			}
+			await update();
+		};
+	};
 </script>
 
 <img
@@ -16,7 +43,7 @@
 	method="post"
 	action="/voter?/resetPasswordAction"
 	enctype="multipart/form-data"
-	use:enhance
+	use:enhance={resetPasswordActionNews}
 	class="px-[55px] py-[32px] xs:px-[40px] xs:py-[88px]"
 >
 	<a href="/" class=" text-[14px] font-semibold text-red-900 underline">BACK TO HOME</a>
