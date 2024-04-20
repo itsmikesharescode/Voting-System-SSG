@@ -11,7 +11,7 @@
 	export let showBallot = false;
 </script>
 
-<div class="m-[20px] md:m-[40px]">
+<div class="m-[20px] md:m-[40px]" in:fade>
 	<Button on:click={() => (showBallot = false)}>Back</Button>
 
 	<h2

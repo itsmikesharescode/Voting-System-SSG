@@ -14,7 +14,7 @@
 {#if showBallot}
 	<ViewBallot bind:showBallot {votedCandidates} />
 {:else if showRealTimeResult}
-	<ViewRealtimeResult />
+	<ViewRealtimeResult bind:showRealTimeResult />
 {:else}
 	<Card.Root class="mx-auto mt-[100px] max-w-[800px]">
 		<Card.Header>
@@ -35,7 +35,7 @@
 				}}>VIEW YOUR BALLOT</Button
 			>
 			<Button
-				on:change={() => {
+				on:click={() => {
 					showBallot = false;
 					showRealTimeResult = true;
 				}}>VIEW REAL TIME RESULT</Button
