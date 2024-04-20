@@ -85,7 +85,7 @@
 				id="password"
 				placeholder="Enter your new password"
 			/>
-			{#each formActionErrors?.email ?? [] as errorMsg}
+			{#each formActionErrors?.password ?? [] as errorMsg}
 				<p class="text-[14px] text-red-600">{errorMsg}</p>
 			{/each}
 		</div>
@@ -100,7 +100,7 @@
 				id="password"
 				placeholder="Confirm your new password"
 			/>
-			{#each formActionErrors?.email ?? [] as errorMsg}
+			{#each formActionErrors?.confirmPassword ?? [] as errorMsg}
 				<p class="text-[14px] text-red-600">{errorMsg}</p>
 			{/each}
 		</div>
