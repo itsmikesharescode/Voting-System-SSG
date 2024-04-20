@@ -14,6 +14,8 @@
 
 	const userState = getUserState();
 
+	$: data.userData.data ? ($userState = data.userData.data) : '';
+
 	let candidates: VotesCandidate[] | undefined = undefined;
 
 	$: {
@@ -83,7 +85,6 @@
 	};
 
 	let submitVoteLoader = false;
-	let alreadyVote = false;
 
 	const submitVotesNews: SubmitFunction = () => {
 		submitVoteLoader = true;
@@ -95,10 +96,10 @@
 
 			switch (status) {
 				case 200:
-					alreadyVote = true;
 					invalidateAll();
 					toast.success('Submit Votes', { description: msg });
 					submitVoteLoader = false;
+
 					break;
 
 				case 401:
@@ -111,14 +112,14 @@
 	};
 </script>
 
-{#if $userState?.not_voted || !alreadyVote}
-	<div class="">
-		<p
-			class="mt-[40px] text-center text-[16px] font-semibold text-mainred xs:text-[18px] sm:text-[20px] md:text-[22px] lg:text-[28px]"
-		>
-			{$userState?.classification.toUpperCase()} ELECTION
-		</p>
+<p
+	class="mt-[40px] text-center text-[16px] font-semibold text-mainred xs:text-[18px] sm:text-[20px] md:text-[22px] lg:text-[28px]"
+>
+	{$userState?.classification.toUpperCase()} ELECTION
+</p>
 
+{#if $userState?.not_voted}
+	<div class="">
 		<div class="mx-auto mt-[20px] flex flex-col gap-[20px] p-[22px]">
 			{#each candidates ?? [] as candidateObj}
 				<CandidateCard {candidateObj} on:votedCandidate={votedData} />
