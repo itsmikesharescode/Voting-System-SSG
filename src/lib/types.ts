@@ -114,3 +114,14 @@ export interface VotesCandidate {
         candidatePhoto: string;
     }[];
 }
+
+export type VotedCandidatesDB = {
+    id: number,
+    created_at: string
+    user_id: string
+    candidate_id: string
+    classification: string
+    position: string
+    candidate_name: string
+    user_fullname: string
+}
