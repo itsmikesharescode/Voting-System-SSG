@@ -102,4 +102,8 @@ export const actions: Actions = {
         else return fail(200, { msg: "Thank you for use our system! come back again." });
     },
 
+    resetPassword: async ({ locals: { supabase } }) => {
+
+    }
+
 };

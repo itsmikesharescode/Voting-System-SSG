@@ -114,4 +114,8 @@ export const updateAccountSchema = z.object({
             path: ["confirmPassword"]
         });
     }
+});
+
+export const resetPasswordSchema = z.object({
+    email: z.string().email({ message: "Must enter a valid email." }),
 })
