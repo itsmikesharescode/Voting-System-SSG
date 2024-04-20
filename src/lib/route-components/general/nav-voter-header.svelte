@@ -35,7 +35,7 @@
 	};
 </script>
 
-<nav class="flex justify-end bg-subwhite p-[20px]">
+<nav class="sticky top-0 z-10 flex justify-end border-b-[1px] border-mainred bg-subwhite p-[20px]">
 	<div class="flex items-center gap-[20px]">
 		<p class="text-[16px] font-semibold text-mainred">{$userState?.user_lrn} (LRN)</p>
 		<form
