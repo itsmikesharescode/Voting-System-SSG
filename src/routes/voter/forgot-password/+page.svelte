@@ -16,8 +16,8 @@
 	let formActionErrors: ResetPassVal | null = null;
 
 	const resetPasswordActionNews: SubmitFunction = () => {
+		resetPwsLoader = true;
 		return async ({ result, update }) => {
-			resetPwsLoader = true;
 			const {
 				status,
 				data: { msg, errors }
@@ -71,6 +71,7 @@
 		<div class="grid w-full items-center gap-1.5">
 			<Label class="text-red-900" for="email">Email Address</Label>
 			<Input
+				disabled={resetPwsLoader}
 				name="email"
 				class="text-red-900"
 				type="email"
@@ -83,10 +84,17 @@
 		</div>
 
 		<Button
+			disabled={resetPwsLoader}
 			type="submit"
-			class=" mx-auto w-[210px] rounded-[10px] bg-red-900 text-[14px] font-semibold"
-			>Send Reset Link</Button
+			class="{resetPwsLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
+			mx-auto w-[210px] rounded-[10px] bg-red-900 text-[14px] font-semibold"
 		>
+			{#if resetPwsLoader}
+				Sending...
+			{:else}
+				Send Reset Link
+			{/if}
+		</Button>
 
 		<a
 			href="/voter"
