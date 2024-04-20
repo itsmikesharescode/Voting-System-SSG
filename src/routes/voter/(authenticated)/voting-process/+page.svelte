@@ -3,9 +3,11 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import CandidateCard from '$lib/route-components/voter/voting-process/candidate-card.svelte';
 	import { getUserState } from '$lib/stores';
-	import type { DataModel, VotesCandidate } from '$lib/types';
-	import { tick } from 'svelte';
+	import type { DataModel, ResultModel, VotesCandidate } from '$lib/types';
 	import type { LayoutServerData } from '../$types';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { toast } from 'svelte-sonner';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data: LayoutServerData;
 
@@ -78,6 +80,32 @@
 
 		votedArrays = Array.from(votedCandidates);
 	};
+
+	let submitVoteLoader = false;
+
+	const submitVotesNews: SubmitFunction = () => {
+		submitVoteLoader = true;
+		return async ({ result, update }) => {
+			const {
+				status,
+				data: { msg }
+			} = result as ResultModel<{ msg: string }>;
+
+			switch (status) {
+				case 200:
+					invalidateAll();
+					toast.success('Submit Votes', { description: msg });
+					submitVoteLoader = false;
+					break;
+
+				case 401:
+					toast.error('Submit Votes', { description: msg });
+					submitVoteLoader = false;
+					break;
+			}
+			await update();
+		};
+	};
 </script>
 
 <div class="">
@@ -99,14 +127,24 @@
 				method="post"
 				action="?/submitVotes"
 				enctype="multipart/form-data"
-				use:enhance
+				use:enhance={submitVotesNews}
 				class="fixed bottom-0 right-0 m-[40px]"
 			>
 				<input name="setsOfvotes" type="hidden" value={JSON.stringify(votedArrays)} />
 				<input name="userId" type="hidden" value={$userState?.user_id} />
 				<input name="userFullname" type="hidden" value={$userState?.user_fullname} />
 				<input name="classification" type="hidden" value={$userState?.classification} />
-				<Button type="submit">Submit Votes</Button>
+				<Button
+					type="submit"
+					disabled={submitVoteLoader}
+					class={submitVoteLoader ? 'cursor-not-allowed bg-clicked' : ''}
+				>
+					{#if submitVoteLoader}
+						Submitting...
+					{:else}
+						Submit Votes
+					{/if}
+				</Button>
 			</form>
 		{/if}
 	{/if}
