@@ -2,7 +2,7 @@ import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { ZodError } from "zod";
-import { updateAccountSchema, voterLoginSchema } from "$lib/schema";
+import { resetPasswordSchema, updateAccountSchema, voterLoginSchema } from "$lib/schema";
 import type { ActivateVoting, VoterLoginType } from "$lib/types";
 
 export const load: PageServerLoad = async ({ locals: { supabase, supabaseAdmin, safeGetSession }, cookies }) => {
@@ -102,8 +102,15 @@ export const actions: Actions = {
         else return fail(200, { msg: "Thank you for use our system! come back again." });
     },
 
-    resetPasswordAction: async ({ locals: { supabase } }) => {
-        console.log('here');
+    resetPasswordAction: async ({ locals: { supabase }, request }) => {
+        const formData = Object.fromEntries(await request.formData());
+        try {
+            const result = resetPasswordSchema.parse(formData);
+        } catch (error) {
+            const zodError = error as ZodError;
+            const { fieldErrors } = zodError.flatten();
+            return fail(400, { errors: fieldErrors });
+        }
     }
 
 };
