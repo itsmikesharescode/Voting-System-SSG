@@ -8,6 +8,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { toast } from 'svelte-sonner';
 	import { invalidateAll } from '$app/navigation';
+	import AlreadyVote from '$lib/route-components/voter/voting-process/already-vote.svelte';
 
 	export let data: LayoutServerData;
 
@@ -82,6 +83,7 @@
 	};
 
 	let submitVoteLoader = false;
+	let alreadyVote = false;
 
 	const submitVotesNews: SubmitFunction = () => {
 		submitVoteLoader = true;
@@ -93,6 +95,7 @@
 
 			switch (status) {
 				case 200:
+					alreadyVote = true;
 					invalidateAll();
 					toast.success('Submit Votes', { description: msg });
 					submitVoteLoader = false;
@@ -108,44 +111,48 @@
 	};
 </script>
 
-<div class="">
-	<p
-		class="mt-[40px] text-center text-[16px] font-semibold text-mainred xs:text-[18px] sm:text-[20px] md:text-[22px] lg:text-[28px]"
-	>
-		{$userState?.classification.toUpperCase()} ELECTION
-	</p>
+{#if $userState?.not_voted || !alreadyVote}
+	<div class="">
+		<p
+			class="mt-[40px] text-center text-[16px] font-semibold text-mainred xs:text-[18px] sm:text-[20px] md:text-[22px] lg:text-[28px]"
+		>
+			{$userState?.classification.toUpperCase()} ELECTION
+		</p>
 
-	<div class="mx-auto mt-[20px] flex flex-col gap-[20px] p-[22px]">
-		{#each candidates ?? [] as candidateObj}
-			<CandidateCard {candidateObj} on:votedCandidate={votedData} />
-		{/each}
-	</div>
+		<div class="mx-auto mt-[20px] flex flex-col gap-[20px] p-[22px]">
+			{#each candidates ?? [] as candidateObj}
+				<CandidateCard {candidateObj} on:votedCandidate={votedData} />
+			{/each}
+		</div>
 
-	{#if candidates}
-		{#if votedArrays.length >= candidates.length}
-			<form
-				method="post"
-				action="?/submitVotes"
-				enctype="multipart/form-data"
-				use:enhance={submitVotesNews}
-				class="fixed bottom-0 right-0 m-[40px]"
-			>
-				<input name="setsOfvotes" type="hidden" value={JSON.stringify(votedArrays)} />
-				<input name="userId" type="hidden" value={$userState?.user_id} />
-				<input name="userFullname" type="hidden" value={$userState?.user_fullname} />
-				<input name="classification" type="hidden" value={$userState?.classification} />
-				<Button
-					type="submit"
-					disabled={submitVoteLoader}
-					class={submitVoteLoader ? 'cursor-not-allowed bg-clicked' : ''}
+		{#if candidates}
+			{#if votedArrays.length >= candidates.length}
+				<form
+					method="post"
+					action="?/submitVotes"
+					enctype="multipart/form-data"
+					use:enhance={submitVotesNews}
+					class="fixed bottom-0 right-0 m-[40px]"
 				>
-					{#if submitVoteLoader}
-						Submitting...
-					{:else}
-						Submit Votes
-					{/if}
-				</Button>
-			</form>
+					<input name="setsOfvotes" type="hidden" value={JSON.stringify(votedArrays)} />
+					<input name="userId" type="hidden" value={$userState?.user_id} />
+					<input name="userFullname" type="hidden" value={$userState?.user_fullname} />
+					<input name="classification" type="hidden" value={$userState?.classification} />
+					<Button
+						type="submit"
+						disabled={submitVoteLoader}
+						class={submitVoteLoader ? 'cursor-not-allowed bg-clicked' : ''}
+					>
+						{#if submitVoteLoader}
+							Submitting...
+						{:else}
+							Submit Votes
+						{/if}
+					</Button>
+				</form>
+			{/if}
 		{/if}
-	{/if}
-</div>
+	</div>
+{:else}
+	<AlreadyVote />
+{/if}
