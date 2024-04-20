@@ -18,10 +18,5 @@ export const setUserState = (state: UserListDB | null) => {
 
 export const getUserState = () => getContext<Writable<UserListDB | null>>("userState");
 
-export const setSupaBaby = (state: SupabaseClient) => {
-    const stateGenerator = writable(state);
-    setContext("supababy", stateGenerator);
-};
-
-export const getSupaBaby = () => getContext<SupabaseClient>("supababy");
+export const supabaseStore = writable<SupabaseClient>();
 

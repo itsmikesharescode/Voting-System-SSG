@@ -107,12 +107,7 @@ export interface DataModel {
 export interface VotesCandidate {
     runningPosition: string;
     maxVote: number;
-    candidates: {
-        id: number;
-        candidateName: string;
-        candidateMotto: string;
-        candidatePhoto: string;
-    }[];
+    candidates: Candidates[]
 }
 
 export type VotedCandidatesDB = {
@@ -125,4 +120,17 @@ export type VotedCandidatesDB = {
     candidate_name: string
     user_fullname: string
     candidate_photo: string
+}
+
+
+export type RealTimeCandidates = {
+    candidateName: string;
+    voteCount: number;
+    candidatePhoto: string;
+}
+
+export interface RealTimeVotesType {
+    runningPosition: string;
+    maxVote: number;
+    candidates: RealTimeCandidates[]
 }

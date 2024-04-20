@@ -4,22 +4,13 @@
 	import VotesPrint from '$lib/route-components/admin/votes/votes-print.svelte';
 	import type { LayoutServerData } from '../$types';
 	import { getAdminState } from '$lib/stores';
+	import type { RealTimeVotesType } from '$lib/types';
 
 	const adminState = getAdminState();
 
 	export let data: LayoutServerData;
 
-	interface VotesCandidate {
-		runningPosition: string;
-		maxVote: number;
-		candidates: {
-			candidateName: string;
-			voteCount: number;
-			candidatePhoto: string;
-		}[];
-	}
-
-	let candidates: VotesCandidate[] | undefined = undefined;
+	let candidates: RealTimeVotesType[] | undefined = undefined;
 
 	$: {
 		const tempArray = data.created_candidates.data?.filter(
