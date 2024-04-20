@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import * as Avatar from '$lib/components/ui/avatar/index';
+	import type { RealTimeCandidates } from '$lib/types';
 
 	export let position_name: string;
 	export let maxVote: number;
-	export let candidateArray: { candidateName: string; voteCount: number; candidatePhoto: string }[];
+	export let candidateArray: RealTimeCandidates[];
 </script>
 
 {#if candidateArray}
