@@ -4,6 +4,7 @@
 	import CandidateCard from '$lib/route-components/voter/voting-process/candidate-card.svelte';
 	import { getUserState } from '$lib/stores';
 	import type { DataModel, VotesCandidate } from '$lib/types';
+	import { tick } from 'svelte';
 	import type { LayoutServerData } from '../$types';
 
 	export let data: LayoutServerData;
@@ -62,22 +63,20 @@
 		candidates = customCandidateArray();
 	}
 
-	//converted to strings then parse at server
-	let votedCandidates = new Set<string>();
+	//sets for read and write speeds
+	const votedCandidates = new Set<DataModel>();
+	//referencing avoiding mutating
+	let reference: DataModel;
+
+	let votedArrays: DataModel[] = [];
 
 	const votedData = (e: CustomEvent<DataModel>) => {
-		if (votedCandidates.has(JSON.stringify(e.detail)))
-			votedCandidates.delete(JSON.stringify(e.detail));
-		else votedCandidates.add(JSON.stringify(e.detail));
-		testFactory();
-	};
+		reference = e.detail;
 
-	//will continue alter sleepy!
-	const testFactory = () => {
-		const tempArray: any[] = [];
-		votedCandidates.forEach((v) => {
-			tempArray.push(JSON.parse(v));
-		});
+		if (votedCandidates.has(reference)) votedCandidates.delete(reference);
+		else votedCandidates.add(reference);
+
+		votedArrays = Array.from(votedCandidates);
 	};
 </script>
 
@@ -101,7 +100,7 @@
 		use:enhance
 		class="fixed bottom-0 right-0 m-[40px]"
 	>
-		<input name="setsOfvotes" type="hidden" value={votedCandidates} />
+		<input name="setsOfvotes" type="hidden" value={JSON.stringify(votedArrays)} />
 
 		<Button type="submit">Submit Votes</Button>
 	</form>
