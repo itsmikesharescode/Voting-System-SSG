@@ -12,6 +12,8 @@
 
 	export let data: LayoutServerData;
 
+	console.log(data.candidates.data);
+
 	const userState = getUserState();
 
 	$: data.userData.data ? ($userState = data.userData.data) : '';
@@ -126,7 +128,7 @@
 			{/each}
 		</div>
 
-		{#if candidates}
+		{#if candidates?.length}
 			{#if votedArrays.length >= candidates.length}
 				<form
 					method="post"
