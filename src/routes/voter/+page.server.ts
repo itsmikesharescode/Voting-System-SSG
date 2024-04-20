@@ -2,7 +2,7 @@ import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { ZodError } from "zod";
-import { updateAccountSchema, voterLoginSchema } from "$lib/schema";
+import { resetPasswordSchema, updateAccountSchema, voterLoginSchema } from "$lib/schema";
 import type { ActivateVoting, VoterLoginType } from "$lib/types";
 
 export const load: PageServerLoad = async ({ locals: { supabase, supabaseAdmin, safeGetSession }, cookies }) => {
@@ -100,6 +100,23 @@ export const actions: Actions = {
         const { error: logoutError } = await supabase.auth.signOut();
         if (logoutError) return fail(401, { msg: logoutError.message });
         else return fail(200, { msg: "Thank you for use our system! come back again." });
+    },
+
+    resetPasswordAction: async ({ locals: { supabase }, request }) => {
+        const formData = Object.fromEntries(await request.formData());
+
+        try {
+            const result = resetPasswordSchema.parse(formData);
+
+            const { error } = await supabase.auth.resetPasswordForEmail(result.email);
+
+            if (error) return fail(401, { msg: error.message });
+            else return fail(200, { msg: `An email containing the password reset link has been sent to your email. ${result.email}` });
+        } catch (error) {
+            const zodError = error as ZodError;
+            const { fieldErrors } = zodError.flatten();
+            return fail(400, { errors: fieldErrors });
+        }
     },
 
 };
