@@ -1,9 +1,14 @@
 import type { ZodError } from "zod";
 import type { Actions, PageServerLoad } from "./$types";
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { updateAccountSchema, updatePasswordSchema } from "$lib/schema";
 
-export const load: PageServerLoad = async ({ locals: { supabase } }) => {
+export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
+
+    const { data: { user }, error: checkUrlError } = await supabase.auth.verifyOtp({ token_hash: url.search.slice(1), type: 'email' });
+
+    if (checkUrlError) return redirect(302, `/voter/forgot-password?${checkUrlError.message}`);
+    else if (!user) return redirect(302, "/voter/forgot-password?invalid-session");
 
 };
 
@@ -27,9 +32,6 @@ export const actions: Actions = {
                 if (updateUserListErr) return fail(401, { msg: updateUserListErr.message });
                 else return fail(200, { msg: "Password Updated Successfully." });
             };
-
-
-
 
         } catch (error) {
             const zodError = error as ZodError;

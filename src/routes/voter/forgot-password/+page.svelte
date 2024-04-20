@@ -96,10 +96,12 @@
 			{/if}
 		</Button>
 
-		<a
-			href="/voter"
-			class="mx-auto text-[14px] font-semibold text-mainred underline transition-all hover:text-[#2d2b29]"
-			>Log in here</a
-		>
+		{#if !resetPwsLoader}
+			<a
+				href="/voter"
+				class="mx-auto text-[14px] font-semibold text-mainred underline transition-all hover:text-[#2d2b29]"
+				>Log in here</a
+			>
+		{/if}
 	</div>
 </form>
