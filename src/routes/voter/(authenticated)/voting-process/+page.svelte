@@ -93,17 +93,19 @@
 		{/each}
 	</div>
 
-	{#if votedArrays.length >= candidates?.length ?? [].length}
-		<form
-			method="post"
-			action="?/submitVotes"
-			enctype="multipart/form-data"
-			use:enhance
-			class="fixed bottom-0 right-0 m-[40px]"
-		>
-			<input name="setsOfvotes" type="hidden" value={JSON.stringify(votedArrays)} />
+	{#if candidates}
+		{#if votedArrays.length >= candidates.length}
+			<form
+				method="post"
+				action="?/submitVotes"
+				enctype="multipart/form-data"
+				use:enhance
+				class="fixed bottom-0 right-0 m-[40px]"
+			>
+				<input name="setsOfvotes" type="hidden" value={JSON.stringify(votedArrays)} />
 
-			<Button type="submit">Submit Votes</Button>
-		</form>
+				<Button type="submit">Submit Votes</Button>
+			</form>
+		{/if}
 	{/if}
 </div>
