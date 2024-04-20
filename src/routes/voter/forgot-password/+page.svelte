@@ -69,8 +69,17 @@
 		</h1>
 
 		<div class="grid w-full items-center gap-1.5">
-			<Label class="text-red-900" for="username">Email Address</Label>
-			<Input class="text-red-900" type="email" id="username" placeholder="Enter email address" />
+			<Label class="text-red-900" for="email">Email Address</Label>
+			<Input
+				name="email"
+				class="text-red-900"
+				type="email"
+				id="email"
+				placeholder="Enter email address"
+			/>
+			{#each formActionErrors?.email ?? [] as errorMsg}
+				<p class="text-[14px] text-red-600">{errorMsg}</p>
+			{/each}
 		</div>
 
 		<Button

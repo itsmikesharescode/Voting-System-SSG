@@ -104,6 +104,7 @@ export const actions: Actions = {
 
     resetPasswordAction: async ({ locals: { supabase }, request }) => {
         const formData = Object.fromEntries(await request.formData());
+
         try {
             const result = resetPasswordSchema.parse(formData);
         } catch (error) {
