@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
+	import type { VotedCandidatesDB } from '$lib/types';
 	import ViewBallot from './already-voted/view-ballot.svelte';
 	import ViewRealtimeResult from './already-voted/view-realtime-result.svelte';
+
+	export let votedCandidates: VotedCandidatesDB[] | null;
 
 	let showBallot = false;
 	let showRealTimeResult = false;

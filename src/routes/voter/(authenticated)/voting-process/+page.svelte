@@ -155,5 +155,5 @@
 		{/if}
 	</div>
 {:else}
-	<AlreadyVote />
+	<AlreadyVote votedCandidates={data.votedCandidates.data} />
 {/if}
