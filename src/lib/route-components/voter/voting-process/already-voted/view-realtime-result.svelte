@@ -2,7 +2,8 @@
 	import { Button } from '$lib/components/ui/button';
 	import VotesTableCard from '$lib/route-components/admin/votes/votes-table-card.svelte';
 	import { getUserState, supabaseStore } from '$lib/stores';
-	import type { CandidatesDB, VotesCandidate } from '$lib/types';
+	import type { CandidatesDB, RealTimeVotesType, VotesCandidate } from '$lib/types';
+	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
 	const userState = getUserState();
@@ -50,35 +51,52 @@
 		return newArray;
 	};
 
-	let candidates: VotesCandidate[] | undefined = undefined;
+	let candidates: RealTimeVotesType[] | undefined = undefined;
 
 	const getLatestVotes = async () => {
 		const { data, error } = await $supabaseStore
 			.from('created_candidates_tb')
 			.select('*')
-			.order('vote_count', { ascending: true });
+			.order('vote_count', { ascending: false });
 
 		const tempArray = data?.filter(
 			(candidate) => candidate.classification === $userState?.classification
 		);
 
-		const candidates = customCandidateArray(tempArray);
+		candidates = customCandidateArray(tempArray);
 	};
 
-	getLatestVotes();
+	const channels = $supabaseStore
+		.channel('custom-all-channel')
+		.on(
+			'postgres_changes',
+			{ event: '*', schema: 'public', table: 'created_candidates_tb' },
+			(payload) => {
+				getLatestVotes();
+			}
+		)
+		.subscribe();
+
+	onMount(() => getLatestVotes());
 </script>
 
 <div class="m-[20px] md:m-[40px]" in:fade>
 	<Button on:click={() => (showRealTimeResult = false)}>Back</Button>
-	real time vote count here
+	<h2
+		class="mt-[20px] text-[22px] font-semibold text-mainred xs:text-[24px] sm:text-[26px] lg:text-[28px]"
+	>
+		Viewing Realtime Results
+	</h2>
 
-	{#each candidates ?? [] as candidateObj}
-		<div class="">
-			<VotesTableCard
-				position_name={candidateObj.runningPosition}
-				candidateArray={candidateObj.candidates}
-				maxVote={candidateObj.maxVote}
-			/>
-		</div>
-	{/each}
+	<div class="mt-[20px] grid gap-[20px] lg:grid-cols-2">
+		{#each candidates ?? [] as candidateObj}
+			<div class="">
+				<VotesTableCard
+					position_name={candidateObj.runningPosition}
+					candidateArray={candidateObj.candidates}
+					maxVote={candidateObj.maxVote}
+				/>
+			</div>
+		{/each}
+	</div>
 </div>
