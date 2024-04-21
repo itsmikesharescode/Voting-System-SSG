@@ -2,20 +2,6 @@ import { createCandidateSchema, createPositionSchema, createVoterAccountSchema, 
 import type { CandidatesDB, MigrationFile, PositionsDB } from "$lib/types";
 import { fail, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
-import puppeteer from 'puppeteer';
-import path from "path";
-import fs from "fs-extra";
-import type { PostgrestError } from "@supabase/supabase-js";
-
-interface PrintingType {
-    runningPosition: string;
-    maxVote: number;
-    candidates: {
-        candidateName: string;
-        voteCount: number;
-        candidatePhoto: string;
-    }[];
-}
 
 export const actions: Actions = {
     // all voter route actions
