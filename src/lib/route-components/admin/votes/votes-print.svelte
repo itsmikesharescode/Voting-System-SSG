@@ -3,52 +3,64 @@
 	import printIcon from '$lib/assets/print_icon.svg';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { getAdminState } from '$lib/stores';
-	import type { ResultModel } from '$lib/types';
-	import type { SubmitFunction } from '@sveltejs/kit';
-	import { toast } from 'svelte-sonner';
+	import type { RealTimeVotesType } from '$lib/types';
+	import { tick } from 'svelte';
 
 	const adminState = getAdminState();
 
-	let printLoader = false;
+	export let candidates: RealTimeVotesType[] | undefined;
 
-	const printActionNews: SubmitFunction = () => {
-		printLoader = true;
-		return async ({ result, update }) => {
-			const {
-				status,
-				data: { msg, link }
-			} = result as ResultModel<{ msg: string; link: string }>;
+	export let isPrinting = false;
 
-			switch (status) {
-				case 200:
-					toast.success('Generate PDF', { description: msg });
-					window.open(link);
-					printLoader = false;
-					break;
+	const handlePrint = async () => {
+		isPrinting = true;
 
-				case 400:
-					toast.error('Generate PDF', { description: msg });
-					printLoader = false;
-					break;
-			}
-			await update();
-		};
+		await tick();
+		print();
+
+		setTimeout(() => {
+			isPrinting = false;
+		}, 2000);
 	};
 </script>
 
-<form method="post" action="APIS?/printAction" use:enhance={printActionNews}>
-	<input name="classification" type="hidden" value={$adminState.votes.activeTab} />
-	<Button
-		disabled={printLoader}
-		type="submit"
-		class="{printLoader ? 'cursor-not-allowed bg-clicked' : 'bg-mainred'}
-		flex items-center gap-[10px] "
-	>
-		<img src={printIcon} alt="poorConnection" />
-		{#if printLoader}
-			Generating...
-		{:else}
-			Generate Pdf
-		{/if}
-	</Button>
-</form>
+<Button
+	on:click={handlePrint}
+	type="submit"
+	class="flex items-center gap-[10px] bg-mainred active:bg-clicked "
+>
+	<img src={printIcon} alt="poorConnection" />
+
+	Print
+</Button>
+
+{#if isPrinting}
+	<div class="absolute bottom-0 left-0 right-0 top-0 z-10 flex flex-col gap-[20px] bg-white">
+		{#each candidates ?? [] as candidate}
+			<p
+				class="text-[16px] font-semibold xs:text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px]"
+			>
+				Running for {candidate.runningPosition}
+			</p>
+
+			<div class="grid grid-cols-2 gap-[20px]">
+				{#each candidate.candidates as candi}
+					<div class="flex gap-[20px] rounded-[20px] bg-subwhite p-[10px]">
+						<img src={candi.candidatePhoto} alt="poorConnection" class="rounded-[10px]" />
+						<div class="flex flex-col gap-[10px]">
+							<div class="">
+								<p class="font-semibold">Candidate Name:</p>
+								<p>{candi.candidateName}</p>
+							</div>
+
+							<div class="">
+								<p class="font-semibold">Total Votes:</p>
+								<p>{candi.voteCount}</p>
+							</div>
+						</div>
+					</div>
+				{/each}
+			</div>
+		{/each}
+	</div>
+{/if}
