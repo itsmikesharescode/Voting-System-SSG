@@ -52,7 +52,7 @@
 		return newArray;
 	};
 
-	$: $adminState.votes.activeTab ? getLatestVotes() : getLatestVotes();
+	$: $adminState.votes.activeTab ? getLatestVotes() : '';
 
 	const getLatestVotes = async () => {
 		const { data, error } = await $supabaseStore
@@ -79,6 +79,8 @@
 		.subscribe();
 
 	onMount(async () => await getLatestVotes());
+
+	let isPrinting = false;
 </script>
 
 <div class="mt-[30px] p-[22px]">
@@ -92,11 +94,11 @@
 			</div>
 
 			<div class="">
-				<VotesPrint />
+				<VotesPrint {candidates} bind:isPrinting />
 			</div>
 		</div>
 
-		<div class="mt-[20px] grid gap-[20px] lg:grid-cols-2">
+		<div class="mt-[20px] grid gap-[20px] lg:grid-cols-2 {isPrinting ? 'hidden' : ''}">
 			{#each candidates ?? [] as candidateObj}
 				<div class="">
 					<VotesTableCard
