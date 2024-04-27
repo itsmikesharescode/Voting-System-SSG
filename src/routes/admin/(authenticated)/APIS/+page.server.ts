@@ -4,6 +4,22 @@ import { fail, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
 
 export const actions: Actions = {
+
+    //votes route
+    resetDataAction: async ({ locals: { supabase, supabaseAdmin }, request }) => {
+        const formData = await request.formData();
+        const selected = formData.get("selected") as "cleanReset" | "resetVoteNvotedCounts";
+
+        if (selected === "cleanReset") {
+            const { error } = await supabaseAdmin.rpc("clean_reset");
+            if (error) return fail(401, { msg: error.message });
+            return { msg: "Clean Reset Operation Success." };
+        } else if (selected === "resetVoteNvotedCounts") {
+            console.log(selected)
+        }
+
+    },
+
     // all voter route actions
     activeVotingAction: async ({ locals: { supabase, supabaseAdmin }, request }) => {
 
@@ -328,5 +344,7 @@ export const actions: Actions = {
         if (deleteCandidatePhotoError) return fail(401, { msg: deleteCandidatePhotoError.message });
         else if (deleteCandidatePhoto.length) return fail(200, { msg: "Candidate Deleted Successfully." });
     }
+
+
 
 };
