@@ -27,6 +27,7 @@
 					toast.success('Reset Data', { description: msg });
 					applyLoader = false;
 					showResetDataDialog = false;
+					selection = '';
 					break;
 
 				case 401:
@@ -90,7 +91,9 @@
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel disabled={applyLoader}>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Cancel disabled={applyLoader} on:click={() => (selection = '')}
+					>Cancel</AlertDialog.Cancel
+				>
 				{#if selection.length}
 					<Button
 						disabled={applyLoader}

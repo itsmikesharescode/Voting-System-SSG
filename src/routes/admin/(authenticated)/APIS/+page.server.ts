@@ -1,22 +1,37 @@
 import { createCandidateSchema, createPositionSchema, createVoterAccountSchema, migrationDataSchema, updateCandidateSchema, updatePositionSchema, updateVoterAccountSchema } from "$lib/schema";
 import type { CandidatesDB, MigrationFile, PositionsDB } from "$lib/types";
-import { fail, type Actions } from "@sveltejs/kit";
+import type { User } from "@supabase/supabase-js";
+import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
 
 export const actions: Actions = {
 
     //votes route
-    resetDataAction: async ({ locals: { supabase, supabaseAdmin }, request }) => {
+    resetDataAction: async ({ locals: { supabase, supabaseAdmin, safeGetSession }, request }) => {
         const formData = await request.formData();
         const selected = formData.get("selected") as "cleanReset" | "resetVoteNvotedCounts";
 
-        if (selected === "cleanReset") {
-            const { error } = await supabaseAdmin.rpc("clean_reset");
-            if (error) return fail(401, { msg: error.message });
-            return { msg: "Clean Reset Operation Success." };
-        } else if (selected === "resetVoteNvotedCounts") {
-            console.log(selected)
+        const { user } = await safeGetSession();
+
+        if (user) {
+            if (selected === "cleanReset") {
+
+                const { data: { users }, error: userListError } = await supabaseAdmin.auth.admin.listUsers();
+                const usersId = users.filter(userObj => userObj.id !== user.id)
+
+                usersId.forEach(async userObj => {
+                    await supabaseAdmin.auth.admin.deleteUser(userObj.id);
+                })
+                const { error } = await supabaseAdmin.rpc("clean_reset");
+                if (error) return fail(401, { msg: error.message });
+                return { msg: "Clean Reset Operation Success." };
+
+            } else if (selected === "resetVoteNvotedCounts") {
+                console.log(selected)
+            }
         }
+
+        return redirect(302, "/admin?session=false");
 
     },
 
