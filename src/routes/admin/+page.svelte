@@ -31,7 +31,8 @@
 					formActionErrors = null;
 					toast.success('Admin Login', { description: msg });
 					adminLoginLoader = false;
-					goto('/admin/dashboard');
+					//fastest solution to make web socket stable from initial fire
+					window.location.reload();
 					break;
 
 				case 400:

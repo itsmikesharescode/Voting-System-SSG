@@ -37,7 +37,8 @@
 					toast.success('Voter Login', { description: msg });
 					formActionErrors = null;
 					loginLoader = false;
-					goto('/voter/voting-process');
+					//fastest solution to make web socket stable from initial fire
+					window.location.reload();
 					break;
 
 				case 201:
