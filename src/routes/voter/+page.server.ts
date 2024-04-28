@@ -32,7 +32,6 @@ export const actions: Actions = {
 
         try {
             const result = voterLoginSchema.parse(formData);
-
             const { data: loginCheck, error: loginCheckError } = await supabaseAdmin.rpc("login_checker", {
                 lrn_param: result.lrn,
                 password_param: result.password

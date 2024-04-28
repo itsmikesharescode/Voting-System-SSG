@@ -6,6 +6,8 @@
 	import { getAdminState, supabaseStore } from '$lib/stores';
 	import type { CandidatesDB, RealTimeVotesType } from '$lib/types';
 	import { onMount } from 'svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import ResetRecords from '$lib/route-components/admin/votes/reset-records.svelte';
 
 	const adminState = getAdminState();
 
@@ -93,7 +95,8 @@
 				</Tabs.List>
 			</div>
 
-			<div class="">
+			<div class="flex items-center gap-[10px]">
+				<ResetRecords />
 				<VotesPrint {candidates} bind:isPrinting />
 			</div>
 		</div>

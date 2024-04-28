@@ -1,9 +1,62 @@
 import { createCandidateSchema, createPositionSchema, createVoterAccountSchema, migrationDataSchema, updateCandidateSchema, updatePositionSchema, updateVoterAccountSchema } from "$lib/schema";
 import type { CandidatesDB, MigrationFile, PositionsDB } from "$lib/types";
-import { fail, type Actions } from "@sveltejs/kit";
+import type { PostgrestError, User } from "@supabase/supabase-js";
+import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
 
 export const actions: Actions = {
+
+    //votes route
+    resetDataAction: async ({ locals: { supabaseAdmin, safeGetSession }, request }) => {
+        const formData = await request.formData();
+        const selected = formData.get("selected") as "cleanReset" | "resetVoteNvotedCounts";
+
+        const { user } = await safeGetSession();
+
+        if (user) {
+            if (selected === "cleanReset") {
+                const { data: getCandidates, error: getCandidatesError } = await supabaseAdmin.from("created_candidates_tb").select("*");
+
+                if (getCandidates) {
+                    // will check and delete candidates photos with cascade feature to candidate schema
+                    const awaitCandidates = getCandidates.map(async candidate => {
+                        await supabaseAdmin.storage
+                            .from("candidate_bucket")
+                            .remove([`${candidate.classification}/${candidate.candidate_position}/${candidate.candidate_fullname}/${candidate.candidate_fullname}.webp`]);
+                    });
+                    // will await for next operation
+                    await Promise.all(awaitCandidates);
+
+                    const { data: { users }, error: usersListError } = await supabaseAdmin.auth.admin.listUsers();
+                    const usersId = users.filter(userObj => userObj.id !== user.id);
+
+                    const awaitDeletedUsers = usersId.map(async userObj => {
+                        await supabaseAdmin.auth.admin.deleteUser(userObj.id);
+                    });
+                    // will await for next operation
+                    await Promise.all(awaitDeletedUsers);
+
+                    // will delete all rows in user_list_tb and created_position_tb with casscade feature
+                    const { error: cleanResetRPCerror } = await supabaseAdmin.rpc("clean_reset");
+                    if (cleanResetRPCerror) return fail(401, { msg: cleanResetRPCerror.message });
+                    else return { msg: "Clean Reset Operation Success." };
+
+                }
+
+
+            } else if (selected === "resetVoteNvotedCounts") {
+                const { error: voteNvotedRPCerror } = await supabaseAdmin.rpc("reset_votes_voted_count");
+
+                if (voteNvotedRPCerror) return fail(401, { msg: voteNvotedRPCerror.message });
+                else return { msg: "Vote counts and Voted count is successfully back to 0." };
+
+            }
+        }
+
+        return redirect(302, "/admin?session=false");
+
+    },
+
     // all voter route actions
     activeVotingAction: async ({ locals: { supabase, supabaseAdmin }, request }) => {
 
@@ -14,7 +67,6 @@ export const actions: Actions = {
         const { error: updateVotingError } = await supabaseAdmin.from("activate_vote").update([{
             voting_active: isActive
         }]).eq("id", Number(id));
-        console.log(updateVotingError?.message)
         if (updateVotingError) return fail(401, { msg: updateVotingError.message });
         else return fail(200, { msg: "Success" });
     },
@@ -57,7 +109,6 @@ export const actions: Actions = {
         } catch (error) {
             const zodError = error as ZodError;
             const { fieldErrors } = zodError.flatten();
-            console.log(fieldErrors)
             return fail(400, { errors: fieldErrors });
         }
     },
@@ -328,5 +379,7 @@ export const actions: Actions = {
         if (deleteCandidatePhotoError) return fail(401, { msg: deleteCandidatePhotoError.message });
         else if (deleteCandidatePhoto.length) return fail(200, { msg: "Candidate Deleted Successfully." });
     }
+
+
 
 };

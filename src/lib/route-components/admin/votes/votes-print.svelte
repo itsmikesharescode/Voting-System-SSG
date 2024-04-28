@@ -14,13 +14,13 @@
 
 	const handlePrint = async () => {
 		isPrinting = true;
-
+		//svelte hack to await dom
 		await tick();
 		print();
 
 		setTimeout(() => {
 			isPrinting = false;
-		}, 2000);
+		}, 500);
 	};
 </script>
 
