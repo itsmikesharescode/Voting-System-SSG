@@ -1,13 +1,13 @@
 import { createCandidateSchema, createPositionSchema, createVoterAccountSchema, migrationDataSchema, updateCandidateSchema, updatePositionSchema, updateVoterAccountSchema } from "$lib/schema";
 import type { CandidatesDB, MigrationFile, PositionsDB } from "$lib/types";
-import type { User } from "@supabase/supabase-js";
+import type { PostgrestError, User } from "@supabase/supabase-js";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
 
 export const actions: Actions = {
 
     //votes route
-    resetDataAction: async ({ locals: { supabase, supabaseAdmin, safeGetSession }, request }) => {
+    resetDataAction: async ({ locals: { supabaseAdmin, safeGetSession }, request }) => {
         const formData = await request.formData();
         const selected = formData.get("selected") as "cleanReset" | "resetVoteNvotedCounts";
 
@@ -15,19 +15,37 @@ export const actions: Actions = {
 
         if (user) {
             if (selected === "cleanReset") {
+                const { data: getCandidates, error: getCandidatesError } = await supabaseAdmin.from("created_candidates_tb").select("*");
 
-                const { data: { users }, error: userListError } = await supabaseAdmin.auth.admin.listUsers();
-                const usersId = users.filter(userObj => userObj.id !== user.id)
+                if (getCandidates) {
+                    // will check and delete candidates photos with cascade feature to candidate schema
+                    const awaitCandidates = getCandidates.map(async candidate => {
+                        await supabaseAdmin.storage
+                            .from("candidate_bucket")
+                            .remove([`${candidate.classification}/${candidate.candidate_position}/${candidate.candidate_fullname}/${candidate.candidate_fullname}.webp`]);
+                    });
+                    // will await for next operation
+                    await Promise.all(awaitCandidates);
 
-                usersId.forEach(async userObj => {
-                    await supabaseAdmin.auth.admin.deleteUser(userObj.id);
-                })
-                const { error } = await supabaseAdmin.rpc("clean_reset");
-                if (error) return fail(401, { msg: error.message });
-                return { msg: "Clean Reset Operation Success." };
+                    const { data: { users }, error: usersListError } = await supabaseAdmin.auth.admin.listUsers();
+                    const usersId = users.filter(userObj => userObj.id !== user.id);
+
+                    const awaitDeletedUsers = usersId.map(async userObj => {
+                        await supabaseAdmin.auth.admin.deleteUser(userObj.id);
+                    });
+                    // will await for next operation
+                    await Promise.all(awaitDeletedUsers);
+
+                    // will delete all rows in user_list_tb and created_position_tb with casscade feature
+                    const { error: cleanResetRPCerror } = await supabaseAdmin.rpc("clean_reset");
+                    if (cleanResetRPCerror) return fail(401, { msg: cleanResetRPCerror.message });
+                    else return { msg: "Clean Reset Operation Success." };
+
+                }
+
 
             } else if (selected === "resetVoteNvotedCounts") {
-                console.log(selected)
+                console.log("fire reset vote and voted counts here");
             }
         }
 
