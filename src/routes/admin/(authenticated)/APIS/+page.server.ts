@@ -67,7 +67,6 @@ export const actions: Actions = {
         const { error: updateVotingError } = await supabaseAdmin.from("activate_vote").update([{
             voting_active: isActive
         }]).eq("id", Number(id));
-        console.log(updateVotingError?.message)
         if (updateVotingError) return fail(401, { msg: updateVotingError.message });
         else return fail(200, { msg: "Success" });
     },
@@ -110,7 +109,6 @@ export const actions: Actions = {
         } catch (error) {
             const zodError = error as ZodError;
             const { fieldErrors } = zodError.flatten();
-            console.log(fieldErrors)
             return fail(400, { errors: fieldErrors });
         }
     },
