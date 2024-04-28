@@ -45,7 +45,11 @@ export const actions: Actions = {
 
 
             } else if (selected === "resetVoteNvotedCounts") {
-                console.log("fire reset vote and voted counts here");
+                const { error: voteNvotedRPCerror } = await supabaseAdmin.rpc("reset_votes_voted_count");
+
+                if (voteNvotedRPCerror) return fail(401, { msg: voteNvotedRPCerror.message });
+                else return { msg: "Vote counts and Voted count is successfully back to 0." };
+
             }
         }
 
