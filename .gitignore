@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+postgrest_functions
 /build
 /.svelte-kit
 /package

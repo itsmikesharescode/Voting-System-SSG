@@ -1,11 +1,12 @@
 import type { ZodError } from "zod";
 import type { Actions, PageServerLoad } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
-import { updateAccountSchema, updatePasswordSchema } from "$lib/schema";
+import { updatePasswordSchema } from "$lib/schema";
 
 export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
 
-    const { data: { user }, error: checkUrlError } = await supabase.auth.verifyOtp({ token_hash: url.search.slice(1), type: 'email' });
+
+    const { data: { user }, error: checkUrlError } = await supabase.auth.verifyOtp({ token_hash: url.searchParams.get("tokenHash") ?? "", type: 'email' });
 
     if (checkUrlError) return redirect(302, `/voter/forgot-password?${checkUrlError.message}`);
     else if (!user) return redirect(302, "/voter/forgot-password?invalid-session");
