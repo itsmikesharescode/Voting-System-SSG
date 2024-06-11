@@ -5,8 +5,9 @@
 	import DeleteVoter from './delete-voter.svelte';
 	import UpdateVoterContent from './update-voter-content.svelte';
 	import { fade } from 'svelte/transition';
+	import type { UserListDB } from '$lib/types';
 
-	const adminState = getAdminState();
+	export let filteredUsers: UserListDB[] | undefined;
 </script>
 
 <div class="mt-[10px] text-[14px] font-semibold text-white xs:text-[16px] md:text-[18px]">
@@ -33,34 +34,35 @@
 	</div>
 
 	<div class="  flex flex-col gap-[10px] text-mainred lg:gap-[5px]">
-		{#each $adminState.allvoters.userList ?? [] as voterObj, index (voterObj.id)}
-			<div
-				animate:flip={{ duration: 350 }}
-				in:fade
-				class="grid items-center gap-[20px] border-b-[1px] bg-subwhite p-[10px] lg:grid lg:grid-cols-[1fr,1fr,1fr,300px,190px]"
-			>
-				<div class="grid overflow-auto">
-					<p>{voterObj.user_fullname}</p>
-				</div>
+		{#if filteredUsers}
+			{#each filteredUsers ?? [] as voterObj, index (voterObj.id)}
+				<div
+					animate:flip={{ duration: 350 }}
+					class="grid items-center gap-[20px] border-b-[1px] bg-subwhite p-[10px] lg:grid lg:grid-cols-[1fr,1fr,1fr,300px,190px]"
+				>
+					<div class="grid overflow-auto">
+						<p>{voterObj.user_fullname}</p>
+					</div>
 
-				<div class="grid overflow-auto">
-					<p>{voterObj.user_lrn}</p>
-				</div>
-				<div class="grid overflow-auto">
-					<p>{voterObj.user_email}</p>
-				</div>
+					<div class="grid overflow-auto">
+						<p>{voterObj.user_lrn}</p>
+					</div>
+					<div class="grid overflow-auto">
+						<p>{voterObj.user_email}</p>
+					</div>
 
-				<div class="grid overflow-auto">
-					<p>{formatDate(voterObj.created_at)}</p>
-				</div>
+					<div class="grid overflow-auto">
+						<p>{formatDate(voterObj.created_at)}</p>
+					</div>
 
-				<div class="w-full">
-					<div class="flex w-full items-center gap-[10px]">
-						<UpdateVoterContent {voterObj} />
-						<DeleteVoter {voterObj} />
+					<div class="w-full">
+						<div class="flex w-full items-center gap-[10px]">
+							<UpdateVoterContent {voterObj} />
+							<DeleteVoter {voterObj} />
+						</div>
 					</div>
 				</div>
-			</div>
-		{/each}
+			{/each}
+		{/if}
 	</div>
 </div>

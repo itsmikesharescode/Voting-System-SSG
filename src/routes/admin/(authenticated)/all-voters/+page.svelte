@@ -7,12 +7,18 @@
 	import { getAdminState } from '$lib/stores';
 	import type { LayoutServerData } from '../$types';
 	import VotersTableCard from '$lib/route-components/admin/all-voters/voters-table-card.svelte';
-	import type { UserListDB } from '$lib/types';
+	import { searchHandler, type UserListDB } from '$lib/types';
 	import VotingActivator from '$lib/route-components/admin/all-voters/voting-activator.svelte';
 	import Search from '$lib/route-components/admin/all-voters/component/search.svelte';
+	import { createSearchStore } from '$lib';
+	import { onDestroy } from 'svelte';
+
+	export let data: LayoutServerData;
 
 	const adminState = getAdminState();
-	export let data: LayoutServerData;
+	let users: UserListDB[] | undefined = undefined;
+
+	const searchStore = createSearchStore<UserListDB>(users ?? []);
 
 	const handleSelections = (classification: 'highschool' | 'elementary') => {
 		const { filterSelection } = $adminState.allvoters;
@@ -44,9 +50,34 @@
 		if (tempArray) $adminState.allvoters.userList = tempArray;
 	};
 
-	$: $adminState.allvoters.filterSelection ? handleSelections($adminState.allvoters.activeTab) : '';
+	$: $adminState.allvoters.filterSelection
+		? (handleSelections($adminState.allvoters.activeTab), triggerMutation())
+		: '';
 
-	$: data.user_list.data ? handleSelections($adminState.allvoters.activeTab) : '';
+	$: data.user_list.data
+		? (handleSelections($adminState.allvoters.activeTab), triggerMutation())
+		: '';
+
+	function triggerMutation() {
+		users = $adminState.allvoters.userList?.map((user) => ({
+			...user,
+			searchTerms: `${user.user_fullname}, ${user.user_email}`
+		}));
+	}
+
+	$: {
+		if (users) {
+			searchStore.set({
+				data: users,
+				filtered: users,
+				search: $searchStore.search
+			});
+		}
+	}
+
+	let unsub = searchStore.subscribe((model) => searchHandler(model));
+
+	onDestroy(() => unsub());
 </script>
 
 <div class="mt-[30px] p-[22px]">
@@ -90,11 +121,10 @@
 		</div>
 
 		<div class="sticky top-0 my-[1rem] justify-end sm:flex">
-			<Search />
+			<Search bind:searchTerms={$searchStore.search} />
 		</div>
 
 		<div class="mt-[10px]">
-			<!---Filters-->
 			<RadioGroup.Root bind:value={$adminState.allvoters.filterSelection} class="mt-[20px]">
 				<div class="flex items-center space-x-2">
 					<RadioGroup.Item value="voted" id="r1" />
@@ -112,6 +142,6 @@
 			</RadioGroup.Root>
 		</div>
 
-		<VotersTableCard />
+		<VotersTableCard filteredUsers={$searchStore.filtered} />
 	</Tabs.Root>
 </div>

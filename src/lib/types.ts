@@ -46,6 +46,7 @@ export type UserListDB = {
 	not_voted: boolean;
 	not_registered: boolean;
 	classification: 'elementary' | 'highschool';
+	searchTearms?: string;
 };
 
 export interface MigrationFile {
