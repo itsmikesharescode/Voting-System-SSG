@@ -9,6 +9,7 @@
 	import VotersTableCard from '$lib/route-components/admin/all-voters/voters-table-card.svelte';
 	import type { UserListDB } from '$lib/types';
 	import VotingActivator from '$lib/route-components/admin/all-voters/voting-activator.svelte';
+	import Search from './component/search.svelte';
 
 	const adminState = getAdminState();
 	export let data: LayoutServerData;
@@ -71,7 +72,7 @@
 				</Tabs.List>
 			</div>
 
-			<div class="flex items-center gap-[10px]">
+			<div class="flex items-center gap-[10px] overflow-auto">
 				{#if data.activate_vote.data}
 					<div class="">
 						<VotingActivator isActive={data.activate_vote.data[0]} />
@@ -86,6 +87,10 @@
 					<ImportData />
 				</div>
 			</div>
+		</div>
+
+		<div class="sticky top-0 my-[1rem] justify-end sm:flex">
+			<Search />
 		</div>
 
 		<div class="mt-[10px]">
