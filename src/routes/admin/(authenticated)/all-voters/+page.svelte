@@ -9,7 +9,7 @@
 	import VotersTableCard from '$lib/route-components/admin/all-voters/voters-table-card.svelte';
 	import type { UserListDB } from '$lib/types';
 	import VotingActivator from '$lib/route-components/admin/all-voters/voting-activator.svelte';
-	import Search from './component/search.svelte';
+	import Search from '$lib/route-components/admin/all-voters/component/search.svelte';
 
 	const adminState = getAdminState();
 	export let data: LayoutServerData;
