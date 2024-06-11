@@ -47,6 +47,7 @@
     "embla-carousel-svelte": "^8.0.1",
     "formsnap": "^1.0.0",
     "lucide-svelte": "^0.366.0",
+    "nodemailer": "^6.9.13",
     "paneforge": "^0.0.3",
     "papaparse": "^5.4.1",
     "sharp": "^0.33.3",
