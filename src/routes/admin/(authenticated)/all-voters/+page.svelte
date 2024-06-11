@@ -12,6 +12,8 @@
 	import Search from '$lib/route-components/admin/all-voters/component/search.svelte';
 	import { createSearchStore } from '$lib';
 	import { onDestroy } from 'svelte';
+	import SendMail from '$lib/route-components/admin/all-voters/send-mail.svelte';
+	import { fade } from 'svelte/transition';
 
 	export let data: LayoutServerData;
 
@@ -107,6 +109,12 @@
 				{#if data.activate_vote.data}
 					<div class="">
 						<VotingActivator isActive={data.activate_vote.data[0]} />
+					</div>
+				{/if}
+
+				{#if $adminState.allvoters.filterSelection !== 'voted'}
+					<div class="" transition:fade>
+						<SendMail />
 					</div>
 				{/if}
 
