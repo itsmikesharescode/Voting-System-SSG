@@ -69,8 +69,8 @@
 					total of {$adminState.allvoters.userList?.length}
 					{$adminState.allvoters.filterSelection === 'unvoted'
 						? 'Unvoted Voters'
-						: 'Not Registered Voters'}</b
-				> via email.
+						: 'Not Registered Voters'}
+				</b> via email.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
