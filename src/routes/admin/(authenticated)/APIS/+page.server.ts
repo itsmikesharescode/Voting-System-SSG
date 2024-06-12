@@ -462,9 +462,20 @@ export const actions: Actions = {
 					const mailOptions: SendMailOptions = {
 						from: process.env.GMAIL_EMAIL,
 						to: user.user_email,
-						subject: 'Graduating',
-						text: `Hello ${user.user_fullname},\n\nYou are graduating!`,
-						html: `<h1>Hello ${user.user_fullname}!</h1><p>You are graduating!</p>`
+						subject: `SSG Voting System ${user.classification} voter.`,
+						text: `Hello ${user.user_fullname},\n\n!`,
+						html: `
+							<h1>Hi  ${user.user_fullname},</h1>
+
+							<p>We are from the SSG Voting System. This is a reminder that you have not yet cast your vote. Please configure your account or cast your vote now.
+
+							Thank you!</p>
+
+							<p>You may login in this website <a href="https://voting-ssg-prototype.vercel.app/voter" target="_blank">https://voting-ssg-prototype.vercel.app/voter</a> using your LRN as username.</p>
+
+							<p>Your password is <b>${user.user_password}</b> Please do not share. </p>
+						
+						`
 					};
 
 					await transporter.sendMail(mailOptions);
