@@ -1,18 +1,17 @@
-import type { SupabaseClient, User } from "@supabase/supabase-js";
+import type { SupabaseClient, User } from '@supabase/supabase-js';
 
-import type { Session } from "@supabase/supabase-js";
+import type { Session } from '@supabase/supabase-js';
 
 declare global {
 	namespace App {
 		interface Locals {
-			supabase: SupabaseClient
-			supabaseAdmin: SupabaseClient
-			safeGetSession: () => Promise<{ session: Session | null; user: User | null }>
-			compressImage: (fileObject: File, targetSizeKB?: number) => Promise<Blob | null>
+			supabase: SupabaseClient;
+			supabaseAdmin: SupabaseClient;
+			safeGetSession: () => Promise<{ session: Session | null; user: User | null }>;
+			compressImage: (fileObject: File, targetSizeKB?: number) => Promise<Blob | null>;
+			transporter: nodemailer.Transporter;
 		}
-
-
 	}
 }
 
-export { };
+export {};
