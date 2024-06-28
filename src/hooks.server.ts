@@ -3,12 +3,17 @@ import { type Handle } from '@sveltejs/kit';
 import sharp from 'sharp';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import type { SupabaseJwt } from '$lib/types';
+import type { Session } from '@supabase/supabase-js';
+import { sequence } from '@sveltejs/kit/hooks';
 
 const supabaseURL: string = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKEY: string = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabaseAdminKEY: string = import.meta.env.VITE_SUPABASE_ADMIN_KEY;
 const user = process.env.GMAIL_EMAIL;
 const pass = process.env.GMAIL_PWS;
+const jwtSecret = import.meta.env.VITE_JWT_SECRET_KEY;
 
 const transporter = nodemailer.createTransport({
 	host: 'smtp.gmail.com',
@@ -30,29 +35,25 @@ transporter.verify((error, success) => {
 
 dotenv.config();
 
-export const handle: Handle = async ({ event, resolve }) => {
+export const supabase: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createServerClient(supabaseURL, supabaseKEY, {
 		cookies: {
-			get: (key) => event.cookies.get(key),
-
-			set: (key, value, options) => {
-				event.cookies.set(key, value, { ...options, path: '/' });
-			},
-			remove: (key, options) => {
-				event.cookies.delete(key, { ...options, path: '/' });
+			getAll: () => event.cookies.getAll(),
+			setAll: (cookies) => {
+				cookies.forEach(({ name, value, options }) => {
+					event.cookies.set(name, value, { ...options, path: '/' });
+				});
 			}
 		}
 	});
 
 	event.locals.supabaseAdmin = createServerClient(supabaseURL, supabaseAdminKEY, {
 		cookies: {
-			get: (key) => event.cookies.get(key),
-
-			set: (key, value, options) => {
-				event.cookies.set(key, value, { ...options, path: '/' });
-			},
-			remove: (key, options) => {
-				event.cookies.delete(key, { ...options, path: '/' });
+			getAll: () => event.cookies.getAll(),
+			setAll: (cookies) => {
+				cookies.forEach(({ name, value, options }) => {
+					event.cookies.set(name, value, { ...options, path: '/' });
+				});
 			}
 		}
 	});
@@ -93,19 +94,35 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return null; // Return null if image processing fails or target size not achieved
 	};
 
-	event.locals.safeGetSession = async () => {
-		const {
-			data: { user },
-			error
-		} = await event.locals.supabase.auth.getUser();
-		if (error) {
-			return { session: null, user: null };
-		}
-
+	event.locals.getSession = async () => {
 		const {
 			data: { session }
 		} = await event.locals.supabase.auth.getSession();
-		return { session, user };
+
+		if (!session) return { session: null, user: null };
+
+		try {
+			const decoded = jwt.verify(session.access_token, jwtSecret) as SupabaseJwt;
+			const validated_session: Session = {
+				access_token: session.access_token,
+				refresh_token: session.refresh_token,
+				expires_at: decoded.exp,
+				expires_in: decoded.exp - Math.round(Date.now() / 1000),
+				token_type: 'bearer',
+				user: {
+					role: decoded.role,
+					app_metadata: decoded.app_metadata ?? {},
+					aud: 'authenticated',
+					created_at: '',
+					id: decoded.sub,
+					user_metadata: decoded.user_metadata
+				}
+			};
+
+			return { session: validated_session, user: validated_session.user };
+		} catch (err) {
+			return { session: null, user: null };
+		}
 	};
 
 	event.locals.transporter = transporter;
@@ -116,3 +133,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	});
 };
+
+const authGuard: Handle = async ({ event, resolve }) => {
+	const { session, user } = await event.locals.getSession();
+	event.locals.session = session;
+	event.locals.user = user;
+
+	return resolve(event);
+};
+
+export const handle: Handle = sequence(supabase, authGuard);
