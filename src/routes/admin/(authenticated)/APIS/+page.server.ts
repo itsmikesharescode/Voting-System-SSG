@@ -458,7 +458,7 @@ export const actions: Actions = {
 			for (const batch of batchedUsers) {
 				const promises = batch.map(async (user) => {
 					const mailOptions: SendMailOptions = {
-						from: process.env.GMAIL_EMAIL,
+						from: 'Lazaro Francisco Integrated School Online Voting System',
 						to: user.user_email,
 						subject: `SSG Voting System ${user.classification} voter.`,
 						text: `Hello ${user.user_fullname},\n\n!`,
@@ -469,7 +469,7 @@ export const actions: Actions = {
 
 							Thank you!</p>
 
-							<p>You may login in this website <a href="https://voting-ssg-prototype.vercel.app/voter" target="_blank">https://voting-ssg-prototype.vercel.app/voter</a> using your LRN as username.</p>
+							<p>You may login in this website <a href="https://voting-ssg-prototype.vercel.app/voter" target="_blank">https://voting-ssg-prototype.vercel.app/voter</a> using your LRN ${user.user_lrn}.</p>
 
 							<p>Your password is <b>${user.user_password}</b> Please do not share. </p>
 						
