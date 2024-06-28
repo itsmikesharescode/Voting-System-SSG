@@ -15,11 +15,9 @@ import type { ZodError } from 'zod';
 
 export const actions: Actions = {
 	//votes route
-	resetDataAction: async ({ locals: { supabaseAdmin, safeGetSession }, request }) => {
+	resetDataAction: async ({ locals: { supabaseAdmin, user }, request }) => {
 		const formData = await request.formData();
 		const selected = formData.get('selected') as 'cleanReset' | 'resetVoteNvotedCounts';
-
-		const { user } = await safeGetSession();
 
 		if (user) {
 			if (selected === 'cleanReset') {
